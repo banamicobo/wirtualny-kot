@@ -1,769 +1,519 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zaleca się kota — wirtualna terapia kotem</title>
+  <title>A Cat is Recommended</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --cream: #FAF5EE;
-      --dark:  #2A2018;
-      --terra: #C4754A;
-      --sage:  #7A9E7E;
-      --warm:  #E8D5B7;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { background: var(--cream); color: var(--dark); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.7; }
+    :root { --cream:#FAF5EE; --dark:#2A2018; --terra:#C4754A; --sage:#7A9E7E; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--cream); color:var(--dark); font-family:'Inter',sans-serif; font-size:15px; line-height:1.7; }
 
     /* Mobile gate */
-    .mobile-gate {
-      display: none; position: fixed; inset: 0; background: var(--cream);
-      z-index: 9999; flex-direction: column; align-items: center;
-      justify-content: center; text-align: center; padding: 48px;
-    }
-    .mobile-gate .icon { font-size: 56px; margin-bottom: 24px; }
-    .mobile-gate h2 { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; margin-bottom: 12px; }
-    .mobile-gate p { font-size: 14px; opacity: .55; max-width: 300px; line-height: 1.7; }
-    @media (max-width: 900px) { .mobile-gate { display: flex; } }
+    .mobile-gate { display:none; position:fixed; inset:0; background:var(--cream); z-index:9999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:48px; }
+    .mobile-gate .icon { font-size:56px; margin-bottom:24px; }
+    .mobile-gate h2 { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; margin-bottom:12px; }
+    .mobile-gate p { font-size:14px; opacity:.55; max-width:300px; line-height:1.7; }
+    @media (max-width:900px) { .mobile-gate { display:flex; } }
 
     /* Nav */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 56px;
-      background: rgba(250,245,238,.93); backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(42,32,24,.06);
-    }
-    .nav-logo { font-family: 'Cormorant Garamond', serif; font-size: 17px; letter-spacing: .1em; }
-    .nav-links { display: flex; gap: 36px; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--dark); font-size: 13px; letter-spacing: .04em; opacity: .5; transition: opacity .2s; }
-    .nav-links a:hover { opacity: 1; }
-    .nav-cta {
-      background: var(--dark); color: var(--cream); border: none;
-      padding: 10px 26px; font-family: 'Inter', sans-serif; font-size: 13px;
-      letter-spacing: .05em; cursor: pointer; transition: background .2s;
-    }
-    .nav-cta:hover { background: var(--terra); }
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(250,245,238,.93); backdrop-filter:blur(10px); border-bottom:1px solid rgba(42,32,24,.06); gap:20px; }
+    .nav-left { display:flex; align-items:center; gap:20px; }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:17px; letter-spacing:.1em; white-space:nowrap; }
+    .lang-switcher { display:flex; gap:2px; }
+    .lang-btn { background:none; border:1px solid transparent; padding:4px 10px; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; color:var(--dark); opacity:.35; transition:all .2s; border-radius:2px; }
+    .lang-btn:hover { opacity:.7; }
+    .lang-btn.active { opacity:1; border-color:rgba(42,32,24,.2); background:rgba(42,32,24,.04); }
+    .nav-links { display:flex; gap:32px; list-style:none; }
+    .nav-links a { text-decoration:none; color:var(--dark); font-size:13px; letter-spacing:.04em; opacity:.5; transition:opacity .2s; }
+    .nav-links a:hover { opacity:1; }
+    .nav-cta { background:var(--dark); color:var(--cream); border:none; padding:10px 24px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.05em; cursor:pointer; transition:background .2s; white-space:nowrap; }
+    .nav-cta:hover { background:var(--terra); }
 
     /* Hero */
-    .hero {
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; text-align: center;
-      padding: 130px 56px 90px; position: relative;
-    }
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 50% 40%, rgba(196,117,74,.07) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .eyebrow { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; opacity: .35; margin-bottom: 28px; }
-    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(58px,8vw,108px); font-weight: 300; line-height: 1.02; margin-bottom: 24px; }
-    .hero h1 em { font-style: italic; color: var(--terra); }
-    .hero-sub { font-size: 16px; font-weight: 300; opacity: .5; max-width: 460px; line-height: 1.85; margin-bottom: 52px; }
+    .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:130px 56px 90px; position:relative; }
+    .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%,rgba(196,117,74,.07) 0%,transparent 70%); pointer-events:none; }
+    .eyebrow { font-size:10px; letter-spacing:.22em; text-transform:uppercase; opacity:.35; margin-bottom:28px; }
+    .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(58px,8vw,108px); font-weight:300; line-height:1.02; margin-bottom:24px; }
+    .hero h1 em { font-style:italic; color:var(--terra); }
+    .hero-sub { font-size:16px; font-weight:300; opacity:.5; max-width:480px; line-height:1.85; margin-bottom:52px; }
 
     /* Counters */
-    .counters {
-      display: flex; gap: 56px; margin-bottom: 48px;
-      font-family: 'Cormorant Garamond', serif;
-    }
-    .cnt { text-align: center; }
-    .cnt-value { font-size: 52px; font-weight: 300; color: var(--terra); line-height: 1; }
-    .cnt-label { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .35; margin-top: 4px; font-family: 'Inter', sans-serif; }
+    .counters { display:flex; gap:56px; margin-bottom:48px; font-family:'Cormorant Garamond',serif; }
+    .cnt { text-align:center; }
+    .cnt-value { font-size:52px; font-weight:300; color:var(--terra); line-height:1; }
+    .cnt-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; opacity:.35; margin-top:4px; font-family:'Inter',sans-serif; }
 
     /* Cat */
-    .cat-widget { cursor: pointer; user-select: none; }
-    .cat-wrap { width: 190px; height: 190px; margin: 0 auto; transition: transform .08s; }
-    .cat-wrap:active { transform: scale(.93); }
-    .cat-wrap.bounce { animation: bounce .35s ease; }
+    .cat-wrap { width:190px; height:190px; margin:0 auto; transition:transform .08s; cursor:pointer; user-select:none; }
+    .cat-wrap:active { transform:scale(.93); }
+    .cat-wrap.bounce { animation:bounce .35s ease; }
     @keyframes bounce { 0%{transform:scale(1)} 25%{transform:scale(1.1) rotate(-3deg)} 55%{transform:scale(1.07) rotate(2deg)} 100%{transform:scale(1) rotate(0)} }
-    .click-hint { margin-top: 14px; font-size: 11px; letter-spacing: .1em; opacity: .28; text-transform: uppercase; animation: blink 2.2s ease-in-out infinite; }
+    @keyframes cat-walkoff { 0%{transform:translate(0,0) rotate(0deg);opacity:1} 8%{transform:translate(22px,-14px) rotate(-4deg)} 16%{transform:translate(50px,2px) rotate(3deg)} 24%{transform:translate(85px,-14px) rotate(-4deg)} 32%{transform:translate(125px,2px) rotate(3deg)} 42%{transform:translate(175px,-10px) rotate(-3deg)} 55%{transform:translate(240px,0);opacity:1} 72%{transform:translate(340px,-6px);opacity:.6} 88%{transform:translate(460px,0);opacity:.2} 100%{transform:translate(620px,0);opacity:0} }
+    @keyframes cat-walkin { 0%{transform:translateX(-500px);opacity:0} 25%{opacity:.5;transform:translateX(-280px) rotate(3deg)} 45%{transform:translateX(-130px) rotate(-3deg)} 62%{transform:translateX(-40px) rotate(2deg)} 78%{transform:translateX(12px) rotate(-1deg)} 100%{transform:translateX(0);opacity:1} }
+    .cat-wrap.walkoff { animation:cat-walkoff 1.8s ease-in forwards; }
+    .cat-wrap.walkin  { animation:cat-walkin 1.2s ease-out forwards; }
+
+    /* Pet dots */
+    .pet-progress { margin-top:20px; width:190px; margin-left:auto; margin-right:auto; }
+    .pet-dots { display:flex; gap:5px; justify-content:center; margin-bottom:8px; }
+    .pet-dot { width:8px; height:8px; border-radius:50%; background:rgba(42,32,24,.12); transition:background .3s; }
+    .pet-dot.filled { background:var(--terra); }
+    .pet-dot.pulse { animation:dot-pulse .4s ease; }
+    @keyframes dot-pulse { 0%{transform:scale(1)} 50%{transform:scale(1.6)} 100%{transform:scale(1)} }
+    .pet-progress-label { font-size:10px; letter-spacing:.14em; text-transform:uppercase; opacity:.28; text-align:center; }
+
+    /* Satisfied */
+    #satisfiedState { text-align:center; padding:8px 0; }
+    .sat-emoji { font-size:52px; margin-bottom:16px; display:block; animation:sat-float 3s ease-in-out infinite; }
+    @keyframes sat-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .sat-title { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:300; margin-bottom:6px; }
+    .sat-sub { font-size:12px; opacity:.38; letter-spacing:.06em; margin-bottom:4px; }
+    .sat-timer { font-family:'Cormorant Garamond',serif; font-size:56px; font-weight:300; color:var(--terra); line-height:1; margin:8px 0 4px; }
+    .sat-unit { font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.28; }
     @keyframes blink { 0%,100%{opacity:.28} 50%{opacity:.55} }
 
-    /* ── Walk-off / walk-in ─────────────────── */
-    @keyframes cat-walkoff {
-      0%   { transform: translate(0,0) rotate(0deg); opacity:1; }
-      8%   { transform: translate(22px,-14px) rotate(-4deg); }
-      16%  { transform: translate(50px,2px) rotate(3deg); }
-      24%  { transform: translate(85px,-14px) rotate(-4deg); }
-      32%  { transform: translate(125px,2px) rotate(3deg); }
-      42%  { transform: translate(175px,-10px) rotate(-3deg); }
-      55%  { transform: translate(240px,0); opacity:1; }
-      72%  { transform: translate(340px,-6px); opacity:.6; }
-      88%  { transform: translate(460px,0); opacity:.2; }
-      100% { transform: translate(620px,0); opacity:0; }
-    }
-    @keyframes cat-walkin {
-      0%   { transform: translateX(-500px); opacity:0; }
-      25%  { opacity:.5; transform: translateX(-280px) rotate(3deg); }
-      45%  { transform: translateX(-130px) rotate(-3deg); }
-      62%  { transform: translateX(-40px) rotate(2deg); }
-      78%  { transform: translateX(12px) rotate(-1deg); }
-      100% { transform: translateX(0); opacity:1; }
-    }
-    .cat-wrap.walkoff { animation: cat-walkoff 1.8s ease-in forwards; }
-    .cat-wrap.walkin  { animation: cat-walkin 1.2s ease-out forwards; }
+    /* Layout */
+    .divider { width:48px; height:1px; background:var(--dark); opacity:.1; margin:0 auto 72px; }
+    hr.thin { border:none; border-top:1px solid rgba(42,32,24,.07); }
+    .section { max-width:1000px; margin:0 auto; padding:80px 56px; }
+    .section-label { font-size:10px; letter-spacing:.25em; text-transform:uppercase; opacity:.3; margin-bottom:18px; }
+    .section h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(34px,4vw,54px); font-weight:300; line-height:1.15; margin-bottom:52px; }
+    .section h2 em { font-style:italic; color:var(--terra); }
 
-    /* ── Pet progress bar ───────────────────── */
-    .pet-progress { margin-top: 20px; width: 190px; margin-left: auto; margin-right: auto; }
-    .pet-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 8px; }
-    .pet-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(42,32,24,.12); transition: background .3s;
-    }
-    .pet-dot.filled { background: var(--terra); }
-    .pet-dot.pulse { animation: dot-pulse .4s ease; }
-    @keyframes dot-pulse { 0%{transform:scale(1)} 50%{transform:scale(1.6)} 100%{transform:scale(1)} }
-    .pet-progress-label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; opacity: .28; text-align: center; }
-
-    /* ── Satisfied state ────────────────────── */
-    #satisfiedState { text-align: center; padding: 8px 0; }
-    .sat-emoji { font-size: 52px; margin-bottom: 16px; display: block; animation: sat-float 3s ease-in-out infinite; }
-    @keyframes sat-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
-    .sat-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 24px; font-weight: 300; margin-bottom: 6px;
-    }
-    .sat-sub { font-size: 12px; opacity: .38; letter-spacing: .06em; margin-bottom: 4px; }
-    .sat-timer {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 56px; font-weight: 300; color: var(--terra);
-      line-height: 1; margin: 8px 0 4px;
-    }
-    .sat-unit { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .28; }
-
-    /* Divider */
-    .divider { width: 48px; height: 1px; background: var(--dark); opacity: .1; margin: 0 auto 72px; }
-    hr.thin { border: none; border-top: 1px solid rgba(42,32,24,.07); }
-
-    /* Sections */
-    .section { max-width: 1000px; margin: 0 auto; padding: 80px 56px; }
-    .section-label { font-size: 10px; letter-spacing: .25em; text-transform: uppercase; opacity: .3; margin-bottom: 18px; }
-    .section h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(34px,4vw,54px); font-weight: 300; line-height: 1.15; margin-bottom: 52px; }
-    .section h2 em { font-style: italic; color: var(--terra); }
-
-    /* Diagnosis section */
-    .diag-paths { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 0; }
-    .diag-card {
-      border: 1px solid rgba(42,32,24,.1); padding: 40px;
-      background: #fff; text-align: center; transition: border-color .2s, box-shadow .2s;
-    }
-    .diag-card:hover { border-color: rgba(42,32,24,.25); box-shadow: 0 4px 20px rgba(0,0,0,.06); }
-    .diag-card .card-icon { font-size: 32px; margin-bottom: 18px; }
-    .diag-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 400; margin-bottom: 10px; }
-    .diag-card p { font-size: 13px; opacity: .5; line-height: 1.75; margin-bottom: 24px; }
-    .diag-input {
-      width: 100%; padding: 12px 16px; border: 1px solid rgba(42,32,24,.13);
-      background: var(--cream); font-family: 'Inter', sans-serif; font-size: 14px;
-      color: var(--dark); outline: none; margin-bottom: 10px;
-    }
-    .diag-input:focus { border-color: var(--terra); }
-    .btn-primary {
-      width: 100%; padding: 13px; background: var(--dark); color: var(--cream);
-      border: none; font-family: 'Inter', sans-serif; font-size: 13px;
-      letter-spacing: .07em; text-transform: uppercase; cursor: pointer; transition: background .2s;
-    }
-    .btn-primary:hover { background: var(--terra); }
-    .btn-outline {
-      width: 100%; padding: 13px; background: transparent; color: var(--dark);
-      border: 1px solid rgba(42,32,24,.2); font-family: 'Inter', sans-serif;
-      font-size: 13px; letter-spacing: .07em; text-transform: uppercase;
-      cursor: pointer; transition: all .2s;
-    }
-    .btn-outline:hover { border-color: var(--dark); background: rgba(42,32,24,.04); }
+    /* Diagnosis */
+    .diag-paths { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .diag-card { border:1px solid rgba(42,32,24,.1); padding:40px; background:#fff; text-align:center; transition:border-color .2s,box-shadow .2s; }
+    .diag-card:hover { border-color:rgba(42,32,24,.25); box-shadow:0 4px 20px rgba(0,0,0,.06); }
+    .diag-card .card-icon { font-size:32px; margin-bottom:18px; }
+    .diag-card h3 { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:400; margin-bottom:10px; }
+    .diag-card p { font-size:13px; opacity:.5; line-height:1.75; margin-bottom:24px; }
+    .diag-input { width:100%; padding:12px 16px; border:1px solid rgba(42,32,24,.13); background:var(--cream); font-family:'Inter',sans-serif; font-size:14px; color:var(--dark); outline:none; margin-bottom:10px; }
+    .diag-input:focus { border-color:var(--terra); }
+    .btn-primary { width:100%; padding:13px; background:var(--dark); color:var(--cream); border:none; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.07em; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+    .btn-primary:hover { background:var(--terra); }
+    .btn-outline { width:100%; padding:13px; background:transparent; color:var(--dark); border:1px solid rgba(42,32,24,.2); font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.07em; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+    .btn-outline:hover { border-color:var(--dark); background:rgba(42,32,24,.04); }
 
     /* Steps */
-    .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; }
-    .step { border-top: 1px solid rgba(42,32,24,.12); padding-top: 20px; }
-    .step-num { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; color: var(--terra); opacity: .2; line-height: 1; margin-bottom: 14px; }
-    .step h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 8px; }
-    .step p { font-size: 13px; opacity: .5; line-height: 1.75; }
+    .steps { display:grid; grid-template-columns:repeat(4,1fr); gap:28px; }
+    .step { border-top:1px solid rgba(42,32,24,.12); padding-top:20px; }
+    .step-num { font-family:'Cormorant Garamond',serif; font-size:52px; font-weight:300; color:var(--terra); opacity:.2; line-height:1; margin-bottom:14px; }
+    .step h3 { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:400; margin-bottom:8px; }
+    .step p { font-size:13px; opacity:.5; line-height:1.75; }
 
-    /* For whom cards */
-    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    .card { background: #fff; border: 1px solid rgba(42,32,24,.07); padding: 44px; }
-    .card .card-icon { font-size: 36px; margin-bottom: 22px; }
-    .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 12px; }
-    .card p { font-size: 13px; opacity: .5; line-height: 1.8; }
-    .card-tag { display: inline-block; margin-top: 22px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; border: 1px solid var(--terra); color: var(--terra); padding: 4px 14px; }
+    /* Cards */
+    .cards { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+    .card { background:#fff; border:1px solid rgba(42,32,24,.07); padding:44px; }
+    .card .card-icon { font-size:36px; margin-bottom:22px; }
+    .card h3 { font-family:'Cormorant Garamond',serif; font-size:24px; font-weight:400; margin-bottom:12px; }
+    .card p { font-size:13px; opacity:.5; line-height:1.8; }
+    .card-tag { display:inline-block; margin-top:22px; font-size:10px; letter-spacing:.14em; text-transform:uppercase; border:1px solid var(--terra); color:var(--terra); padding:4px 14px; }
 
     /* Donation */
-    .donation-bg { background: var(--dark); color: var(--cream); }
-    .donation-bg .section-label { color: var(--cream); opacity: .25; }
-    .donation-bg h2 { color: var(--cream); }
-    .split-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(250,245,238,.08); margin-top: 44px; }
-    .split-block { padding: 44px; text-align: center; border-right: 1px solid rgba(250,245,238,.08); }
-    .split-block:last-child { border-right: none; }
-    .split-pct { font-family: 'Cormorant Garamond', serif; font-size: 80px; font-weight: 300; line-height: 1; color: var(--terra); }
-    .split-label { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; opacity: .35; margin-top: 8px; }
-    .split-desc { font-size: 13px; opacity: .4; margin-top: 16px; line-height: 1.75; }
-    .donate-btn { display: block; width: fit-content; margin: 52px auto 0; background: var(--terra); color: #fff; border: none; padding: 16px 52px; font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: opacity .2s; }
-    .donate-btn:hover { opacity: .8; }
+    .donation-bg { background:var(--dark); color:var(--cream); }
+    .donation-bg .section-label { color:var(--cream); opacity:.25; }
+    .donation-bg h2 { color:var(--cream); }
+    .split-grid { display:grid; grid-template-columns:1fr 1fr; border:1px solid rgba(250,245,238,.08); margin-top:44px; }
+    .split-block { padding:44px; text-align:center; border-right:1px solid rgba(250,245,238,.08); }
+    .split-block:last-child { border-right:none; }
+    .split-pct { font-family:'Cormorant Garamond',serif; font-size:80px; font-weight:300; line-height:1; color:var(--terra); }
+    .split-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; opacity:.35; margin-top:8px; }
+    .split-desc { font-size:13px; opacity:.4; margin-top:16px; line-height:1.75; }
+    .donate-btn { display:block; width:fit-content; margin:52px auto 0; background:var(--terra); color:#fff; border:none; padding:16px 52px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:opacity .2s; }
+    .donate-btn:hover { opacity:.8; }
 
     /* Auth */
-    .auth-wrap { max-width: 480px; margin: 0 auto; padding: 80px 56px; text-align: center; }
-    .auth-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; margin-bottom: 10px; }
-    .auth-wrap > p { font-size: 14px; opacity: .45; margin-bottom: 44px; }
-    .auth-stack { display: flex; flex-direction: column; gap: 12px; }
-    .auth-btn { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 14px 20px; border: 1px solid rgba(42,32,24,.13); background: #fff; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--dark); cursor: pointer; transition: border-color .2s, box-shadow .2s; }
-    .auth-btn:hover { border-color: rgba(42,32,24,.3); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
-    .or-divider { display: flex; align-items: center; gap: 14px; font-size: 12px; opacity: .3; }
-    .or-divider::before,.or-divider::after { content:''; flex:1; height:1px; background: var(--dark); }
-    .email-input { width: 100%; padding: 14px 16px; border: 1px solid rgba(42,32,24,.13); background: #fff; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--dark); outline: none; }
-    .email-input:focus { border-color: var(--terra); }
-    .email-submit { width: 100%; padding: 14px; background: var(--dark); color: var(--cream); border: none; font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
-    .email-submit:hover { background: var(--terra); }
+    .auth-wrap { max-width:480px; margin:0 auto; padding:80px 56px; text-align:center; }
+    .auth-wrap h2 { font-family:'Cormorant Garamond',serif; font-size:42px; font-weight:300; margin-bottom:10px; }
+    .auth-wrap > p { font-size:14px; opacity:.45; margin-bottom:44px; }
+    .auth-stack { display:flex; flex-direction:column; gap:12px; }
+    .auth-btn { display:flex; align-items:center; justify-content:center; gap:12px; padding:14px 20px; border:1px solid rgba(42,32,24,.13); background:#fff; font-family:'Inter',sans-serif; font-size:14px; color:var(--dark); cursor:pointer; transition:border-color .2s,box-shadow .2s; }
+    .auth-btn:hover { border-color:rgba(42,32,24,.3); box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .or-divider { display:flex; align-items:center; gap:14px; font-size:12px; opacity:.3; }
+    .or-divider::before,.or-divider::after { content:''; flex:1; height:1px; background:var(--dark); }
+    .email-input { width:100%; padding:14px 16px; border:1px solid rgba(42,32,24,.13); background:#fff; font-family:'Inter',sans-serif; font-size:14px; color:var(--dark); outline:none; }
+    .email-input:focus { border-color:var(--terra); }
+    .email-submit { width:100%; padding:14px; background:var(--dark); color:var(--cream); border:none; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+    .email-submit:hover { background:var(--terra); }
+    footer { text-align:center; padding:36px 56px; border-top:1px solid rgba(42,32,24,.07); font-size:12px; opacity:.28; letter-spacing:.04em; }
 
-    footer { text-align: center; padding: 36px 56px; border-top: 1px solid rgba(42,32,24,.07); font-size: 12px; opacity: .28; letter-spacing: .04em; }
-
-    /* ══ QUIZ MODAL ══════════════════════════════ */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; z-index: 500;
-      background: rgba(42,32,24,.6); backdrop-filter: blur(4px);
-      align-items: center; justify-content: center; padding: 24px;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: var(--cream); max-width: 640px; width: 100%;
-      padding: 56px; position: relative; max-height: 90vh; overflow-y: auto;
-    }
-    .modal-close {
-      position: absolute; top: 20px; right: 24px; background: none; border: none;
-      font-size: 22px; cursor: pointer; opacity: .35; transition: opacity .2s; color: var(--dark);
-    }
-    .modal-close:hover { opacity: .8; }
-    .quiz-progress { display: flex; gap: 6px; margin-bottom: 40px; }
-    .quiz-bar { flex: 1; height: 2px; background: rgba(42,32,24,.1); transition: background .4s; }
-    .quiz-bar.done { background: var(--terra); }
-    .quiz-q {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 28px; font-weight: 300; line-height: 1.3; margin-bottom: 8px;
-    }
-    .quiz-sub { font-size: 13px; opacity: .4; margin-bottom: 32px; }
-    .quiz-options { display: flex; flex-direction: column; gap: 10px; }
-    .quiz-option {
-      padding: 16px 20px; border: 1px solid rgba(42,32,24,.12); background: #fff;
-      font-family: 'Inter', sans-serif; font-size: 14px; color: var(--dark);
-      cursor: pointer; text-align: left; transition: all .2s; line-height: 1.5;
-    }
-    .quiz-option:hover { border-color: var(--terra); background: rgba(196,117,74,.04); }
-    .quiz-option.selected { border-color: var(--terra); background: rgba(196,117,74,.08); }
-    .quiz-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
-    .quiz-back { background: none; border: none; font-size: 13px; opacity: .4; cursor: pointer; font-family: 'Inter', sans-serif; transition: opacity .2s; }
-    .quiz-back:hover { opacity: .8; }
-    .quiz-next { background: var(--dark); color: var(--cream); border: none; padding: 12px 32px; font-family: 'Inter', sans-serif; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: background .2s; }
-    .quiz-next:hover { background: var(--terra); }
-    .quiz-next:disabled { opacity: .3; cursor: default; }
-
-    /* ══ RESULT MODAL ════════════════════════════ */
-    .result-header { text-align: center; margin-bottom: 40px; }
-    .result-diag-label { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .35; margin-bottom: 12px; }
-    .result-diag { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; margin-bottom: 6px; }
-    .result-intro { font-size: 13px; opacity: .45; }
-    .result-cat-card {
-      border: 1px solid rgba(42,32,24,.1); padding: 36px; margin-bottom: 20px;
-      text-align: center; background: #fff;
-    }
-    .result-cat-emoji { font-size: 56px; margin-bottom: 16px; }
-    .result-breed { font-family: 'Cormorant Garamond', serif; font-size: 32px; font-weight: 400; margin-bottom: 10px; }
-    .result-why { font-size: 14px; opacity: .55; line-height: 1.75; margin-bottom: 24px; }
-    .result-traits { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-    .trait { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; border: 1px solid rgba(42,32,24,.15); padding: 4px 14px; }
-    .result-cta { display: flex; flex-direction: column; gap: 10px; margin-top: 28px; }
-    .result-note { font-size: 12px; opacity: .35; text-align: center; margin-top: 16px; line-height: 1.6; }
+    /* Quiz / Result modal */
+    .modal-overlay { display:none; position:fixed; inset:0; z-index:500; background:rgba(42,32,24,.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:24px; }
+    .modal-overlay.open { display:flex; }
+    .modal { background:var(--cream); max-width:640px; width:100%; padding:56px; position:relative; max-height:90vh; overflow-y:auto; }
+    .modal-close { position:absolute; top:20px; right:24px; background:none; border:none; font-size:22px; cursor:pointer; opacity:.35; transition:opacity .2s; color:var(--dark); }
+    .modal-close:hover { opacity:.8; }
+    .quiz-progress { display:flex; gap:6px; margin-bottom:40px; }
+    .quiz-bar { flex:1; height:2px; background:rgba(42,32,24,.1); transition:background .4s; }
+    .quiz-bar.done { background:var(--terra); }
+    .quiz-q { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:300; line-height:1.3; margin-bottom:8px; }
+    .quiz-sub { font-size:13px; opacity:.4; margin-bottom:32px; }
+    .quiz-options { display:flex; flex-direction:column; gap:10px; }
+    .quiz-option { padding:16px 20px; border:1px solid rgba(42,32,24,.12); background:#fff; font-family:'Inter',sans-serif; font-size:14px; color:var(--dark); cursor:pointer; text-align:left; transition:all .2s; line-height:1.5; }
+    .quiz-option:hover { border-color:var(--terra); background:rgba(196,117,74,.04); }
+    .quiz-option.selected { border-color:var(--terra); background:rgba(196,117,74,.08); }
+    .quiz-nav { display:flex; justify-content:space-between; align-items:center; margin-top:32px; }
+    .quiz-back { background:none; border:none; font-size:13px; opacity:.4; cursor:pointer; font-family:'Inter',sans-serif; transition:opacity .2s; }
+    .quiz-back:hover { opacity:.8; }
+    .quiz-next { background:var(--dark); color:var(--cream); border:none; padding:12px 32px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:background .2s; }
+    .quiz-next:hover { background:var(--terra); }
+    .quiz-next:disabled { opacity:.3; cursor:default; }
+    .result-header { text-align:center; margin-bottom:40px; }
+    .result-diag-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; opacity:.35; margin-bottom:12px; }
+    .result-diag { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; margin-bottom:6px; }
+    .result-intro { font-size:13px; opacity:.45; }
+    .result-cat-card { border:1px solid rgba(42,32,24,.1); padding:36px; margin-bottom:20px; text-align:center; background:#fff; }
+    .result-cat-emoji { font-size:56px; margin-bottom:16px; }
+    .result-breed { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:400; margin-bottom:10px; }
+    .result-why { font-size:14px; opacity:.55; line-height:1.75; margin-bottom:24px; }
+    .result-traits { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+    .trait { font-size:11px; letter-spacing:.1em; text-transform:uppercase; border:1px solid rgba(42,32,24,.15); padding:4px 14px; }
+    .result-cta { display:flex; flex-direction:column; gap:10px; margin-top:28px; }
+    .result-note { font-size:12px; opacity:.35; text-align:center; margin-top:16px; line-height:1.6; }
   </style>
 </head>
 <body>
 
-<!-- Mobile gate -->
 <div class="mobile-gate">
   <div class="icon">🐱</div>
-  <h2>Tylko z domu</h2>
-  <p>Prawdziwa opieka nad kotem wymaga Twojej obecności. Wróć na komputerze podłączonym do domowego WiFi.</p>
+  <h2 data-i18n="gate.h2">Home only</h2>
+  <p data-i18n="gate.p">Real cat care requires your presence at home. Return on a computer connected to your home WiFi.</p>
 </div>
 
-<!-- Nav -->
 <nav>
-  <div class="nav-logo">ZALECA SIĘ KOTA</div>
+  <div class="nav-left">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" data-lang="ja" onclick="setLang('ja')">日本語</button>
+      <button class="lang-btn" data-lang="ko" onclick="setLang('ko')">한국어</button>
+    </div>
+    <div class="nav-logo" data-i18n="nav.logo">A CAT IS RECOMMENDED</div>
+  </div>
   <ul class="nav-links">
-    <li><a href="#diagnoza">Diagnoza</a></li>
-    <li><a href="#jak-dziala">Jak działa</a></li>
-    <li><a href="#dotacje">Dotacje</a></li>
+    <li><a href="#diagnoza" data-i18n="nav.diagnosis">Diagnosis</a></li>
+    <li><a href="#jak-dziala" data-i18n="nav.how">How it works</a></li>
+    <li><a href="#dotacje" data-i18n="nav.donate">Donations</a></li>
   </ul>
-  <button class="nav-cta" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Znajdź swojego kota →</button>
+  <button class="nav-cta" data-i18n="nav.cta" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Find your cat →</button>
 </nav>
 
-<!-- Hero -->
 <div class="hero">
-  <p class="eyebrow">Inspirowane książkami Sho Ishidy</p>
-  <h1>Zaleca się<br><em>kota</em></h1>
-  <p class="hero-sub">Wirtualna terapia kotem dla tych, którzy nie mogą go mieć — i dla dzieci, które chcą go zdobyć.</p>
+  <p class="eyebrow" data-i18n="hero.eyebrow">Inspired by Sho Ishida's books</p>
+  <h1><span data-i18n="hero.h1a">A cat is</span><br><em data-i18n="hero.h1b">recommended</em></h1>
+  <p class="hero-sub" data-i18n="hero.sub">Virtual cat therapy for those who can't have one — and for children who want to earn one.</p>
 
   <div class="counters">
     <div class="cnt">
       <div class="cnt-value" id="dayCount">1</div>
-      <div class="cnt-label">Dzień opieki</div>
+      <div class="cnt-label" data-i18n="cnt.days">Day of care</div>
     </div>
     <div class="cnt">
       <div class="cnt-value" id="petCount">0</div>
-      <div class="cnt-label">Głaskań</div>
+      <div class="cnt-label" data-i18n="cnt.pets">Pets given</div>
     </div>
   </div>
 
-  <div class="cat-widget" id="catWidget">
-
-    <!-- Petting state -->
-    <div id="petState">
+  <div id="petState">
     <div class="cat-wrap" id="catWrap">
       <svg viewBox="0 0 200 210" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 168 Q8 148 14 122 Q20 98 38 104 Q46 107 44 120" stroke="#D4B090" stroke-width="16" fill="none" stroke-linecap="round"/>
         <ellipse cx="100" cy="130" rx="74" ry="66" fill="#DDB990"/>
-        <path d="M36 82 L52 36 L78 70" fill="#DDB990"/>
-        <path d="M44 76 L54 44 L72 68" fill="#D09090"/>
-        <path d="M164 82 L148 36 L122 70" fill="#DDB990"/>
-        <path d="M156 76 L146 44 L128 68" fill="#D09090"/>
+        <path d="M36 82 L52 36 L78 70" fill="#DDB990"/><path d="M44 76 L54 44 L72 68" fill="#D09090"/>
+        <path d="M164 82 L148 36 L122 70" fill="#DDB990"/><path d="M156 76 L146 44 L128 68" fill="#D09090"/>
         <ellipse cx="100" cy="136" rx="54" ry="48" fill="#EDD5B0"/>
-        <g id="eyesN">
-          <ellipse cx="78" cy="120" rx="11" ry="13" fill="#3A2820"/>
-          <ellipse cx="122" cy="120" rx="11" ry="13" fill="#3A2820"/>
-          <circle cx="81" cy="117" r="3.5" fill="white"/>
-          <circle cx="125" cy="117" r="3.5" fill="white"/>
-        </g>
-        <g id="eyesH" display="none">
-          <path d="M67 120 Q78 110 89 120" stroke="#3A2820" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path d="M111 120 Q122 110 133 120" stroke="#3A2820" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </g>
+        <g id="eyesN"><ellipse cx="78" cy="120" rx="11" ry="13" fill="#3A2820"/><ellipse cx="122" cy="120" rx="11" ry="13" fill="#3A2820"/><circle cx="81" cy="117" r="3.5" fill="white"/><circle cx="125" cy="117" r="3.5" fill="white"/></g>
+        <g id="eyesH" display="none"><path d="M67 120 Q78 110 89 120" stroke="#3A2820" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M111 120 Q122 110 133 120" stroke="#3A2820" stroke-width="3" fill="none" stroke-linecap="round"/></g>
         <path d="M95 138 L100 144 L105 138 Q100 132 95 138Z" fill="#C47878"/>
-        <g id="mouthN">
-          <path d="M100 144 Q91 151 85 149" stroke="#9A7060" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <path d="M100 144 Q109 151 115 149" stroke="#9A7060" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-        </g>
-        <g id="mouthO" display="none">
-          <ellipse cx="100" cy="152" rx="14" ry="11" fill="#B05050"/>
-          <ellipse cx="100" cy="155" rx="9" ry="7" fill="#902020"/>
-          <ellipse cx="100" cy="160" rx="5.5" ry="3.5" fill="#C06060"/>
-        </g>
-        <line x1="24" y1="134" x2="82" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/>
-        <line x1="22" y1="144" x2="80" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/>
-        <line x1="26" y1="154" x2="82" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
-        <line x1="176" y1="134" x2="118" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/>
-        <line x1="178" y1="144" x2="120" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/>
-        <line x1="174" y1="154" x2="118" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <g id="mouthN"><path d="M100 144 Q91 151 85 149" stroke="#9A7060" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M100 144 Q109 151 115 149" stroke="#9A7060" stroke-width="1.5" fill="none" stroke-linecap="round"/></g>
+        <g id="mouthO" display="none"><ellipse cx="100" cy="152" rx="14" ry="11" fill="#B05050"/><ellipse cx="100" cy="155" rx="9" ry="7" fill="#902020"/><ellipse cx="100" cy="160" rx="5.5" ry="3.5" fill="#C06060"/></g>
+        <line x1="24" y1="134" x2="82" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/><line x1="22" y1="144" x2="80" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/><line x1="26" y1="154" x2="82" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <line x1="176" y1="134" x2="118" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/><line x1="178" y1="144" x2="120" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/><line x1="174" y1="154" x2="118" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
       </svg>
     </div>
     <div class="pet-progress">
       <div class="pet-dots" id="petDots"></div>
-      <div class="pet-progress-label" id="petProgressLabel">głaszcz kota ↑</div>
+      <div class="pet-progress-label" id="petLabel" data-i18n="hint">pet the cat ↑</div>
     </div>
-    </div><!-- /petState -->
+  </div>
 
-    <!-- Satisfied / cooldown state -->
-    <div id="satisfiedState" style="display:none">
-      <span class="sat-emoji">😸</span>
-      <div class="sat-title">Kot jest najedzony głaskaniem</div>
-      <div class="sat-sub">Wróci za</div>
-      <div class="sat-timer" id="satTimer">15:00</div>
-      <div class="sat-unit">minut · sekund</div>
-    </div>
-
+  <div id="satisfiedState" style="display:none">
+    <span class="sat-emoji">😸</span>
+    <div class="sat-title" data-i18n="sat.title">The cat has had enough petting</div>
+    <div class="sat-sub" data-i18n="sat.sub">Back in</div>
+    <div class="sat-timer" id="satTimer">15:00</div>
+    <div class="sat-unit" data-i18n="sat.unit">min · sec</div>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<!-- Diagnosis section -->
 <section class="section" id="diagnoza">
-  <p class="section-label">Znajdź swojego kota</p>
-  <h2>Dopasuj kota<br><em>do swojej sytuacji</em></h2>
+  <p class="section-label" data-i18n="diag.label">Find your cat</p>
+  <h2><span data-i18n="diag.h2a">Match a cat</span><br><em data-i18n="diag.h2b">to your situation</em></h2>
   <div class="diag-paths">
     <div class="diag-card">
       <div class="card-icon">✍️</div>
-      <h3>Znam swój stan</h3>
-      <p>Wpisz diagnozę, stan emocjonalny lub sytuację życiową. Dobierzemy kota, który rozumie to, przez co przechodzisz.</p>
-      <input class="diag-input" id="diagInput" type="text" placeholder="np. samotność, ADHD, DDA, rozstanie…" />
-      <button class="btn-primary" onclick="matchFromText()">Dobierz kota →</button>
+      <h3 data-i18n="diag.c1.h3">I know my state</h3>
+      <p data-i18n="diag.c1.p">Enter a diagnosis, emotional state or life situation. We'll find the cat that understands what you're going through.</p>
+      <input class="diag-input" id="diagInput" type="text" data-i18n-ph="diag.c1.ph" placeholder="e.g. loneliness, ADHD, anxiety, breakup…" />
+      <button class="btn-primary" data-i18n="diag.c1.btn" onclick="matchFromText()">Match my cat →</button>
     </div>
     <div class="diag-card">
       <div class="card-icon">🧭</div>
-      <h3>Chcę się dowiedzieć</h3>
-      <p>Odpowiedz na 4 pytania. Na ich podstawie zasugerujemy diagnozę i dopasujemy rasę kota do Twoich potrzeb emocjonalnych.</p>
+      <h3 data-i18n="diag.c2.h3">I want to find out</h3>
+      <p data-i18n="diag.c2.p">Answer 4 questions. We'll suggest a diagnosis and match a cat breed to your emotional needs.</p>
       <br/>
-      <button class="btn-outline" onclick="openQuiz()">Przejdź przez ankietę →</button>
+      <button class="btn-outline" data-i18n="diag.c2.btn" onclick="openQuiz()">Take the quiz →</button>
     </div>
   </div>
 </section>
 
 <hr class="thin"/>
 
-<!-- How it works -->
 <section class="section" id="jak-dziala">
-  <p class="section-label">Jak to działa</p>
-  <h2>Cztery kroki do<br><em>Twojego kota</em></h2>
+  <p class="section-label" data-i18n="how.label">How it works</p>
+  <h2><span data-i18n="how.h2a">Four steps to</span><br><em data-i18n="how.h2b">your cat</em></h2>
   <div class="steps">
-    <div class="step">
-      <div class="step-num">01</div>
-      <h3>Quiz charakteru</h3>
-      <p>Odpowiadasz na pytania o swoje potrzeby emocjonalne. Dobieramy rasę kota i jego osobowość do Twojego profilu.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">02</div>
-      <h3>Codzienna opieka</h3>
-      <p>Wchodzisz każdego dnia z domowego WiFi. Karmisz, głaszczesz, rozwiązujesz niespodzianki kociego żywota.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">03</div>
-      <h3>Wyzwania kociego życia</h3>
-      <p>Wizyta u weterynarza, kaprysy rasy, zepsute zabawki — codzienne decyzje uczą odpowiedzialności.</p>
-    </div>
-    <div class="step">
-      <div class="step-num">04</div>
-      <h3>Certyfikat opiekuna</h3>
-      <p>Po 90 dniach regularnej opieki dostajesz certyfikat — bilet do schroniska lub ekskluzywnych ofert hodowli.</p>
-    </div>
+    <div class="step"><div class="step-num">01</div><h3 data-i18n="s1.h3">Character quiz</h3><p data-i18n="s1.p">Answer questions about your emotional needs. We match a cat breed and personality to your profile.</p></div>
+    <div class="step"><div class="step-num">02</div><h3 data-i18n="s2.h3">Daily care</h3><p data-i18n="s2.p">Visit every day from your home WiFi. Feed, pet, and handle the surprises of cat life.</p></div>
+    <div class="step"><div class="step-num">03</div><h3 data-i18n="s3.h3">Cat life challenges</h3><p data-i18n="s3.p">Vet visits, breed quirks, broken toys — daily decisions teach responsibility.</p></div>
+    <div class="step"><div class="step-num">04</div><h3 data-i18n="s4.h3">Caregiver certificate</h3><p data-i18n="s4.p">After 90 days of regular care you earn a certificate — a ticket to a shelter or exclusive breeder offers.</p></div>
   </div>
 </section>
 
 <hr class="thin"/>
 
-<!-- For whom -->
 <section class="section" id="dla-kogo">
-  <p class="section-label">Dla kogo</p>
-  <h2>Kot dla każdego,<br><em>kto go potrzebuje</em></h2>
+  <p class="section-label" data-i18n="whom.label">For whom</p>
+  <h2><span data-i18n="whom.h2a">A cat for everyone</span><br><em data-i18n="whom.h2b">who needs one</em></h2>
   <div class="cards">
-    <div class="card">
-      <div class="card-icon">🌿</div>
-      <h3>Terapia kotem bez kota</h3>
-      <p>Alergia, najem, podróże — powody są różne, potrzeba ta sama. Rasa i charakter wirtualnego kota są dobrane do Twoich trudności emocjonalnych na podstawie badań kocioterapii.</p>
-      <span class="card-tag">Dla dorosłych</span>
-    </div>
-    <div class="card">
-      <div class="card-icon">🏅</div>
-      <h3>Udowodnij rodzicom</h3>
-      <p>Chcesz kota, rodzice nie są przekonani? Przez 90 dni opiekuj się wirtualnym zwierzęciem i zdobądź certyfikat — bilet do schroniska lub hodowli partnerskiej.</p>
-      <span class="card-tag">Dla dzieci i nastolatków</span>
-    </div>
+    <div class="card"><div class="card-icon">🌿</div><h3 data-i18n="whom.c1.h3">Cat therapy without a cat</h3><p data-i18n="whom.c1.p">Allergy, rental, travel — reasons vary, the need is the same. Your virtual cat's breed and character are matched to your emotional difficulties.</p><span class="card-tag" data-i18n="whom.c1.tag">For adults</span></div>
+    <div class="card"><div class="card-icon">🏅</div><h3 data-i18n="whom.c2.h3">Prove it to your parents</h3><p data-i18n="whom.c2.p">Want a cat but parents aren't convinced? Care for a virtual pet for 90 days and earn a certificate — a ticket to a shelter or partner breeder.</p><span class="card-tag" data-i18n="whom.c2.tag">For children &amp; teens</span></div>
   </div>
 </section>
 
-<!-- Donation -->
 <div class="donation-bg" id="dotacje">
   <div class="section">
-    <p class="section-label">Przejrzystość dotacji</p>
-    <h2>Twoja dotacja<br><em>pomaga realnym kotom</em></h2>
-    <p style="font-size:14px;opacity:.4;max-width:460px;font-weight:300">Każda złotówka jest widoczna i policzalna. Tak dzielimy każdą wpłatę.</p>
+    <p class="section-label" data-i18n="don.label">Donation transparency</p>
+    <h2><span data-i18n="don.h2a">Your donation</span><br><em data-i18n="don.h2b">helps real cats</em></h2>
+    <p style="font-size:14px;opacity:.4;max-width:460px;font-weight:300" data-i18n="don.sub">Every amount is visible and countable. Here's how we split each donation.</p>
     <div class="split-grid">
-      <div class="split-block">
-        <div class="split-pct">80%</div>
-        <div class="split-label">Dla zwierząt</div>
-        <div class="split-desc">Trafia bezpośrednio do schronisk i organizacji pomagających kotom i psom szukającym domu.</div>
-      </div>
-      <div class="split-block">
-        <div class="split-pct">20%</div>
-        <div class="split-label">Platforma</div>
-        <div class="split-desc">Pokrywa koszty serwerów i dalszego rozwoju — żeby kot był z Tobą jak najdłużej.</div>
-      </div>
+      <div class="split-block"><div class="split-pct">80%</div><div class="split-label" data-i18n="don.p1.label">For animals</div><div class="split-desc" data-i18n="don.p1.desc">Goes directly to shelters and organizations helping cats and dogs find homes.</div></div>
+      <div class="split-block"><div class="split-pct">20%</div><div class="split-label" data-i18n="don.p2.label">Platform</div><div class="split-desc" data-i18n="don.p2.desc">Covers server costs and further development — so your cat stays with you as long as possible.</div></div>
     </div>
-    <button class="donate-btn">Wspomóż koty →</button>
+    <button class="donate-btn" data-i18n="don.btn">Support the cats →</button>
   </div>
 </div>
 
-<!-- Auth -->
 <div id="logowanie" class="auth-wrap">
-  <p class="section-label" style="text-align:center">Zacznij opiekę</p>
-  <h2>Znajdź swojego kota</h2>
-  <p>Załóż konto i dowiedz się, jaki kot na Ciebie czeka.</p>
+  <p class="section-label" style="text-align:center" data-i18n="auth.label">Start caring</p>
+  <h2 data-i18n="auth.h2">Find your cat</h2>
+  <p data-i18n="auth.p">Create an account and discover which cat is waiting for you.</p>
   <div class="auth-stack">
-    <button class="auth-btn">
-      <svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.77-2.7.77-2.08 0-3.85-1.4-4.48-3.29H1.83v2.07A8 8 0 0 0 8.98 17z" fill="#34A853"/><path d="M4.5 10.53A4.8 4.8 0 0 1 4.25 9c0-.53.09-1.04.25-1.53V5.4H1.83A8 8 0 0 0 .98 9c0 1.29.31 2.5.85 3.6l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 3.58c1.17 0 2.23.4 3.06 1.2l2.3-2.3C12.95.99 11.14.2 8.98.2A8 8 0 0 0 1.83 5.4l2.67 2.07C5.13 5 6.9 3.58 8.98 3.58z" fill="#EA4335"/></svg>
-      Kontynuuj z Google
-    </button>
-    <button class="auth-btn">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="#1877F2"><path d="M18 9a9 9 0 1 0-10.4 8.9V11.6H5.3V9h2.3V7.2c0-2.3 1.4-3.6 3.5-3.6 1 0 2 .1 3 .3v2.3H13a1.3 1.3 0 0 0-1.5 1.4V9h2.6l-.4 2.6H11.5V18A9 9 0 0 0 18 9z"/></svg>
-      Kontynuuj z Facebook
-    </button>
-    <button class="auth-btn">
-      <svg width="18" height="18" viewBox="0 0 18 18" fill="#000"><path d="M12.47 0c.1 1.42-.4 2.82-1.2 3.82-.8 1-2.1 1.78-3.36 1.68-.14-1.38.48-2.82 1.24-3.72C10 .82 11.36.08 12.47 0zM16.5 12.2c-.6 1.3-1.3 2.52-2.3 3.42-.86.78-1.72 1.38-2.9 1.38-1.14 0-1.88-.6-2.9-.6-1.06 0-1.92.62-2.9.62-1.14 0-2.06-.66-2.94-1.48C1.2 14.02.3 11.76.3 9.4c0-3.96 2.6-6.04 5.14-6.04 1.22 0 2.26.66 3.04.66.74 0 1.94-.72 3.3-.72 1.04 0 2.94.4 4.06 2.3-.1.08-2.46 1.44-2.44 4.28.04 2.38 1.8 3.82 2.1 4.32z"/></svg>
-      Kontynuuj z Apple
-    </button>
-    <div class="or-divider">lub</div>
-    <input class="email-input" type="email" placeholder="twoj@email.com" />
-    <button class="email-submit">Zaczynamy →</button>
+    <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.77-2.7.77-2.08 0-3.85-1.4-4.48-3.29H1.83v2.07A8 8 0 0 0 8.98 17z" fill="#34A853"/><path d="M4.5 10.53A4.8 4.8 0 0 1 4.25 9c0-.53.09-1.04.25-1.53V5.4H1.83A8 8 0 0 0 .98 9c0 1.29.31 2.5.85 3.6l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 3.58c1.17 0 2.23.4 3.06 1.2l2.3-2.3C12.95.99 11.14.2 8.98.2A8 8 0 0 0 1.83 5.4l2.67 2.07C5.13 5 6.9 3.58 8.98 3.58z" fill="#EA4335"/></svg><span data-i18n="auth.google">Continue with Google</span></button>
+    <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="#1877F2"><path d="M18 9a9 9 0 1 0-10.4 8.9V11.6H5.3V9h2.3V7.2c0-2.3 1.4-3.6 3.5-3.6 1 0 2 .1 3 .3v2.3H13a1.3 1.3 0 0 0-1.5 1.4V9h2.6l-.4 2.6H11.5V18A9 9 0 0 0 18 9z"/></svg><span data-i18n="auth.facebook">Continue with Facebook</span></button>
+    <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="#000"><path d="M12.47 0c.1 1.42-.4 2.82-1.2 3.82-.8 1-2.1 1.78-3.36 1.68-.14-1.38.48-2.82 1.24-3.72C10 .82 11.36.08 12.47 0zM16.5 12.2c-.6 1.3-1.3 2.52-2.3 3.42-.86.78-1.72 1.38-2.9 1.38-1.14 0-1.88-.6-2.9-.6-1.06 0-1.92.62-2.9.62-1.14 0-2.06-.66-2.94-1.48C1.2 14.02.3 11.76.3 9.4c0-3.96 2.6-6.04 5.14-6.04 1.22 0 2.26.66 3.04.66.74 0 1.94-.72 3.3-.72 1.04 0 2.94.4 4.06 2.3-.1.08-2.46 1.44-2.44 4.28.04 2.38 1.8 3.82 2.1 4.32z"/></svg><span data-i18n="auth.apple">Continue with Apple</span></button>
+    <div class="or-divider"><span data-i18n="auth.or">or</span></div>
+    <input class="email-input" id="emailInput" type="email" data-i18n-ph="auth.ph" placeholder="your@email.com" />
+    <button class="email-submit" data-i18n="auth.submit">Let's go →</button>
   </div>
 </div>
 
-<footer>
-  <p>Inspirowane <em>Zaleca się kota</em> i <em>Zaleca się kolejnego kota</em> — Sho Ishida &nbsp;·&nbsp; 2026</p>
-</footer>
+<footer><p data-i18n="footer">Inspired by A Cat is Recommended and Another Cat is Recommended — Sho Ishida · 2026</p></footer>
 
-<!-- ══ QUIZ MODAL ══════════════════════════════════════════ -->
 <div class="modal-overlay" id="quizOverlay">
-  <div class="modal">
-    <button class="modal-close" onclick="closeQuiz()">✕</button>
-    <div class="quiz-progress" id="quizProgress"></div>
-    <div id="quizContent"></div>
-  </div>
+  <div class="modal"><button class="modal-close" onclick="closeQuiz()">✕</button><div class="quiz-progress" id="quizProgress"></div><div id="quizContent"></div></div>
 </div>
-
-<!-- ══ RESULT MODAL ════════════════════════════════════════ -->
 <div class="modal-overlay" id="resultOverlay">
-  <div class="modal">
-    <button class="modal-close" onclick="closeResult()">✕</button>
-    <div id="resultContent"></div>
-  </div>
+  <div class="modal"><button class="modal-close" onclick="closeResult()">✕</button><div id="resultContent"></div></div>
 </div>
 
 <script>
-/* ── Config ────────────────────────────────── */
-const MAX_PETS    = 15;
-const COOLDOWN_MS = 15 * 60 * 1000; // 15 minut
-
-/* ── Elements ──────────────────────────────── */
-const catWrap       = document.getElementById('catWrap');
-const eyesN         = document.getElementById('eyesN');
-const eyesH         = document.getElementById('eyesH');
-const mouthN        = document.getElementById('mouthN');
-const mouthO        = document.getElementById('mouthO');
-const petState      = document.getElementById('petState');
-const satisfiedState= document.getElementById('satisfiedState');
-const satTimer      = document.getElementById('satTimer');
-const petDots       = document.getElementById('petDots');
-const petLabel      = document.getElementById('petProgressLabel');
-let petT, cooldownInterval;
-
-/* ── Storage helpers ───────────────────────── */
-const ls = {
-  get: (k, def=0) => parseInt(localStorage.getItem(k) || def),
-  set: (k,v) => localStorage.setItem(k, v),
+/* ════════════════════════════════════════════
+   TRANSLATIONS
+════════════════════════════════════════════ */
+const t = {
+  en: {
+    'gate.h2':'Home only','gate.p':'Real cat care requires your presence at home. Return on a computer connected to your home WiFi.',
+    'nav.logo':'A CAT IS RECOMMENDED','nav.diagnosis':'Diagnosis','nav.how':'How it works','nav.donate':'Donations','nav.cta':'Find your cat →',
+    'hero.eyebrow':"Inspired by Sho Ishida's books",'hero.h1a':'A cat is','hero.h1b':'recommended',
+    'hero.sub':"Virtual cat therapy for those who can't have one — and for children who want to earn one.",
+    'cnt.days':'Day of care','cnt.pets':'Pets given','hint':'pet the cat ↑',
+    'sat.title':'The cat has had enough petting','sat.sub':'Back in','sat.unit':'min · sec',
+    'diag.label':'Find your cat','diag.h2a':'Match a cat','diag.h2b':'to your situation',
+    'diag.c1.h3':'I know my state','diag.c1.p':"Enter a diagnosis, emotional state or life situation. We'll find the cat that understands what you're going through.",'diag.c1.ph':'e.g. loneliness, ADHD, anxiety, breakup…','diag.c1.btn':'Match my cat →',
+    'diag.c2.h3':'I want to find out','diag.c2.p':'Answer 4 questions. We\'ll suggest a diagnosis and match a cat breed to your emotional needs.','diag.c2.btn':'Take the quiz →',
+    'how.label':'How it works','how.h2a':'Four steps to','how.h2b':'your cat',
+    's1.h3':'Character quiz','s1.p':'Answer questions about your emotional needs. We match a cat breed and personality to your profile.',
+    's2.h3':'Daily care','s2.p':'Visit every day from your home WiFi. Feed, pet, and handle the surprises of cat life.',
+    's3.h3':'Cat life challenges','s3.p':'Vet visits, breed quirks, broken toys — daily decisions teach responsibility.',
+    's4.h3':'Caregiver certificate','s4.p':'After 90 days of regular care you earn a certificate — a ticket to a shelter or exclusive breeder offers.',
+    'whom.label':'For whom','whom.h2a':'A cat for everyone','whom.h2b':'who needs one',
+    'whom.c1.h3':'Cat therapy without a cat','whom.c1.p':"Allergy, rental, travel — reasons vary, the need is the same. Your virtual cat's breed and character are matched to your emotional difficulties.",'whom.c1.tag':'For adults',
+    'whom.c2.h3':'Prove it to your parents','whom.c2.p':"Want a cat but parents aren't convinced? Care for a virtual pet for 90 days and earn a certificate — a ticket to a shelter or partner breeder.",'whom.c2.tag':'For children & teens',
+    'don.label':'Donation transparency','don.h2a':'Your donation','don.h2b':'helps real cats',
+    'don.sub':"Every amount is visible and countable. Here's how we split each donation.",
+    'don.p1.label':'For animals','don.p1.desc':'Goes directly to shelters and organizations helping cats and dogs find homes.',
+    'don.p2.label':'Platform','don.p2.desc':'Covers server costs and further development — so your cat stays with you as long as possible.',
+    'don.btn':'Support the cats →',
+    'auth.label':'Start caring','auth.h2':'Find your cat','auth.p':'Create an account and discover which cat is waiting for you.',
+    'auth.google':'Continue with Google','auth.facebook':'Continue with Facebook','auth.apple':'Continue with Apple','auth.or':'or','auth.ph':'your@email.com','auth.submit':"Let's go →",
+    'footer':'Inspired by A Cat is Recommended and Another Cat is Recommended — Sho Ishida · 2026',
+    'q.sub':'Choose the one that resonates most.','q.back':'← Back','q.next':'Next →','q.result':'See result →',
+    'r.diaglabel':'Your diagnosis','r.intro':'Based on your answers, we\'re matching the cat that best understands what you\'re going through.',
+    'r.cta':'Start caring for your {breed} →','r.note':'After 90 days of regular care, you\'ll receive a caregiver certificate — opening access to partner shelters and exclusive breeder offers.',
+  },
+  ja: {
+    'gate.h2':'自宅専用','gate.p':'猫のお世話には自宅での存在が必要です。自宅のWiFiに接続したパソコンでアクセスしてください。',
+    'nav.logo':'猫をすすめる','nav.diagnosis':'診断','nav.how':'使い方','nav.donate':'寄付','nav.cta':'猫を見つける →',
+    'hero.eyebrow':'石田祥著の本からインスピレーションを得て','hero.h1a':'猫を','hero.h1b':'すすめる',
+    'hero.sub':'猫を飼えない方のための仮想猫セラピー — 猫を手に入れたい子どもたちのために。',
+    'cnt.days':'ケアの日数','cnt.pets':'なでた回数','hint':'猫をなでてください ↑',
+    'sat.title':'猫はなで過ぎで満足しています','sat.sub':'戻るまで','sat.unit':'分 · 秒',
+    'diag.label':'猫を見つける','diag.h2a':'状況に合った猫を','diag.h2b':'マッチングする',
+    'diag.c1.h3':'状態がわかっている','diag.c1.p':'診断名、感情状態、または状況を入力してください。あなたの状況を理解してくれる猫をお探しします。','diag.c1.ph':'例：孤独、ADHD、不安、別れ…','diag.c1.btn':'猫を選ぶ →',
+    'diag.c2.h3':'診断を知りたい','diag.c2.p':'4つの質問に答えてください。診断を提案し、感情的なニーズに合った猫の品種をマッチングします。','diag.c2.btn':'アンケートに答える →',
+    'how.label':'使い方','how.h2a':'4つのステップで','how.h2b':'あなたの猫へ',
+    's1.h3':'性格クイズ','s1.p':'感情的なニーズについての質問に答えます。プロフィールに合った猫の品種と個性をマッチングします。',
+    's2.h3':'毎日のお世話','s2.p':'自宅のWiFiから毎日訪問します。猫に餌をあげ、なでて、猫生活のサプライズに対処します。',
+    's3.h3':'猫生活の課題','s3.p':'獣医の訪問、品種の気まぐれ、壊れたおもちゃ — 毎日の決断が責任感を育てます。',
+    's4.h3':'飼育者認定証','s4.p':'90日間の定期的なお世話の後、認定証を取得できます — 保護施設や優良ブリーダーへのパスポートです。',
+    'whom.label':'対象者','whom.h2a':'猫を必要とする','whom.h2b':'すべての人に',
+    'whom.c1.h3':'猫なしの猫セラピー','whom.c1.p':'アレルギー、賃貸、旅行 — 理由はさまざまでもニーズは同じです。仮想猫の品種と性格は、あなたの感情的な困難に合わせて選ばれます。','whom.c1.tag':'大人向け',
+    'whom.c2.h3':'両親に証明する','whom.c2.p':'猫が欲しいけど両親が納得していない？90日間、仮想ペットのお世話をして認定証を取得しましょう。','whom.c2.tag':'子どもと10代向け',
+    'don.label':'寄付の透明性','don.h2a':'あなたの寄付が','don.h2b':'本物の猫を助ける',
+    'don.sub':'すべての金額は可視化され、計算可能です。各寄付の配分方式を公開しています。',
+    'don.p1.label':'動物のために','don.p1.desc':'家を探している猫や犬を支援するシェルターや団体に直接届きます。',
+    'don.p2.label':'プラットフォーム','don.p2.desc':'サーバー費用と継続的な開発に充てられます。',
+    'don.btn':'猫を支援する →',
+    'auth.label':'ケアを始める','auth.h2':'猫を見つける','auth.p':'アカウントを作成して、あなたを待っている猫を発見しましょう。',
+    'auth.google':'Googleで続ける','auth.facebook':'Facebookで続ける','auth.apple':'Appleで続ける','auth.or':'または','auth.ph':'メールアドレス','auth.submit':'はじめる →',
+    'footer':'石田祥著「猫をすすめる」「もう一匹の猫をすすめる」からインスピレーションを得て · 2026',
+    'q.sub':'最もあてはまるものを選んでください。','q.back':'← 戻る','q.next':'次へ →','q.result':'結果を見る →',
+    'r.diaglabel':'あなたの診断','r.intro':'回答に基づいて、あなたの状況を最もよく理解してくれる猫をマッチングします。',
+    'r.cta':'{breed}のお世話を始める →','r.note':'90日間の定期的なお世話の後、猫飼育者認定証を受け取ります。パートナー保護施設や優良ブリーダーへのアクセスが開かれます。',
+  },
+  ko: {
+    'gate.h2':'자택 전용','gate.p':'진정한 고양이 돌봄은 집에서의 존재가 필요합니다. 집 WiFi에 연결된 컴퓨터로 돌아오세요.',
+    'nav.logo':'고양이를 권합니다','nav.diagnosis':'진단','nav.how':'사용법','nav.donate':'기부','nav.cta':'내 고양이 찾기 →',
+    'hero.eyebrow':'이시다 쇼의 책에서 영감을 받아','hero.h1a':'고양이를','hero.h1b':'권합니다',
+    'hero.sub':'고양이를 키울 수 없는 분들을 위한 가상 고양이 테라피 — 고양이를 얻고 싶은 아이들을 위해.',
+    'cnt.days':'돌봄의 날','cnt.pets':'쓰다듬은 횟수','hint':'고양이를 쓰다듬어 주세요 ↑',
+    'sat.title':'고양이가 쓰다듬기에 만족했습니다','sat.sub':'돌아올 때까지','sat.unit':'분 · 초',
+    'diag.label':'고양이 찾기','diag.h2a':'상황에 맞는','diag.h2b':'고양이 매칭',
+    'diag.c1.h3':'내 상태를 알고 있어요','diag.c1.p':'진단명, 감정 상태 또는 상황을 입력하세요. 당신의 상황을 이해하는 고양이를 찾아드립니다.','diag.c1.ph':'예: 외로움, ADHD, 불안, 이별…','diag.c1.btn':'고양이 매칭하기 →',
+    'diag.c2.h3':'알고 싶어요','diag.c2.p':'4가지 질문에 답하세요. 진단을 제안하고 감정적 필요에 맞는 고양이 품종을 매칭해드립니다.','diag.c2.btn':'설문 시작하기 →',
+    'how.label':'사용법','how.h2a':'네 단계로','how.h2b':'내 고양이에게',
+    's1.h3':'성격 퀴즈','s1.p':'감정적 필요에 대한 질문에 답하세요. 프로필에 맞는 고양이 품종과 성격을 매칭합니다.',
+    's2.h3':'매일 돌보기','s2.p':'집 WiFi에서 매일 방문하세요. 먹이주기, 쓰다듬기, 고양이 생활의 깜짝 상황 해결하기.',
+    's3.h3':'고양이 생활 도전','s3.p':'수의사 방문, 품종별 기질, 망가진 장난감 — 매일의 결정이 책임감을 키웁니다.',
+    's4.h3':'돌봄 인증서','s4.p':'90일간 꾸준히 돌보면 인증서를 받습니다 — 보호소나 파트너 브리더를 위한 티켓.',
+    'whom.label':'누구를 위한 것인가','whom.h2a':'필요한 모든 분을 위한','whom.h2b':'고양이',
+    'whom.c1.h3':'고양이 없는 고양이 테라피','whom.c1.p':'알레르기, 임대, 여행 — 이유는 달라도 필요는 같습니다. 가상 고양이의 품종과 성격은 감정적 어려움에 맞게 선택됩니다.','whom.c1.tag':'성인용',
+    'whom.c2.h3':'부모님께 증명하기','whom.c2.p':'고양이를 원하지만 부모님이 확신하지 못하나요? 90일간 가상 동물을 돌보고 인증서를 획득하세요.','whom.c2.tag':'어린이 및 청소년용',
+    'don.label':'기부 투명성','don.h2a':'당신의 기부가','don.h2b':'실제 고양이를 돕습니다',
+    'don.sub':'모든 금액은 투명하게 공개됩니다. 각 기부의 배분 방식입니다.',
+    'don.p1.label':'동물을 위해','don.p1.desc':'집을 찾는 고양이와 강아지를 돕는 보호소와 단체에 직접 전달됩니다.',
+    'don.p2.label':'플랫폼','don.p2.desc':'서버 비용과 지속적인 개발에 사용됩니다.',
+    'don.btn':'고양이 후원하기 →',
+    'auth.label':'돌봄 시작','auth.h2':'내 고양이 찾기','auth.p':'계정을 만들고 당신을 기다리는 고양이를 발견하세요.',
+    'auth.google':'Google로 계속','auth.facebook':'Facebook으로 계속','auth.apple':'Apple로 계속','auth.or':'또는','auth.ph':'이메일 주소','auth.submit':'시작하기 →',
+    'footer':'이시다 쇼의 「고양이를 권합니다」와 「또 한 마리의 고양이를 권합니다」에서 영감을 받아 · 2026',
+    'q.sub':'가장 공감하는 것을 선택하세요.','q.back':'← 뒤로','q.next':'다음 →','q.result':'결과 보기 →',
+    'r.diaglabel':'당신의 진단','r.intro':'답변을 바탕으로 당신의 상황을 가장 잘 이해하는 고양이를 매칭합니다.',
+    'r.cta':'{breed} 돌보기 시작 →','r.note':'90일간 꾸준히 돌본 후 고양이 돌봄 인증서를 받게 됩니다. 파트너 보호소와 우수 브리더의 독점 혜택을 이용할 수 있습니다.',
+  }
 };
 
-/* ── Day counter ───────────────────────────── */
-if (!localStorage.getItem('careStart')) ls.set('careStart', Date.now());
-const days = Math.max(1, Math.floor((Date.now() - ls.get('careStart')) / 86400000) + 1);
-document.getElementById('dayCount').textContent = days;
-document.getElementById('petCount').textContent = ls.get('pets').toLocaleString('pl-PL');
+let currentLang = localStorage.getItem('lang') || 'en';
 
-/* ── Dots progress bar ─────────────────────── */
-function renderDots(filled) {
-  petDots.innerHTML = Array.from({length: MAX_PETS}, (_,i) =>
-    `<div class="pet-dot ${i < filled ? 'filled' : ''}" id="dot${i}"></div>`
-  ).join('');
+function setLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang);
+  document.documentElement.lang = lang;
+  const tr = t[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (tr[k] !== undefined) el.textContent = tr[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.dataset.i18nPh;
+    if (tr[k] !== undefined) el.placeholder = tr[k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn =>
+    btn.classList.toggle('active', btn.dataset.lang === lang)
+  );
+  const sp = parseInt(localStorage.getItem('sessionPets') || '0');
+  const lbl = document.getElementById('petLabel');
+  if (lbl && sp === 0) lbl.textContent = tr['hint'];
 }
 
-/* ── Cooldown state ────────────────────────── */
-function formatTime(ms) {
-  const s = Math.ceil(ms / 1000);
-  const m = Math.floor(s / 60);
-  const sec = s % 60;
-  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
-}
-
-function startCooldownUI() {
-  petState.style.display = 'none';
-  satisfiedState.style.display = 'block';
-
-  clearInterval(cooldownInterval);
-  cooldownInterval = setInterval(() => {
-    const remaining = COOLDOWN_MS - (Date.now() - ls.get('lastSatisfied'));
-    if (remaining <= 0) {
-      clearInterval(cooldownInterval);
-      ls.set('sessionPets', 0);
-      catReturn();
-    } else {
-      satTimer.textContent = formatTime(remaining);
-    }
-  }, 1000);
-
-  const remaining = COOLDOWN_MS - (Date.now() - ls.get('lastSatisfied'));
-  satTimer.textContent = formatTime(Math.max(0, remaining));
-}
-
-/* ── Cat walkoff ───────────────────────────── */
-function catWalkOff() {
-  // Pokaż szczęśliwą minę
-  eyesN.setAttribute('display','none'); eyesH.setAttribute('display','block');
-  mouthN.setAttribute('display','none'); mouthO.setAttribute('display','block');
-
-  catWrap.classList.remove('bounce','walkin');
-  void catWrap.offsetWidth;
-  catWrap.classList.add('walkoff');
-
-  setTimeout(() => {
-    ls.set('lastSatisfied', Date.now());
-    startCooldownUI();
-    // Reset kot do normalnej miny (na kolejny powrót)
-    eyesN.setAttribute('display','block'); eyesH.setAttribute('display','none');
-    mouthN.setAttribute('display','block'); mouthO.setAttribute('display','none');
-    catWrap.classList.remove('walkoff');
-  }, 1900);
-}
-
-/* ── Cat return ────────────────────────────── */
-function catReturn() {
-  satisfiedState.style.display = 'none';
-  petState.style.display = 'block';
-  renderDots(0);
-  petLabel.textContent = 'głaszcz kota ↑';
-
-  catWrap.classList.remove('walkin');
-  void catWrap.offsetWidth;
-  catWrap.classList.add('walkin');
-  setTimeout(() => catWrap.classList.remove('walkin'), 1300);
-}
-
-/* ── Petting ───────────────────────────────── */
-catWrap.addEventListener('click', () => {
-  const sessionPets = ls.get('sessionPets');
-  if (sessionPets >= MAX_PETS) return;
-
-  // Total pets
-  const total = ls.get('pets') + 1;
-  ls.set('pets', total);
-  document.getElementById('petCount').textContent = total.toLocaleString('pl-PL');
-
-  // Session pets
-  const newSession = sessionPets + 1;
-  ls.set('sessionPets', newSession);
-
-  // Dots
-  renderDots(newSession);
-  const dot = document.getElementById(`dot${newSession - 1}`);
-  if (dot) { dot.classList.add('pulse'); setTimeout(() => dot.classList.remove('pulse'), 400); }
-
-  // Label
-  if (newSession < MAX_PETS) {
-    petLabel.textContent = `${newSession} / ${MAX_PETS} głaskań`;
-  } else {
-    petLabel.textContent = 'Kot jest szczęśliwy! 😸';
-  }
-
-  // Cat animation
-  eyesN.setAttribute('display','none'); eyesH.setAttribute('display','block');
-  mouthN.setAttribute('display','none'); mouthO.setAttribute('display','block');
-  catWrap.classList.remove('bounce'); void catWrap.offsetWidth; catWrap.classList.add('bounce');
-  clearTimeout(petT);
-  petT = setTimeout(() => {
-    eyesN.setAttribute('display','block'); eyesH.setAttribute('display','none');
-    mouthN.setAttribute('display','block'); mouthO.setAttribute('display','none');
-  }, 700);
-
-  // Walk off at max
-  if (newSession >= MAX_PETS) {
-    catWrap.removeEventListener('click', arguments.callee);
-    setTimeout(catWalkOff, 600);
-  }
-});
-
-/* ── Init ──────────────────────────────────── */
-(function init() {
-  const lastSat = ls.get('lastSatisfied');
-  const remaining = lastSat ? COOLDOWN_MS - (Date.now() - lastSat) : 0;
-
-  if (remaining > 0) {
-    // Jesteśmy w trakcie cooldownu
-    startCooldownUI();
-  } else {
-    // Reset sesji jeśli cooldown minął
-    if (lastSat && remaining <= 0) ls.set('sessionPets', 0);
-    renderDots(ls.get('sessionPets'));
-    const sp = ls.get('sessionPets');
-    petLabel.textContent = sp > 0 ? `${sp} / ${MAX_PETS} głaskań` : 'głaszcz kota ↑';
-  }
-})();
-
-/* ── Diagnoses data ────────────────────────── */
+/* ════════════════════════════════════════════
+   DIAGNOSES (per language)
+════════════════════════════════════════════ */
 const diagnoses = {
-  samotnosc: {
-    label: 'Samotność',
-    breed: 'Ragdoll',
-    emoji: '🤍',
-    why: 'Ragdolle są wyjątkowo przywiązane do jednej osoby. Będą Ci towarzyszyć wszędzie — dosłownie. Ich spokojny, ciepły charakter wypełnia ciszę bez słów.',
-    traits: ['Idzie za opiekunem', 'Lubi być noszony', 'Nigdy nie jest obojętny'],
-    keywords: ['samot','alona','lonely','solo','izol']
+  en: {
+    loneliness: { label:'Loneliness', breed:'Ragdoll', emoji:'🤍', why:"Ragdolls are exceptionally devoted to one person. They'll follow you everywhere — literally. Their calm, warm presence fills silence without words.", traits:['Follows you everywhere','Loves to be held','Never indifferent'], kw:['lonel','isol','alone','empt','silenc'] },
+    breakup:    { label:'Loneliness after a breakup', breed:'British Shorthair', emoji:'💙', why:"British Shorthairs give warmth without pressure. They're there, but they don't overwhelm — exactly what you need right now.", traits:['Calm and stable','Loves without clinging','Doesn\'t dramatize'], kw:['breakup','break up','split','heartbr','loss','grief','separation'] },
+    longing:    { label:'Longing', breed:'Maine Coon', emoji:'🧡', why:'Maine Coons are loyal like dogs. They wait at the door, follow you room to room, and remember your routines — filling that specific emptiness after someone close.', traits:['Dog-loyal','Loves routine','Strong attachment'], kw:['long','miss','nostalg','yearning','far away','apart'] },
+    adhd:       { label:'ADHD', breed:'Bengal', emoji:'⚡', why:"Bengals are adventure cats. Energetic, intelligent, always moving, demanding stimulation — they'll understand you like no one else.", traits:['Highly active','Loves challenges','Intelligent and curious'], kw:['adhd','add','focus','hyperact','impuls','distract','scatter'] },
+    hsp:        { label:'High sensitivity (HSP)', breed:'Scottish Fold', emoji:'🌸', why:"Scottish Folds are quiet, gentle, and exquisitely sensitive to their owner's moods. They don't overwhelm — they respond subtly, giving a sense of being understood.", traits:['Quiet and calm','Intuitive','Perfect pace for sensitive souls'], kw:['sensit','hsp','overwhelm','empath','intens','anxious','anxiety'] },
+    dda:        { label:'Adult child of an alcoholic', breed:'Persian', emoji:'🕊️', why:'Persian cats are predictable, calm, and absolutely stable. They provide what you may have lacked — a safe, constant presence without drama or surprises.', traits:['Highly predictable','Calm temperament','A safe space'], kw:['trauma','dysfunct','unstable','alcoholic','codepend','avoidant','control'] },
+    empathy:    { label:'Difficulty with empathy / relationships', breed:'Siamese', emoji:'💬', why:'Siamese cats are extraordinarily communicative. They vocalize their needs loudly and respond to your emotions — teaching emotional awareness in a safe setting.', traits:['Very vocal','Clearly communicates','Teaches emotional reading'], kw:['empathy','relation','intimacy','connect','distant','numb','social'] },
   },
-  rozstanie: {
-    label: 'Samotność po rozstaniu',
-    breed: 'British Shorthair',
-    emoji: '💙',
-    why: 'British Shorthair daje ciepło bez presji. Jest obok, ale nie przytłacza — dokładnie tyle, ile teraz potrzebujesz. Nie dramatyzuje i nie wymaga.',
-    traits: ['Spokojny i stabilny', 'Kocha bez zależności', 'Niezawodna obecność'],
-    keywords: ['rozstan','break','rozpad','po związ','po relac','strat','żałob']
+  ja: {
+    loneliness: { label:'孤独', breed:'ラグドール', emoji:'🤍', why:'ラグドールは一人の人に特別な愛着を示します。文字通りどこでもついてきます。穏やかで温かい存在が言葉なく沈黙を埋めてくれます。', traits:['どこでもついてくる','抱っこが大好き','常に気にかけてくれる'], kw:['孤独','孤立','一人','空虚','寂し'] },
+    breakup:    { label:'別れ後の孤独', breed:'ブリティッシュショートヘア', emoji:'💙', why:'ブリティッシュショートヘアはプレッシャーなしに温もりを与えます。そばにいるけれど圧倒しない — 今のあなたに必要なものです。', traits:['穏やかで安定','依存せず愛する','感情的にならない'], kw:['別れ','失恋','離別','喪失','悲しみ'] },
+    longing:    { label:'懐かしさ・恋しさ', breed:'メインクーン', emoji:'🧡', why:'メインクーンは犬のように忠実です。ドアで待ち、部屋から部屋へついてきて、あなたのルーティンを覚えています。', traits:['犬のような忠実さ','ルーティンが大好き','強い愛着'], kw:['懐かし','恋し','思い出','遠く','離れ'] },
+    adhd:       { label:'ADHD', breed:'ベンガル', emoji:'⚡', why:'ベンガルは冒険猫です。エネルギッシュで、知的で、常に動いていて刺激を求めます — あなたを誰よりも理解してくれます。', traits:['非常に活発','挑戦が好き','知的で好奇心旺盛'], kw:['adhd','集中','多動','衝動','散漫'] },
+    hsp:        { label:'高感受性（HSP）', breed:'スコティッシュフォールド', emoji:'🌸', why:'スコティッシュフォールドは静かで優しく、飼い主の気持ちに敏感です。圧倒せず微妙に反応し、理解されている感覚を与えます。', traits:['静かで落ち着いている','直感的','敏感な人に最適なペース'], kw:['敏感','hsp','圧倒','共感','不安'] },
+    dda:        { label:'アダルトチルドレン', breed:'ペルシャ', emoji:'🕊️', why:'ペルシャ猫は予測可能で、穏やかで、絶対的に安定しています。あなたに欠けていたかもしれないもの — ドラマや驚きのない安全で一定の存在を提供します。', traits:['非常に予測可能','穏やかな気質','安全な空間'], kw:['トラウマ','機能不全','不安定','アルコール','回避'] },
+    empathy:    { label:'共感・関係の困難', breed:'シャム', emoji:'💬', why:'シャム猫は非常にコミュニケーション能力が高いです。ニーズをはっきり伝え、あなたの感情に反応します — 安全な環境で感情への気づきを教えてくれます。', traits:['とても話好き','はっきり伝える','感情の読み方を教える'], kw:['共感','関係','親密','繋がり','距離','無感覚'] },
   },
-  tesknota: {
-    label: 'Tęsknota',
-    breed: 'Maine Coon',
-    emoji: '🧡',
-    why: 'Maine Coony są lojalne jak psy. Czekają przy drzwiach, chodzą za Tobą po domu i pamiętają rutynę. Wypełniają tę konkretną pustkę po kimś bliskim.',
-    traits: ['Lojalny jak pies', 'Uwielbia rutynę', 'Silne przywiązanie'],
-    keywords: ['tęskn','teskn','brakuje','miss','nostalg','daleko','rozłąk']
-  },
-  adhd: {
-    label: 'ADHD',
-    breed: 'Bengal',
-    emoji: '⚡',
-    why: 'Bengal to kot-przygoda. Energiczny, inteligentny, zawsze w ruchu, wymaga stymulacji — zrozumie Cię jak nikt. Razem nie będziecie siedzieć bezczynnie.',
-    traits: ['Bardzo aktywny', 'Lubi wyzwania', 'Inteligentny i ciekawski'],
-    keywords: ['adhd','add','rozkojarz','skupi','uwag','hiperak','impuls']
-  },
-  wrazliwosc: {
-    label: 'Wysoka wrażliwość (WWO)',
-    breed: 'Scottish Fold',
-    emoji: '🌸',
-    why: 'Scottish Foldy są ciche, łagodne i niezwykle wrażliwe na nastroje opiekuna. Nie przytłaczają — reagują subtelnie, dając poczucie bycia rozumianym.',
-    traits: ['Spokojny i wyciszony', 'Intuicyjny', 'Idealne tempo dla wrażliwych'],
-    keywords: ['wrażli','wrazli','wwo','hsp','przytłacz','przytlacz','czuł','czul','empatyczn']
-  },
-  dda: {
-    label: 'DDA — Dorosłe Dziecko Alkoholika',
-    breed: 'Perski',
-    emoji: '🕊️',
-    why: 'Koty perskie są przewidywalne, spokojne i absolutnie stabilne. Dają to, czego mogło Ci brakować — bezpieczną, stałą obecność bez dramatów i niespodzianek.',
-    traits: ['Bardzo przewidywalny', 'Spokojny temperament', 'Bezpieczna przestrzeń'],
-    keywords: ['dda','ddd','alkohol','dysfunk','niestabiln','trauma dziec','rodzina']
-  },
-  empatia: {
-    label: 'Trudności z empatią / relacjami',
-    breed: 'Syjamski',
-    emoji: '💬',
-    why: 'Koty syjamskie są niezwykle komunikatywne. Głośno sygnalizują potrzeby i reagują na Twoje emocje — uczą uważności na drugiego w bezpiecznych warunkach.',
-    traits: ['Bardzo rozmowny', 'Wyraźnie komunikuje', 'Uczy czytania emocji'],
-    keywords: ['empatia','empath','relacj','związk','bliskość','bliskosc','dystans','chłód','chlod','intymn']
+  ko: {
+    loneliness: { label:'외로움', breed:'래그돌', emoji:'🤍', why:'래그돌은 한 사람에게 특별히 헌신합니다. 말 그대로 어디든 따라옵니다. 조용하고 따뜻한 존재가 말 없이 침묵을 채워줍니다.', traits:['어디든 따라옴','안기는 것을 좋아함','항상 신경 써줌'], kw:['외로','고독','혼자','공허','쓸쓸'] },
+    breakup:    { label:'이별 후 외로움', breed:'브리티시 숏헤어', emoji:'💙', why:'브리티시 숏헤어는 부담 없이 온기를 줍니다. 곁에 있지만 압도하지 않습니다 — 지금 당신에게 딱 필요한 것입니다.', traits:['차분하고 안정적','집착 없이 사랑','감정적이지 않음'], kw:['이별','헤어짐','실연','상실','슬픔'] },
+    longing:    { label:'그리움', breed:'메인쿤', emoji:'🧡', why:'메인쿤은 개처럼 충성스럽습니다. 문 앞에서 기다리고, 방에서 방으로 따라다니며, 당신의 루틴을 기억합니다.', traits:['개처럼 충성스러움','루틴을 좋아함','강한 유대감'], kw:['그리움','그리워','보고싶','멀리','떠나'] },
+    adhd:       { label:'ADHD', breed:'벵갈', emoji:'⚡', why:'벵갈은 모험가 고양이입니다. 활동적이고, 영리하며, 항상 움직이며 자극을 필요로 합니다 — 누구보다 당신을 이해할 것입니다.', traits:['매우 활동적','도전을 좋아함','영리하고 호기심 많음'], kw:['adhd','집중','과잉','충동','산만'] },
+    hsp:        { label:'고감수성(HSP)', breed:'스코티시 폴드', emoji:'🌸', why:'스코티시 폴드는 조용하고 온순하며 보호자의 기분에 민감합니다. 압도하지 않고 미묘하게 반응하여 이해받는 느낌을 줍니다.', traits:['조용하고 차분함','직관적','민감한 사람에게 완벽'], kw:['예민','hsp','압도','공감','불안'] },
+    dda:        { label:'성인 알코올 중독자 자녀(ACA)', breed:'페르시안', emoji:'🕊️', why:'페르시안 고양이는 예측 가능하고, 차분하며, 절대적으로 안정적입니다. 당신이 부족했을 수 있는 것 — 드라마나 놀라움 없는 안전하고 일정한 존재를 제공합니다.', traits:['매우 예측 가능','차분한 기질','안전한 공간'], kw:['트라우마','역기능','불안정','알코올','회피'] },
+    empathy:    { label:'공감/관계의 어려움', breed:'시암', emoji:'💬', why:'시암 고양이는 매우 의사소통이 활발합니다. 큰 소리로 필요를 표현하고 당신의 감정에 반응합니다 — 안전한 환경에서 감정 인식을 가르쳐줍니다.', traits:['매우 수다스러움','명확하게 소통','감정 읽기를 가르침'], kw:['공감','관계','친밀','연결','거리','무감각'] },
   }
 };
 
-function matchDiagnosis(text) {
-  const t = text.toLowerCase();
-  for (const [key, d] of Object.entries(diagnoses)) {
-    if (d.keywords.some(k => t.includes(k))) return key;
+function getDiagnosis(text) {
+  const lower = text.toLowerCase();
+  const d = diagnoses[currentLang] || diagnoses.en;
+  for (const [key, v] of Object.entries(d)) {
+    if (v.kw.some(k => lower.includes(k))) return key;
   }
-  return 'samotnosc'; // fallback
+  return 'loneliness';
 }
 
-function showResult(diagKey) {
-  const d = diagnoses[diagKey];
+function showResult(key) {
+  const d = (diagnoses[currentLang] || diagnoses.en)[key] || (diagnoses[currentLang] || diagnoses.en).loneliness;
+  const tr = t[currentLang] || t.en;
   document.getElementById('resultContent').innerHTML = `
     <div class="result-header">
-      <div class="result-diag-label">Twoja diagnoza</div>
+      <div class="result-diag-label">${tr['r.diaglabel']}</div>
       <div class="result-diag">${d.label}</div>
-      <div class="result-intro">Na podstawie Twoich odpowiedzi dobieramy kota, który najlepiej rozumie to, przez co przechodzisz.</div>
+      <div class="result-intro">${tr['r.intro']}</div>
     </div>
     <div class="result-cat-card">
       <div class="result-cat-emoji">${d.emoji} 🐱</div>
       <div class="result-breed">${d.breed}</div>
       <div class="result-why">${d.why}</div>
-      <div class="result-traits">
-        ${d.traits.map(t => `<span class="trait">${t}</span>`).join('')}
-      </div>
+      <div class="result-traits">${d.traits.map(t=>`<span class="trait">${t}</span>`).join('')}</div>
     </div>
     <div class="result-cta">
-      <button class="btn-primary" onclick="closeResult(); document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">
-        Zacznij opiekować się ${d.breed}em →
+      <button class="btn-primary" onclick="closeResult();document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">
+        ${tr['r.cta'].replace('{breed}', d.breed)}
       </button>
     </div>
-    <div class="result-note">
-      Po 90 dniach regularnej opieki otrzymasz certyfikat kociego opiekuna,<br/>
-      który otwiera dostęp do schronisk partnerskich i ekskluzywnych ofert hodowli.
-    </div>
+    <div class="result-note">${tr['r.note']}</div>
   `;
   document.getElementById('resultOverlay').classList.add('open');
 }
@@ -771,142 +521,240 @@ function showResult(diagKey) {
 function matchFromText() {
   const val = document.getElementById('diagInput').value.trim();
   if (!val) { document.getElementById('diagInput').focus(); return; }
-  const key = matchDiagnosis(val);
-  showResult(key);
+  showResult(getDiagnosis(val));
 }
+function closeResult() { document.getElementById('resultOverlay').classList.remove('open'); }
 
-function closeResult() {
-  document.getElementById('resultOverlay').classList.remove('open');
-}
+/* ════════════════════════════════════════════
+   QUIZ
+════════════════════════════════════════════ */
+const questions = {
+  en: [
+    { q:'How would you describe your main feeling lately?', options:[
+      { text:'Emptiness — the silence around me is too loud', scores:{loneliness:3} },
+      { text:'Missing a specific person who is no longer there', scores:{breakup:2,longing:1} },
+      { text:'Longing — for someone, something, a different life', scores:{longing:3} },
+      { text:"I can't stop my thoughts or sit still", scores:{adhd:3} },
+      { text:'Everything overwhelms me — I feel too much', scores:{hsp:3} },
+      { text:'Relationships with people are difficult or shallow', scores:{empathy:2,dda:1} },
+    ]},
+    { q:'When do you feel worst?', options:[
+      { text:'In the evenings, when silence returns and no one to talk to', scores:{loneliness:3} },
+      { text:'When you find things that remind you of someone', scores:{breakup:2,longing:1} },
+      { text:'When something changes without warning', scores:{dda:2,hsp:1} },
+      { text:'When you sit idle without a task or goal', scores:{adhd:3} },
+      { text:'When too many stimuli hit you at once', scores:{hsp:3} },
+      { text:'When someone expects emotional closeness from you', scores:{empathy:3} },
+    ]},
+    { q:'What helps you most to calm down?', options:[
+      { text:"Someone's presence nearby — even in silence", scores:{loneliness:3} },
+      { text:'Talking to someone who remembers the past', scores:{longing:2,breakup:1} },
+      { text:'Quiet, calm, predictable ritual', scores:{dda:2,hsp:1} },
+      { text:'Movement, activity, new stimuli and challenges', scores:{adhd:3} },
+      { text:"Being alone, away from others' demands", scores:{hsp:2,empathy:1} },
+      { text:'Something predictable — no surprises', scores:{dda:3} },
+    ]},
+    { q:'How would you describe yourself in relationships?', options:[
+      { text:'I wish I had more than I do', scores:{loneliness:3} },
+      { text:'There is one person I miss more than others', scores:{breakup:3} },
+      { text:'I long for deeper connections than I have', scores:{longing:2,loneliness:1} },
+      { text:'I get distracted in conversations and lose the thread', scores:{adhd:3} },
+      { text:'Relationships are intense and exhausting for me', scores:{hsp:3} },
+      { text:'I prefer distance — closeness is uncomfortable', scores:{empathy:2,dda:1} },
+    ]},
+  ],
+  ja: [
+    { q:'最近の主な感情はどのようなものですか？', options:[
+      { text:'空虚感 — 周りの静寂が大きすぎる', scores:{loneliness:3} },
+      { text:'もういない特定の人が恋しい', scores:{breakup:2,longing:1} },
+      { text:'懐かしさ — 誰かを、何かを、別の人生を', scores:{longing:3} },
+      { text:'考えが止まらない、じっとしていられない', scores:{adhd:3} },
+      { text:'すべてが圧倒的 — 感じすぎる', scores:{hsp:3} },
+      { text:'人との関係が難しい、または表面的', scores:{empathy:2,dda:1} },
+    ]},
+    { q:'最もつらい時はいつですか？', options:[
+      { text:'夜、静寂が戻り誰とも話せない時', scores:{loneliness:3} },
+      { text:'誰かを思い出すものを見つけた時', scores:{breakup:2,longing:1} },
+      { text:'警告なく何かが変わった時', scores:{dda:2,hsp:1} },
+      { text:'何もしないで座っている時', scores:{adhd:3} },
+      { text:'一度に多くの刺激が来る時', scores:{hsp:3} },
+      { text:'感情的な近さを求められる時', scores:{empathy:3} },
+    ]},
+    { q:'落ち着くのに最も効果的なことは？', options:[
+      { text:'誰かの存在 — 沈黙の中でも', scores:{loneliness:3} },
+      { text:'過去を知る人との会話', scores:{longing:2,breakup:1} },
+      { text:'静かで穏やかな予測可能なルーティン', scores:{dda:2,hsp:1} },
+      { text:'動き、活動、新しい刺激と挑戦', scores:{adhd:3} },
+      { text:'他人の要求から離れて一人でいること', scores:{hsp:2,empathy:1} },
+      { text:'予測できること — 驚きなし', scores:{dda:3} },
+    ]},
+    { q:'人間関係における自分をどう表現しますか？', options:[
+      { text:'今以上に持ちたい', scores:{loneliness:3} },
+      { text:'他の誰より恋しい一人がいる', scores:{breakup:3} },
+      { text:'今あるより深いつながりを求めている', scores:{longing:2,loneliness:1} },
+      { text:'会話で気が散り、話の筋を失う', scores:{adhd:3} },
+      { text:'関係が強烈で疲れる', scores:{hsp:3} },
+      { text:'距離を置きたい — 親密さが不快', scores:{empathy:2,dda:1} },
+    ]},
+  ],
+  ko: [
+    { q:'최근 주된 감정을 어떻게 표현하겠습니까?', options:[
+      { text:'공허함 — 주변의 침묵이 너무 큼', scores:{loneliness:3} },
+      { text:'더 이상 곁에 없는 특정 사람이 그리움', scores:{breakup:2,longing:1} },
+      { text:'그리움 — 누군가, 무언가, 다른 삶에 대한', scores:{longing:3} },
+      { text:'생각을 멈출 수 없고 가만히 앉아 있을 수 없음', scores:{adhd:3} },
+      { text:'모든 것이 압도적 — 너무 많이 느낌', scores:{hsp:3} },
+      { text:'사람들과의 관계가 어렵거나 피상적', scores:{empathy:2,dda:1} },
+    ]},
+    { q:'언제 가장 힘드십니까?', options:[
+      { text:'저녁, 침묵이 돌아와 이야기할 사람이 없을 때', scores:{loneliness:3} },
+      { text:'누군가를 생각나게 하는 것을 발견했을 때', scores:{breakup:2,longing:1} },
+      { text:'예고 없이 무언가가 바뀔 때', scores:{dda:2,hsp:1} },
+      { text:'할 일이나 목표 없이 가만히 있을 때', scores:{adhd:3} },
+      { text:'한꺼번에 너무 많은 자극이 올 때', scores:{hsp:3} },
+      { text:'감정적 친밀함을 요구받을 때', scores:{empathy:3} },
+    ]},
+    { q:'가장 진정하는 데 도움이 되는 것은?', options:[
+      { text:'누군가의 존재 — 침묵 속에서도', scores:{loneliness:3} },
+      { text:'과거를 기억하는 사람과의 대화', scores:{longing:2,breakup:1} },
+      { text:'조용하고 차분한 예측 가능한 루틴', scores:{dda:2,hsp:1} },
+      { text:'움직임, 활동, 새로운 자극과 도전', scores:{adhd:3} },
+      { text:'타인의 요구에서 벗어나 혼자 있기', scores:{hsp:2,empathy:1} },
+      { text:'예측 가능한 것 — 놀라움 없음', scores:{dda:3} },
+    ]},
+    { q:'관계에서 자신을 어떻게 표현하겠습니까?', options:[
+      { text:'지금보다 더 많은 관계를 원함', scores:{loneliness:3} },
+      { text:'다른 누구보다 그리운 한 사람이 있음', scores:{breakup:3} },
+      { text:'지금 있는 것보다 더 깊은 연결을 갈망함', scores:{longing:2,loneliness:1} },
+      { text:'대화에서 산만해지고 줄거리를 잃음', scores:{adhd:3} },
+      { text:'관계가 강렬하고 소모적', scores:{hsp:3} },
+      { text:'거리를 두고 싶음 — 친밀함이 불편함', scores:{empathy:2,dda:1} },
+    ]},
+  ],
+};
 
-/* ── Quiz ──────────────────────────────────── */
-const questions = [
-  {
-    q: 'Jak opisałbyś swoje główne uczucie w ostatnim czasie?',
-    sub: 'Wybierz to, które najbardziej rezonuje.',
-    options: [
-      { text: 'Pustka — cisza wokół mnie jest zbyt głośna',         scores: { samotnosc: 3 } },
-      { text: 'Brakuje mi konkretnej osoby, której już nie ma',      scores: { rozstanie: 2, tesknota: 1 } },
-      { text: 'Tęsknię — za kimś, za czymś, za innym życiem',       scores: { tesknota: 3 } },
-      { text: 'Nie mogę zatrzymać myśli ani usiedzieć na miejscu',   scores: { adhd: 3 } },
-      { text: 'Wszystko mnie przytłacza — za dużo czuję',           scores: { wrazliwosc: 3 } },
-      { text: 'Relacje z ludźmi są dla mnie trudne lub powierzchowne', scores: { empatia: 2, dda: 1 } },
-    ]
-  },
-  {
-    q: 'Kiedy czujesz się najgorzej?',
-    sub: 'Wybierz sytuację, która najbardziej do Ciebie pasuje.',
-    options: [
-      { text: 'Wieczorami, gdy wraca cisza i nie ma z kim porozmawiać', scores: { samotnosc: 3 } },
-      { text: 'Gdy natrafiasz na rzeczy przypominające kogoś bliskiego', scores: { rozstanie: 2, tesknota: 1 } },
-      { text: 'Gdy coś zmienia się bez ostrzeżenia',                   scores: { dda: 2, wrazliwosc: 1 } },
-      { text: 'Gdy siedzisz bezczynnie bez zadania lub celu',          scores: { adhd: 3 } },
-      { text: 'Gdy dociera do Ciebie za dużo bodźców naraz',          scores: { wrazliwosc: 3 } },
-      { text: 'Gdy ktoś oczekuje od Ciebie bliskości emocjonalnej',   scores: { empatia: 3 } },
-    ]
-  },
-  {
-    q: 'Co najbardziej pomaga Ci się uspokoić?',
-    sub: 'Jedna odpowiedź — ta pierwsza, która przyszła Ci do głowy.',
-    options: [
-      { text: 'Obecność kogokolwiek — nawet w ciszy',                 scores: { samotnosc: 3 } },
-      { text: 'Rozmowa z kimś bliskim, kto pamięta przeszłość',      scores: { tesknota: 2, rozstanie: 1 } },
-      { text: 'Cisza, spokój, przewidywalny rytuał',                  scores: { dda: 2, wrazliwosc: 1 } },
-      { text: 'Ruch, aktywność, nowe bodźce i wyzwania',             scores: { adhd: 3 } },
-      { text: 'Bycie sam/a z dala od wymagań innych',                 scores: { wrazliwosc: 2, empatia: 1 } },
-      { text: 'Coś przewidywalnego — bez zaskoczeń',                  scores: { dda: 3 } },
-    ]
-  },
-  {
-    q: 'Jak opisałbyś siebie w relacjach z innymi?',
-    sub: 'Bądź ze sobą szczery/a.',
-    options: [
-      { text: 'Chciałbym/chciałabym mieć ich więcej niż mam',        scores: { samotnosc: 3 } },
-      { text: 'Jest jedna osoba, której mi brakuje bardziej niż innych', scores: { rozstanie: 3 } },
-      { text: 'Tęsknię za głębszymi połączeniami niż te, które mam', scores: { tesknota: 2, samotnosc: 1 } },
-      { text: 'Rozpraszam się w rozmowach i tracę wątek',            scores: { adhd: 3 } },
-      { text: 'Relacje są dla mnie intensywne i wyczerpujące',       scores: { wrazliwosc: 3 } },
-      { text: 'Wolę mieć dystans — bliskość bywa niekomfortowa',      scores: { empatia: 2, dda: 1 } },
-    ]
-  }
-];
-
-let currentQ = 0;
-let answers = [];
-let totalScores = {};
+let currentQ = 0, answers = [], totalScores = {};
 
 function openQuiz() {
   currentQ = 0; answers = []; totalScores = {};
-  renderQuestion();
+  renderQ();
   document.getElementById('quizOverlay').classList.add('open');
 }
+function closeQuiz() { document.getElementById('quizOverlay').classList.remove('open'); }
 
-function closeQuiz() {
-  document.getElementById('quizOverlay').classList.remove('open');
-}
-
-function renderQuestion() {
-  const q = questions[currentQ];
-  const progress = document.getElementById('quizProgress');
-  progress.innerHTML = questions.map((_,i) =>
-    `<div class="quiz-bar ${i < currentQ ? 'done' : i === currentQ ? 'done' : ''}"></div>`
-  ).join('');
-
-  const selectedIdx = answers[currentQ] !== undefined ? answers[currentQ] : -1;
-
+function renderQ() {
+  const qs = (questions[currentLang] || questions.en);
+  const q = qs[currentQ];
+  const tr = t[currentLang] || t.en;
+  const sel = answers[currentQ] !== undefined ? answers[currentQ] : -1;
+  document.getElementById('quizProgress').innerHTML = qs.map((_,i) => `<div class="quiz-bar ${i <= currentQ ? 'done' : ''}"></div>`).join('');
   document.getElementById('quizContent').innerHTML = `
     <div class="quiz-q">${q.q}</div>
-    <div class="quiz-sub">${q.sub}</div>
-    <div class="quiz-options">
-      ${q.options.map((o,i) => `
-        <button class="quiz-option ${selectedIdx === i ? 'selected' : ''}"
-                onclick="selectAnswer(${i})">${o.text}</button>
-      `).join('')}
-    </div>
+    <div class="quiz-sub">${tr['q.sub']}</div>
+    <div class="quiz-options">${q.options.map((o,i)=>`<button class="quiz-option ${sel===i?'selected':''}" onclick="pickA(${i})">${o.text}</button>`).join('')}</div>
     <div class="quiz-nav">
-      <button class="quiz-back" onclick="prevQuestion()" ${currentQ === 0 ? 'style="visibility:hidden"' : ''}>← Wróć</button>
-      <button class="quiz-next" id="nextBtn" onclick="nextQuestion()" ${selectedIdx === -1 ? 'disabled' : ''}>
-        ${currentQ < questions.length - 1 ? 'Dalej →' : 'Zobacz wynik →'}
-      </button>
+      <button class="quiz-back" onclick="prevQ()" ${currentQ===0?'style="visibility:hidden"':''}>${tr['q.back']}</button>
+      <button class="quiz-next" id="qnext" onclick="nextQ()" ${sel===-1?'disabled':''}>${currentQ < qs.length-1 ? tr['q.next'] : tr['q.result']}</button>
     </div>
   `;
 }
 
-function selectAnswer(idx) {
-  answers[currentQ] = idx;
-  document.querySelectorAll('.quiz-option').forEach((el,i) => {
-    el.classList.toggle('selected', i === idx);
-  });
-  document.getElementById('nextBtn').disabled = false;
+function pickA(i) {
+  answers[currentQ] = i;
+  document.querySelectorAll('.quiz-option').forEach((el,j) => el.classList.toggle('selected', j===i));
+  document.getElementById('qnext').disabled = false;
 }
 
-function nextQuestion() {
-  if (answers[currentQ] === undefined) return;
+function nextQ() {
+  const qs = questions[currentLang] || questions.en;
+  const scores = qs[currentQ].options[answers[currentQ]].scores;
+  for (const [k,v] of Object.entries(scores)) totalScores[k] = (totalScores[k]||0) + v;
+  if (currentQ < qs.length - 1) { currentQ++; renderQ(); }
+  else { closeQuiz(); showResult(Object.entries(totalScores).sort((a,b)=>b[1]-a[1])[0][0]); }
+}
+function prevQ() { if (currentQ > 0) { currentQ--; renderQ(); } }
 
-  // Add scores
-  const scores = questions[currentQ].options[answers[currentQ]].scores;
-  for (const [key, val] of Object.entries(scores)) {
-    totalScores[key] = (totalScores[key] || 0) + val;
-  }
+/* ════════════════════════════════════════════
+   PETTING + DAY COUNTER
+════════════════════════════════════════════ */
+const MAX_PETS = 15, COOLDOWN = 15 * 60 * 1000;
+const catWrap = document.getElementById('catWrap');
+const eyesN = document.getElementById('eyesN'), eyesH = document.getElementById('eyesH');
+const mouthN = document.getElementById('mouthN'), mouthO = document.getElementById('mouthO');
+let petT, cdInt;
 
-  if (currentQ < questions.length - 1) {
-    currentQ++;
-    renderQuestion();
-  } else {
-    // Find winning diagnosis
-    const winner = Object.entries(totalScores).sort((a,b) => b[1]-a[1])[0][0];
-    closeQuiz();
-    showResult(winner);
-  }
+const ls = { get:(k,d=0)=>parseInt(localStorage.getItem(k)||d), set:(k,v)=>localStorage.setItem(k,v) };
+
+if (!localStorage.getItem('careStart')) ls.set('careStart', Date.now());
+document.getElementById('dayCount').textContent = Math.max(1, Math.floor((Date.now()-ls.get('careStart'))/86400000)+1);
+document.getElementById('petCount').textContent = ls.get('pets').toLocaleString();
+
+function renderDots(n) {
+  document.getElementById('petDots').innerHTML = Array.from({length:MAX_PETS},(_,i)=>`<div class="pet-dot ${i<n?'filled':''}" id="dot${i}"></div>`).join('');
+}
+function fmt(ms) { const s=Math.ceil(ms/1000),m=Math.floor(s/60),sc=s%60; return `${String(m).padStart(2,'0')}:${String(sc).padStart(2,'0')}`; }
+
+function startCooldown() {
+  document.getElementById('petState').style.display = 'none';
+  document.getElementById('satisfiedState').style.display = 'block';
+  clearInterval(cdInt);
+  cdInt = setInterval(() => {
+    const rem = COOLDOWN - (Date.now() - ls.get('lastSat'));
+    if (rem <= 0) { clearInterval(cdInt); ls.set('sessionPets',0); catReturn(); }
+    else document.getElementById('satTimer').textContent = fmt(rem);
+  }, 1000);
+  document.getElementById('satTimer').textContent = fmt(COOLDOWN - (Date.now()-ls.get('lastSat')));
 }
 
-function prevQuestion() {
-  if (currentQ > 0) { currentQ--; renderQuestion(); }
+function catWalkOff() {
+  eyesN.setAttribute('display','none'); eyesH.setAttribute('display','block');
+  mouthN.setAttribute('display','none'); mouthO.setAttribute('display','block');
+  catWrap.classList.remove('bounce','walkin'); void catWrap.offsetWidth; catWrap.classList.add('walkoff');
+  setTimeout(() => {
+    ls.set('lastSat', Date.now()); startCooldown();
+    eyesN.setAttribute('display','block'); eyesH.setAttribute('display','none');
+    mouthN.setAttribute('display','block'); mouthO.setAttribute('display','none');
+    catWrap.classList.remove('walkoff');
+  }, 1900);
 }
 
-// Close modals on overlay click
-document.getElementById('quizOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeQuiz(); });
-document.getElementById('resultOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeResult(); });
+function catReturn() {
+  document.getElementById('satisfiedState').style.display = 'none';
+  document.getElementById('petState').style.display = 'block';
+  renderDots(0);
+  document.getElementById('petLabel').textContent = (t[currentLang]||t.en)['hint'];
+  catWrap.classList.remove('walkin'); void catWrap.offsetWidth; catWrap.classList.add('walkin');
+  setTimeout(()=>catWrap.classList.remove('walkin'), 1300);
+}
+
+catWrap.addEventListener('click', () => {
+  const sp = ls.get('sessionPets');
+  if (sp >= MAX_PETS) return;
+  const total = ls.get('pets') + 1; ls.set('pets', total);
+  document.getElementById('petCount').textContent = total.toLocaleString();
+  const newSp = sp + 1; ls.set('sessionPets', newSp);
+  renderDots(newSp);
+  const dot = document.getElementById(`dot${newSp-1}`);
+  if (dot) { dot.classList.add('pulse'); setTimeout(()=>dot.classList.remove('pulse'),400); }
+  document.getElementById('petLabel').textContent = newSp < MAX_PETS ? `${newSp} / ${MAX_PETS}` : '😸';
+  eyesN.setAttribute('display','none'); eyesH.setAttribute('display','block');
+  mouthN.setAttribute('display','none'); mouthO.setAttribute('display','block');
+  catWrap.classList.remove('bounce'); void catWrap.offsetWidth; catWrap.classList.add('bounce');
+  clearTimeout(petT); petT = setTimeout(()=>{ eyesN.setAttribute('display','block'); eyesH.setAttribute('display','none'); mouthN.setAttribute('display','block'); mouthO.setAttribute('display','none'); }, 700);
+  if (newSp >= MAX_PETS) setTimeout(catWalkOff, 600);
+});
+
+// Modal close on overlay click
+document.getElementById('quizOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeQuiz(); });
+document.getElementById('resultOverlay').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeResult(); });
+
+// Init
+(function(){
+  const rem = ls.get('lastSat') ? COOLDOWN-(Date.now()-ls.get('lastSat')) : 0;
+  if (rem > 0) startCooldown();
+  else { if (ls.get('lastSat') && rem <= 0) ls.set('sessionPets',0); renderDots(ls.get('sessionPets')); }
+  setLang(currentLang);
+})();
 </script>
 </body>
 </html>
