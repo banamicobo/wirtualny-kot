@@ -11,12 +11,34 @@
     html { scroll-behavior:smooth; }
     body { background:var(--cream); color:var(--dark); font-family:'Inter',sans-serif; font-size:15px; line-height:1.7; }
 
-    /* Mobile gate */
-    .mobile-gate { display:none; position:fixed; inset:0; background:var(--cream); z-index:9999; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:48px; }
-    .mobile-gate .icon { font-size:56px; margin-bottom:24px; }
-    .mobile-gate h2 { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; margin-bottom:12px; }
-    .mobile-gate p { font-size:14px; opacity:.55; max-width:300px; line-height:1.7; }
-    @media (max-width:900px) { .mobile-gate { display:flex; } }
+    /* Mobile pet notice */
+    .mobile-pet-notice { display:none; margin-top:16px; font-size:12px; letter-spacing:.08em; opacity:.38; text-align:center; line-height:1.7; }
+    @media (max-width:760px) {
+      .mobile-pet-notice { display:block; }
+      nav { padding:14px 20px; }
+      .nav-links, .nav-cta { display:none; }
+      .nav-logo { font-size:14px; }
+      .hero { padding:100px 24px 60px; }
+      .hero h1 { font-size:clamp(42px,11vw,72px); }
+      .hero-sub { font-size:14px; max-width:100%; }
+      .counters { gap:32px; }
+      .cnt-value { font-size:40px; }
+      .section { padding:56px 24px; }
+      .section h2 { font-size:clamp(28px,7vw,42px); margin-bottom:32px; }
+      .diag-paths { grid-template-columns:1fr; }
+      .steps { grid-template-columns:1fr 1fr; gap:20px; }
+      .cards { grid-template-columns:1fr; }
+      .split-grid { grid-template-columns:1fr; }
+      .split-block { border-right:none; border-bottom:1px solid rgba(250,245,238,.08); padding:32px 24px; }
+      .split-block:last-child { border-bottom:none; }
+      .modal { padding:32px 24px; }
+      footer { padding:28px 24px; }
+      .cat-wrap { cursor:default; }
+    }
+    @media (max-width:420px) {
+      .steps { grid-template-columns:1fr; }
+      .split-pct { font-size:60px; }
+    }
 
     /* Nav */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(250,245,238,.93); backdrop-filter:blur(10px); border-bottom:1px solid rgba(42,32,24,.06); gap:20px; }
@@ -177,12 +199,6 @@
 </head>
 <body>
 
-<div class="mobile-gate">
-  <div class="icon">🐱</div>
-  <h2 data-i18n="gate.h2">Home only</h2>
-  <p data-i18n="gate.p">Real cat care requires your presence at home. Return on a computer connected to your home WiFi.</p>
-</div>
-
 <nav>
   <div class="nav-left">
     <div class="lang-switcher">
@@ -237,6 +253,7 @@
       <div class="pet-dots" id="petDots"></div>
       <div class="pet-progress-label" id="petLabel" data-i18n="hint">pet the cat ↑</div>
     </div>
+    <p class="mobile-pet-notice" data-i18n="mobile.notice">Cat care is available from your home computer only.</p>
   </div>
 
   <div id="satisfiedState" style="display:none">
@@ -342,6 +359,7 @@ const t = {
     'hero.eyebrow':"Inspired by Sho Ishida's books",'hero.h1a':'A cat is','hero.h1b':'recommended',
     'hero.sub':"Virtual cat therapy for those who can't have one — and for children who want to earn one.",
     'cnt.days':'Day of care','cnt.pets':'Pets given','hint':'pet the cat ↑',
+    'mobile.notice':'Cat care is available from your home computer only.',
     'sat.title':'The cat has had enough petting','sat.sub':'Back in','sat.unit':'min · sec',
     'diag.label':'Find your cat','diag.h2a':'Match a cat','diag.h2b':'to your situation',
     'diag.c1.h3':'I know my state','diag.c1.p':"Enter a diagnosis, emotional state or life situation. We'll find the cat that understands what you're going through.",'diag.c1.ph':'e.g. loneliness, ADHD, anxiety, breakup…','diag.c1.btn':'Match my cat →',
@@ -372,6 +390,7 @@ const t = {
     'hero.eyebrow':'石田祥著の本からインスピレーションを得て','hero.h1a':'猫を','hero.h1b':'すすめる',
     'hero.sub':'猫を飼えない方のための仮想猫セラピー — 猫を手に入れたい子どもたちのために。',
     'cnt.days':'ケアの日数','cnt.pets':'なでた回数','hint':'猫をなでてください ↑',
+    'mobile.notice':'猫のお世話はご自宅のパソコンからのみ可能です。',
     'sat.title':'猫はなで過ぎで満足しています','sat.sub':'戻るまで','sat.unit':'分 · 秒',
     'diag.label':'猫を見つける','diag.h2a':'状況に合った猫を','diag.h2b':'マッチングする',
     'diag.c1.h3':'状態がわかっている','diag.c1.p':'診断名、感情状態、または状況を入力してください。あなたの状況を理解してくれる猫をお探しします。','diag.c1.ph':'例：孤独、ADHD、不安、別れ…','diag.c1.btn':'猫を選ぶ →',
@@ -402,6 +421,7 @@ const t = {
     'hero.eyebrow':'이시다 쇼의 책에서 영감을 받아','hero.h1a':'고양이를','hero.h1b':'권합니다',
     'hero.sub':'고양이를 키울 수 없는 분들을 위한 가상 고양이 테라피 — 고양이를 얻고 싶은 아이들을 위해.',
     'cnt.days':'돌봄의 날','cnt.pets':'쓰다듬은 횟수','hint':'고양이를 쓰다듬어 주세요 ↑',
+    'mobile.notice':'고양이 돌봄은 집 컴퓨터에서만 가능합니다.',
     'sat.title':'고양이가 쓰다듬기에 만족했습니다','sat.sub':'돌아올 때까지','sat.unit':'분 · 초',
     'diag.label':'고양이 찾기','diag.h2a':'상황에 맞는','diag.h2b':'고양이 매칭',
     'diag.c1.h3':'내 상태를 알고 있어요','diag.c1.p':'진단명, 감정 상태 또는 상황을 입력하세요. 당신의 상황을 이해하는 고양이를 찾아드립니다.','diag.c1.ph':'예: 외로움, ADHD, 불안, 이별…','diag.c1.btn':'고양이 매칭하기 →',
@@ -733,6 +753,7 @@ function catReturn() {
 }
 
 catWrap.addEventListener('click', () => {
+  if (window.innerWidth <= 760) return;
   const sp = ls.get('sessionPets');
   if (sp >= MAX_PETS) return;
   const total = ls.get('pets') + 1; ls.set('pets', total);
