@@ -81,6 +81,58 @@
     .click-hint { margin-top: 14px; font-size: 11px; letter-spacing: .1em; opacity: .28; text-transform: uppercase; animation: blink 2.2s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:.28} 50%{opacity:.55} }
 
+    /* ── Walk-off / walk-in ─────────────────── */
+    @keyframes cat-walkoff {
+      0%   { transform: translate(0,0) rotate(0deg); opacity:1; }
+      8%   { transform: translate(22px,-14px) rotate(-4deg); }
+      16%  { transform: translate(50px,2px) rotate(3deg); }
+      24%  { transform: translate(85px,-14px) rotate(-4deg); }
+      32%  { transform: translate(125px,2px) rotate(3deg); }
+      42%  { transform: translate(175px,-10px) rotate(-3deg); }
+      55%  { transform: translate(240px,0); opacity:1; }
+      72%  { transform: translate(340px,-6px); opacity:.6; }
+      88%  { transform: translate(460px,0); opacity:.2; }
+      100% { transform: translate(620px,0); opacity:0; }
+    }
+    @keyframes cat-walkin {
+      0%   { transform: translateX(-500px); opacity:0; }
+      25%  { opacity:.5; transform: translateX(-280px) rotate(3deg); }
+      45%  { transform: translateX(-130px) rotate(-3deg); }
+      62%  { transform: translateX(-40px) rotate(2deg); }
+      78%  { transform: translateX(12px) rotate(-1deg); }
+      100% { transform: translateX(0); opacity:1; }
+    }
+    .cat-wrap.walkoff { animation: cat-walkoff 1.8s ease-in forwards; }
+    .cat-wrap.walkin  { animation: cat-walkin 1.2s ease-out forwards; }
+
+    /* ── Pet progress bar ───────────────────── */
+    .pet-progress { margin-top: 20px; width: 190px; margin-left: auto; margin-right: auto; }
+    .pet-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 8px; }
+    .pet-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(42,32,24,.12); transition: background .3s;
+    }
+    .pet-dot.filled { background: var(--terra); }
+    .pet-dot.pulse { animation: dot-pulse .4s ease; }
+    @keyframes dot-pulse { 0%{transform:scale(1)} 50%{transform:scale(1.6)} 100%{transform:scale(1)} }
+    .pet-progress-label { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; opacity: .28; text-align: center; }
+
+    /* ── Satisfied state ────────────────────── */
+    #satisfiedState { text-align: center; padding: 8px 0; }
+    .sat-emoji { font-size: 52px; margin-bottom: 16px; display: block; animation: sat-float 3s ease-in-out infinite; }
+    @keyframes sat-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .sat-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px; font-weight: 300; margin-bottom: 6px;
+    }
+    .sat-sub { font-size: 12px; opacity: .38; letter-spacing: .06em; margin-bottom: 4px; }
+    .sat-timer {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px; font-weight: 300; color: var(--terra);
+      line-height: 1; margin: 8px 0 4px;
+    }
+    .sat-unit { font-size: 10px; letter-spacing: .2em; text-transform: uppercase; opacity: .28; }
+
     /* Divider */
     .divider { width: 48px; height: 1px; background: var(--dark); opacity: .1; margin: 0 auto 72px; }
     hr.thin { border: none; border-top: 1px solid rgba(42,32,24,.07); }
@@ -260,6 +312,9 @@
   </div>
 
   <div class="cat-widget" id="catWidget">
+
+    <!-- Petting state -->
+    <div id="petState">
     <div class="cat-wrap" id="catWrap">
       <svg viewBox="0 0 200 210" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 168 Q8 148 14 122 Q20 98 38 104 Q46 107 44 120" stroke="#D4B090" stroke-width="16" fill="none" stroke-linecap="round"/>
@@ -297,7 +352,21 @@
         <line x1="174" y1="154" x2="118" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
       </svg>
     </div>
-    <div class="click-hint">głaszcz kota ↑</div>
+    <div class="pet-progress">
+      <div class="pet-dots" id="petDots"></div>
+      <div class="pet-progress-label" id="petProgressLabel">głaszcz kota ↑</div>
+    </div>
+    </div><!-- /petState -->
+
+    <!-- Satisfied / cooldown state -->
+    <div id="satisfiedState" style="display:none">
+      <span class="sat-emoji">😸</span>
+      <div class="sat-title">Kot jest najedzony głaskaniem</div>
+      <div class="sat-sub">Wróci za</div>
+      <div class="sat-timer" id="satTimer">15:00</div>
+      <div class="sat-unit">minut · sekund</div>
+    </div>
+
   </div>
 </div>
 
@@ -445,19 +514,130 @@
 </div>
 
 <script>
-/* ── Cat petting ───────────────────────────── */
-const catWrap = document.getElementById('catWrap');
-const eyesN   = document.getElementById('eyesN');
-const eyesH   = document.getElementById('eyesH');
-const mouthN  = document.getElementById('mouthN');
-const mouthO  = document.getElementById('mouthO');
-let petT;
+/* ── Config ────────────────────────────────── */
+const MAX_PETS    = 15;
+const COOLDOWN_MS = 15 * 60 * 1000; // 15 minut
 
+/* ── Elements ──────────────────────────────── */
+const catWrap       = document.getElementById('catWrap');
+const eyesN         = document.getElementById('eyesN');
+const eyesH         = document.getElementById('eyesH');
+const mouthN        = document.getElementById('mouthN');
+const mouthO        = document.getElementById('mouthO');
+const petState      = document.getElementById('petState');
+const satisfiedState= document.getElementById('satisfiedState');
+const satTimer      = document.getElementById('satTimer');
+const petDots       = document.getElementById('petDots');
+const petLabel      = document.getElementById('petProgressLabel');
+let petT, cooldownInterval;
+
+/* ── Storage helpers ───────────────────────── */
+const ls = {
+  get: (k, def=0) => parseInt(localStorage.getItem(k) || def),
+  set: (k,v) => localStorage.setItem(k, v),
+};
+
+/* ── Day counter ───────────────────────────── */
+if (!localStorage.getItem('careStart')) ls.set('careStart', Date.now());
+const days = Math.max(1, Math.floor((Date.now() - ls.get('careStart')) / 86400000) + 1);
+document.getElementById('dayCount').textContent = days;
+document.getElementById('petCount').textContent = ls.get('pets').toLocaleString('pl-PL');
+
+/* ── Dots progress bar ─────────────────────── */
+function renderDots(filled) {
+  petDots.innerHTML = Array.from({length: MAX_PETS}, (_,i) =>
+    `<div class="pet-dot ${i < filled ? 'filled' : ''}" id="dot${i}"></div>`
+  ).join('');
+}
+
+/* ── Cooldown state ────────────────────────── */
+function formatTime(ms) {
+  const s = Math.ceil(ms / 1000);
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+function startCooldownUI() {
+  petState.style.display = 'none';
+  satisfiedState.style.display = 'block';
+
+  clearInterval(cooldownInterval);
+  cooldownInterval = setInterval(() => {
+    const remaining = COOLDOWN_MS - (Date.now() - ls.get('lastSatisfied'));
+    if (remaining <= 0) {
+      clearInterval(cooldownInterval);
+      ls.set('sessionPets', 0);
+      catReturn();
+    } else {
+      satTimer.textContent = formatTime(remaining);
+    }
+  }, 1000);
+
+  const remaining = COOLDOWN_MS - (Date.now() - ls.get('lastSatisfied'));
+  satTimer.textContent = formatTime(Math.max(0, remaining));
+}
+
+/* ── Cat walkoff ───────────────────────────── */
+function catWalkOff() {
+  // Pokaż szczęśliwą minę
+  eyesN.setAttribute('display','none'); eyesH.setAttribute('display','block');
+  mouthN.setAttribute('display','none'); mouthO.setAttribute('display','block');
+
+  catWrap.classList.remove('bounce','walkin');
+  void catWrap.offsetWidth;
+  catWrap.classList.add('walkoff');
+
+  setTimeout(() => {
+    ls.set('lastSatisfied', Date.now());
+    startCooldownUI();
+    // Reset kot do normalnej miny (na kolejny powrót)
+    eyesN.setAttribute('display','block'); eyesH.setAttribute('display','none');
+    mouthN.setAttribute('display','block'); mouthO.setAttribute('display','none');
+    catWrap.classList.remove('walkoff');
+  }, 1900);
+}
+
+/* ── Cat return ────────────────────────────── */
+function catReturn() {
+  satisfiedState.style.display = 'none';
+  petState.style.display = 'block';
+  renderDots(0);
+  petLabel.textContent = 'głaszcz kota ↑';
+
+  catWrap.classList.remove('walkin');
+  void catWrap.offsetWidth;
+  catWrap.classList.add('walkin');
+  setTimeout(() => catWrap.classList.remove('walkin'), 1300);
+}
+
+/* ── Petting ───────────────────────────────── */
 catWrap.addEventListener('click', () => {
-  let pets = parseInt(localStorage.getItem('pets') || '0') + 1;
-  localStorage.setItem('pets', pets);
-  document.getElementById('petCount').textContent = pets.toLocaleString('pl-PL');
+  const sessionPets = ls.get('sessionPets');
+  if (sessionPets >= MAX_PETS) return;
 
+  // Total pets
+  const total = ls.get('pets') + 1;
+  ls.set('pets', total);
+  document.getElementById('petCount').textContent = total.toLocaleString('pl-PL');
+
+  // Session pets
+  const newSession = sessionPets + 1;
+  ls.set('sessionPets', newSession);
+
+  // Dots
+  renderDots(newSession);
+  const dot = document.getElementById(`dot${newSession - 1}`);
+  if (dot) { dot.classList.add('pulse'); setTimeout(() => dot.classList.remove('pulse'), 400); }
+
+  // Label
+  if (newSession < MAX_PETS) {
+    petLabel.textContent = `${newSession} / ${MAX_PETS} głaskań`;
+  } else {
+    petLabel.textContent = 'Kot jest szczęśliwy! 😸';
+  }
+
+  // Cat animation
   eyesN.setAttribute('display','none'); eyesH.setAttribute('display','block');
   mouthN.setAttribute('display','none'); mouthO.setAttribute('display','block');
   catWrap.classList.remove('bounce'); void catWrap.offsetWidth; catWrap.classList.add('bounce');
@@ -466,15 +646,29 @@ catWrap.addEventListener('click', () => {
     eyesN.setAttribute('display','block'); eyesH.setAttribute('display','none');
     mouthN.setAttribute('display','block'); mouthO.setAttribute('display','none');
   }, 700);
+
+  // Walk off at max
+  if (newSession >= MAX_PETS) {
+    catWrap.removeEventListener('click', arguments.callee);
+    setTimeout(catWalkOff, 600);
+  }
 });
 
-/* ── Day counter ───────────────────────────── */
-(function() {
-  const key = 'careStart';
-  if (!localStorage.getItem(key)) localStorage.setItem(key, Date.now());
-  const days = Math.max(1, Math.floor((Date.now() - parseInt(localStorage.getItem(key))) / 86400000) + 1);
-  document.getElementById('dayCount').textContent = days;
-  document.getElementById('petCount').textContent = (parseInt(localStorage.getItem('pets') || '0')).toLocaleString('pl-PL');
+/* ── Init ──────────────────────────────────── */
+(function init() {
+  const lastSat = ls.get('lastSatisfied');
+  const remaining = lastSat ? COOLDOWN_MS - (Date.now() - lastSat) : 0;
+
+  if (remaining > 0) {
+    // Jesteśmy w trakcie cooldownu
+    startCooldownUI();
+  } else {
+    // Reset sesji jeśli cooldown minął
+    if (lastSat && remaining <= 0) ls.set('sessionPets', 0);
+    renderDots(ls.get('sessionPets'));
+    const sp = ls.get('sessionPets');
+    petLabel.textContent = sp > 0 ? `${sp} / ${MAX_PETS} głaskań` : 'głaszcz kota ↑';
+  }
 })();
 
 /* ── Diagnoses data ────────────────────────── */
