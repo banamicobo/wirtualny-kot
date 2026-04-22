@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zaleca się kota — wirtualna terapia kotem</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #FAF5EE;
+      --dark:  #2A2018;
+      --terra: #C4754A;
+      --sage:  #7A9E7E;
+      --warm:  #E8D5B7;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* ── Desktop-only gate ─────────────────── */
+    .mobile-gate {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      z-index: 9999;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 48px;
+    }
+    .mobile-gate .gate-icon { font-size: 56px; margin-bottom: 24px; }
+    .mobile-gate h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 300;
+      margin-bottom: 12px;
+    }
+    .mobile-gate p { font-size: 14px; opacity: .55; max-width: 300px; line-height: 1.7; }
+    @media (max-width: 900px) { .mobile-gate { display: flex; } }
+
+    /* ── Nav ───────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 56px;
+      background: rgba(250, 245, 238, .93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(42,32,24,.06);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      letter-spacing: .1em;
+      font-weight: 400;
+    }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--dark);
+      font-size: 13px;
+      letter-spacing: .04em;
+      opacity: .5;
+      transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: 1; }
+    .nav-cta {
+      background: var(--dark);
+      color: var(--cream);
+      border: none;
+      padding: 10px 26px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      letter-spacing: .05em;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .nav-cta:hover { background: var(--terra); }
+
+    /* ── Hero ──────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 130px 56px 90px;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(196,117,74,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      opacity: .35;
+      margin-bottom: 28px;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(58px, 8vw, 108px);
+      font-weight: 300;
+      line-height: 1.02;
+      margin-bottom: 24px;
+    }
+    .hero h1 em { font-style: italic; color: var(--terra); }
+    .hero-sub {
+      font-size: 16px;
+      font-weight: 300;
+      opacity: .5;
+      max-width: 460px;
+      line-height: 1.85;
+      margin-bottom: 60px;
+    }
+
+    /* ── Cat widget ────────────────────────── */
+    .cat-widget { cursor: pointer; user-select: none; }
+    .cat-wrap {
+      width: 190px;
+      height: 190px;
+      margin: 0 auto;
+      transition: transform .08s;
+    }
+    .cat-wrap:active { transform: scale(.93); }
+    .cat-wrap.bounce { animation: bounce .35s ease; }
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      25%  { transform: scale(1.1) rotate(-3deg); }
+      55%  { transform: scale(1.07) rotate(2deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+    .cat-counter {
+      margin-top: 18px;
+      font-size: 11px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .35;
+    }
+    .cat-counter strong {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 300;
+      color: var(--terra);
+      opacity: 1;
+      margin-bottom: 2px;
+    }
+    .click-hint {
+      margin-top: 10px;
+      font-size: 11px;
+      letter-spacing: .1em;
+      opacity: .28;
+      text-transform: uppercase;
+      animation: blink 2.2s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:.28} 50%{opacity:.55} }
+
+    /* ── Divider ───────────────────────────── */
+    .divider { width: 48px; height: 1px; background: var(--dark); opacity: .1; margin: 0 auto 72px; }
+
+    /* ── Sections ──────────────────────────── */
+    .section { max-width: 1000px; margin: 0 auto; padding: 80px 56px; }
+    .section-label {
+      font-size: 10px;
+      letter-spacing: .25em;
+      text-transform: uppercase;
+      opacity: .3;
+      margin-bottom: 18px;
+    }
+    .section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(34px, 4vw, 54px);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 52px;
+    }
+    .section h2 em { font-style: italic; color: var(--terra); }
+    hr.thin { border: none; border-top: 1px solid rgba(42,32,24,.07); }
+
+    /* ── Steps ─────────────────────────────── */
+    .steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 28px; }
+    .step { border-top: 1px solid rgba(42,32,24,.12); padding-top: 20px; }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 300;
+      color: var(--terra);
+      opacity: .2;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .step h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; margin-bottom: 8px; }
+    .step p { font-size: 13px; opacity: .5; line-height: 1.75; }
+
+    /* ── Cards (for whom) ──────────────────── */
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .card {
+      background: #fff;
+      border: 1px solid rgba(42,32,24,.07);
+      padding: 44px;
+    }
+    .card-icon { font-size: 36px; margin-bottom: 22px; }
+    .card h3 { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+    .card p { font-size: 13px; opacity: .5; line-height: 1.8; }
+    .card-tag {
+      display: inline-block;
+      margin-top: 22px;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border: 1px solid var(--terra);
+      color: var(--terra);
+      padding: 4px 14px;
+    }
+
+    /* ── Donation ───────────────────────────── */
+    .donation-bg { background: var(--dark); color: var(--cream); }
+    .donation-bg .section-label { color: var(--cream); opacity: .25; }
+    .donation-bg h2 { color: var(--cream); }
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid rgba(250,245,238,.08);
+      margin-top: 44px;
+    }
+    .split-block {
+      padding: 44px;
+      text-align: center;
+      border-right: 1px solid rgba(250,245,238,.08);
+    }
+    .split-block:last-child { border-right: none; }
+    .split-pct {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--terra);
+    }
+    .split-label {
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      opacity: .35;
+      margin-top: 8px;
+    }
+    .split-desc { font-size: 13px; opacity: .4; margin-top: 16px; line-height: 1.75; }
+    .donate-btn {
+      display: block;
+      width: fit-content;
+      margin: 52px auto 0;
+      background: var(--terra);
+      color: #fff;
+      border: none;
+      padding: 16px 52px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    .donate-btn:hover { opacity: .8; }
+
+    /* ── Auth ───────────────────────────────── */
+    .auth-wrap {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 80px 56px;
+      text-align: center;
+    }
+    .auth-wrap h2 { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; margin-bottom: 10px; }
+    .auth-wrap > p { font-size: 14px; opacity: .45; margin-bottom: 44px; }
+    .auth-stack { display: flex; flex-direction: column; gap: 12px; }
+    .auth-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 14px 20px;
+      border: 1px solid rgba(42,32,24,.13);
+      background: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--dark);
+      cursor: pointer;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .auth-btn:hover { border-color: rgba(42,32,24,.3); box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+    .or-divider {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+      opacity: .3;
+    }
+    .or-divider::before,.or-divider::after { content:''; flex:1; height:1px; background: var(--dark); }
+    .email-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(42,32,24,.13);
+      background: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: var(--dark);
+      outline: none;
+    }
+    .email-input:focus { border-color: var(--terra); }
+    .email-submit {
+      width: 100%;
+      padding: 14px;
+      background: var(--dark);
+      color: var(--cream);
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .email-submit:hover { background: var(--terra); }
+
+    /* ── Footer ─────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 36px 56px;
+      border-top: 1px solid rgba(42,32,24,.07);
+      font-size: 12px;
+      opacity: .28;
+      letter-spacing: .04em;
+    }
+    footer em { font-style: italic; }
+  </style>
+</head>
+<body>
+
+<!-- Mobile gate -->
+<div class="mobile-gate">
+  <div class="gate-icon">🐱</div>
+  <h2>Tylko z domu</h2>
+  <p>Prawdziwa opieka nad kotem wymaga Twojej obecności. Wróć na komputerze podłączonym do domowego WiFi.</p>
+</div>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">ZALECA SIĘ KOTA</div>
+  <ul class="nav-links">
+    <li><a href="#jak-dziala">Jak działa</a></li>
+    <li><a href="#dla-kogo">Dla kogo</a></li>
+    <li><a href="#dotacje">Dotacje</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Znajdź swojego kota →</button>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <p class="eyebrow">Inspirowane książkami Sho Ishidy</p>
+  <h1>Zaleca się<br><em>kota</em></h1>
+  <p class="hero-sub">Wirtualna terapia kotem dla tych, którzy nie mogą go mieć — i dla dzieci, które chcą go zdobyć.</p>
+
+  <div class="cat-widget" id="catWidget">
+    <div class="cat-wrap" id="catWrap">
+      <svg viewBox="0 0 200 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Tail -->
+        <path d="M32 168 Q8 148 14 122 Q20 98 38 104 Q46 107 44 120" stroke="#D4B090" stroke-width="16" fill="none" stroke-linecap="round"/>
+        <!-- Body -->
+        <ellipse cx="100" cy="130" rx="74" ry="66" fill="#DDB990"/>
+        <!-- Ear L -->
+        <path d="M36 82 L52 36 L78 70" fill="#DDB990"/>
+        <path d="M44 76 L54 44 L72 68" fill="#D09090"/>
+        <!-- Ear R -->
+        <path d="M164 82 L148 36 L122 70" fill="#DDB990"/>
+        <path d="M156 76 L146 44 L128 68" fill="#D09090"/>
+        <!-- Face -->
+        <ellipse cx="100" cy="136" rx="54" ry="48" fill="#EDD5B0"/>
+        <!-- Eyes normal -->
+        <g id="eyesN">
+          <ellipse cx="78" cy="120" rx="11" ry="13" fill="#3A2820"/>
+          <ellipse cx="122" cy="120" rx="11" ry="13" fill="#3A2820"/>
+          <circle cx="81" cy="117" r="3.5" fill="white"/>
+          <circle cx="125" cy="117" r="3.5" fill="white"/>
+        </g>
+        <!-- Eyes happy (squint) -->
+        <g id="eyesH" display="none">
+          <path d="M67 120 Q78 110 89 120" stroke="#3A2820" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <path d="M111 120 Q122 110 133 120" stroke="#3A2820" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- Nose -->
+        <path d="M95 138 L100 144 L105 138 Q100 132 95 138Z" fill="#C47878"/>
+        <!-- Mouth normal -->
+        <g id="mouthN">
+          <path d="M100 144 Q91 151 85 149" stroke="#9A7060" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <path d="M100 144 Q109 151 115 149" stroke="#9A7060" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- Mouth open -->
+        <g id="mouthO" display="none">
+          <ellipse cx="100" cy="152" rx="14" ry="11" fill="#B05050"/>
+          <ellipse cx="100" cy="155" rx="9" ry="7" fill="#902020"/>
+          <ellipse cx="100" cy="160" rx="5.5" ry="3.5" fill="#C06060"/>
+        </g>
+        <!-- Whiskers L -->
+        <line x1="24" y1="134" x2="82" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <line x1="22" y1="144" x2="80" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <line x1="26" y1="154" x2="82" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <!-- Whiskers R -->
+        <line x1="176" y1="134" x2="118" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <line x1="178" y1="144" x2="120" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+        <line x1="174" y1="154" x2="118" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
+      </svg>
+    </div>
+    <div class="cat-counter">
+      <strong id="counter">0</strong>
+      głaskań
+    </div>
+    <div class="click-hint">głaszcz kota ↑</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- How it works -->
+<section class="section" id="jak-dziala">
+  <p class="section-label">Jak to działa</p>
+  <h2>Cztery kroki do<br><em>Twojego kota</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h3>Quiz charakteru</h3>
+      <p>Odpowiadasz na pytania o swoje potrzeby emocjonalne. Dobieramy rasę kota i jego osobowość do Twojego profilu psychologicznego.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h3>Codzienna opieka</h3>
+      <p>Wchodzisz każdego dnia z domowego WiFi. Karmisz, głaszczesz, rozwiązujesz niespodzianki które przynosi koci żywot.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h3>Wyzwania kociego życia</h3>
+      <p>Wizyta u weterynarza, kaprysy rasy, zepsute zabawki — codzienne decyzje uczą odpowiedzialności lepiej niż instrukcja.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h3>Certyfikat opiekuna</h3>
+      <p>Po 90 dniach regularnej opieki dostajesz certyfikat. Bilet do schroniska lub hodowli — honorowany przez partnerów.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="thin"/>
+
+<!-- For whom -->
+<section class="section" id="dla-kogo">
+  <p class="section-label">Dla kogo</p>
+  <h2>Kot dla każdego,<br><em>kto go potrzebuje</em></h2>
+  <div class="cards">
+    <div class="card">
+      <div class="card-icon">🌿</div>
+      <h3>Terapia kotem bez kota</h3>
+      <p>Alergia, najem, podróże — powody są różne, potrzeba ta sama. Rasa i charakter wirtualnego kota są dobrane do Twoich trudności emocjonalnych na podstawie badań kocioterapii.</p>
+      <span class="card-tag">Dla dorosłych</span>
+    </div>
+    <div class="card">
+      <div class="card-icon">🏅</div>
+      <h3>Udowodnij rodzicom</h3>
+      <p>Chcesz kota, rodzice nie są przekonani? Przez 90 dni opiekuj się wirtualnym zwierzęciem i zdobądź certyfikat kociego opiekuna — prawdziwy bilet do adopcji ze schroniska.</p>
+      <span class="card-tag">Dla dzieci i nastolatków</span>
+    </div>
+  </div>
+</section>
+
+<!-- Donation -->
+<div class="donation-bg" id="dotacje">
+  <div class="section" style="max-width:1000px">
+    <p class="section-label">Przejrzystość dotacji</p>
+    <h2>Twoja dotacja<br><em>pomaga realnym kotom</em></h2>
+    <p style="font-size:14px; opacity:.4; max-width:460px; font-weight:300">Każda złotówka zostawiona na stronie jest widoczna i policzalna. Tak dzielimy każdą wpłatę.</p>
+    <div class="split-grid">
+      <div class="split-block">
+        <div class="split-pct">80%</div>
+        <div class="split-label">Dla zwierząt</div>
+        <div class="split-desc">Trafia bezpośrednio do schronisk i organizacji pomagających kotom i psom szukającym domu.</div>
+      </div>
+      <div class="split-block">
+        <div class="split-pct">20%</div>
+        <div class="split-label">Platforma</div>
+        <div class="split-desc">Pokrywa koszty serwerów i dalszego rozwoju — żeby kot był z Tobą jak najdłużej.</div>
+      </div>
+    </div>
+    <button class="donate-btn">Wspomóż koty →</button>
+  </div>
+</div>
+
+<!-- Auth -->
+<div id="logowanie" class="auth-wrap">
+  <p class="section-label" style="text-align:center">Zacznij opiekę</p>
+  <h2>Znajdź swojego kota</h2>
+  <p>Załóż konto i dowiedz się, jaki kot na Ciebie czeka.</p>
+  <div class="auth-stack">
+    <button class="auth-btn">
+      <svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.77-2.7.77-2.08 0-3.85-1.4-4.48-3.29H1.83v2.07A8 8 0 0 0 8.98 17z" fill="#34A853"/><path d="M4.5 10.53A4.8 4.8 0 0 1 4.25 9c0-.53.09-1.04.25-1.53V5.4H1.83A8 8 0 0 0 .98 9c0 1.29.31 2.5.85 3.6l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 3.58c1.17 0 2.23.4 3.06 1.2l2.3-2.3C12.95.99 11.14.2 8.98.2A8 8 0 0 0 1.83 5.4l2.67 2.07C5.13 5 6.9 3.58 8.98 3.58z" fill="#EA4335"/></svg>
+      Kontynuuj z Google
+    </button>
+    <button class="auth-btn">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="#1877F2"><path d="M18 9a9 9 0 1 0-10.4 8.9V11.6H5.3V9h2.3V7.2c0-2.3 1.4-3.6 3.5-3.6 1 0 2 .1 3 .3v2.3H13a1.3 1.3 0 0 0-1.5 1.4V9h2.6l-.4 2.6H11.5V18A9 9 0 0 0 18 9z"/></svg>
+      Kontynuuj z Facebook
+    </button>
+    <button class="auth-btn">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="#000"><path d="M12.47 0c.1 1.42-.4 2.82-1.2 3.82-.8 1-2.1 1.78-3.36 1.68-.14-1.38.48-2.82 1.24-3.72C10 .82 11.36.08 12.47 0zM16.5 12.2c-.6 1.3-1.3 2.52-2.3 3.42-.86.78-1.72 1.38-2.9 1.38-1.14 0-1.88-.6-2.9-.6-1.06 0-1.92.62-2.9.62-1.14 0-2.06-.66-2.94-1.48C1.2 14.02.3 11.76.3 9.4c0-3.96 2.6-6.04 5.14-6.04 1.22 0 2.26.66 3.04.66.74 0 1.94-.72 3.3-.72 1.04 0 2.94.4 4.06 2.3-.1.08-2.46 1.44-2.44 4.28.04 2.38 1.8 3.82 2.1 4.32z"/></svg>
+      Kontynuuj z Apple
+    </button>
+    <div class="or-divider">lub</div>
+    <input class="email-input" type="email" placeholder="twoj@email.com" />
+    <button class="email-submit">Zaczynamy →</button>
+  </div>
+</div>
+
+<footer>
+  <p>Inspirowane <em>Zaleca się kota</em> i <em>Zaleca się kolejnego kota</em> — Sho Ishida &nbsp;·&nbsp; 2026</p>
+</footer>
+
+<script>
+const catWrap  = document.getElementById('catWrap');
+const counter  = document.getElementById('counter');
+const eyesN    = document.getElementById('eyesN');
+const eyesH    = document.getElementById('eyesH');
+const mouthN   = document.getElementById('mouthN');
+const mouthO   = document.getElementById('mouthO');
+let count = 0, t;
+
+catWrap.addEventListener('click', () => {
+  count++;
+  counter.textContent = count.toLocaleString('pl-PL');
+
+  eyesN.setAttribute('display','none');
+  eyesH.setAttribute('display','block');
+  mouthN.setAttribute('display','none');
+  mouthO.setAttribute('display','block');
+
+  catWrap.classList.remove('bounce');
+  void catWrap.offsetWidth;
+  catWrap.classList.add('bounce');
+
+  clearTimeout(t);
+  t = setTimeout(() => {
+    eyesN.setAttribute('display','block');
+    eyesH.setAttribute('display','none');
+    mouthN.setAttribute('display','block');
+    mouthO.setAttribute('display','none');
+  }, 700);
+});
+</script>
+</body>
+</html>
