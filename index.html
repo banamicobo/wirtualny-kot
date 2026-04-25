@@ -13,6 +13,18 @@
 
     /* Mobile pet notice */
     .mobile-pet-notice { display:none; margin-top:16px; font-size:12px; letter-spacing:.08em; opacity:.38; text-align:center; line-height:1.7; }
+    @media (max-height:800px) {
+      .hero { padding:90px 56px 40px; }
+      .eyebrow { margin-bottom:12px; }
+      .hero h1 { font-size:clamp(42px,6vw,72px); margin-bottom:12px; }
+      .hero-sub { font-size:14px; margin-bottom:24px; line-height:1.6; }
+      .counters { margin-bottom:20px; gap:40px; }
+      .cnt-value { font-size:38px; }
+      .cat-wrap { width:140px; height:140px; }
+      .pet-progress { width:140px; }
+      .hero-cta { margin-top:16px; padding:14px 40px; font-size:13px; }
+    }
+
     @media (max-width:760px) {
       .mobile-pet-notice { display:block; }
       nav { padding:14px 20px; }
