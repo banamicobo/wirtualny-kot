@@ -220,8 +220,8 @@
     <li><a href="#dotacje" data-i18n="nav.donate">Donations</a></li>
   </ul>
   <div class="nav-actions">
-    <button class="nav-cta-outline" data-i18n="nav.register" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Załóż konto</button>
-    <button class="nav-cta" data-i18n="nav.login" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Zaloguj się</button>
+    <a class="nav-cta-outline" id="navRegister" data-i18n="nav.register" href="/register/">Załóż konto</a>
+    <a class="nav-cta" id="navLogin" data-i18n="nav.login" href="/login/">Zaloguj się</a>
   </div>
 </nav>
 
@@ -333,20 +333,6 @@
       <div class="split-block"><div class="split-pct">20%</div><div class="split-label" data-i18n="don.p2.label">Platform</div><div class="split-desc" data-i18n="don.p2.desc">Covers server costs and further development — so your cat stays with you as long as possible.</div></div>
     </div>
     <button class="donate-btn" data-i18n="don.btn">Support the cats →</button>
-  </div>
-</div>
-
-<div id="logowanie" class="auth-wrap">
-  <p class="section-label" style="text-align:center" data-i18n="auth.label">Start caring</p>
-  <h2 data-i18n="auth.h2">Find your cat</h2>
-  <p data-i18n="auth.p">Create an account and discover which cat is waiting for you.</p>
-  <div class="auth-stack">
-    <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.77-2.7.77-2.08 0-3.85-1.4-4.48-3.29H1.83v2.07A8 8 0 0 0 8.98 17z" fill="#34A853"/><path d="M4.5 10.53A4.8 4.8 0 0 1 4.25 9c0-.53.09-1.04.25-1.53V5.4H1.83A8 8 0 0 0 .98 9c0 1.29.31 2.5.85 3.6l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 3.58c1.17 0 2.23.4 3.06 1.2l2.3-2.3C12.95.99 11.14.2 8.98.2A8 8 0 0 0 1.83 5.4l2.67 2.07C5.13 5 6.9 3.58 8.98 3.58z" fill="#EA4335"/></svg><span data-i18n="auth.google">Continue with Google</span></button>
-    <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="#1877F2"><path d="M18 9a9 9 0 1 0-10.4 8.9V11.6H5.3V9h2.3V7.2c0-2.3 1.4-3.6 3.5-3.6 1 0 2 .1 3 .3v2.3H13a1.3 1.3 0 0 0-1.5 1.4V9h2.6l-.4 2.6H11.5V18A9 9 0 0 0 18 9z"/></svg><span data-i18n="auth.facebook">Continue with Facebook</span></button>
-    <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="#000"><path d="M12.47 0c.1 1.42-.4 2.82-1.2 3.82-.8 1-2.1 1.78-3.36 1.68-.14-1.38.48-2.82 1.24-3.72C10 .82 11.36.08 12.47 0zM16.5 12.2c-.6 1.3-1.3 2.52-2.3 3.42-.86.78-1.72 1.38-2.9 1.38-1.14 0-1.88-.6-2.9-.6-1.06 0-1.92.62-2.9.62-1.14 0-2.06-.66-2.94-1.48C1.2 14.02.3 11.76.3 9.4c0-3.96 2.6-6.04 5.14-6.04 1.22 0 2.26.66 3.04.66.74 0 1.94-.72 3.3-.72 1.04 0 2.94.4 4.06 2.3-.1.08-2.46 1.44-2.44 4.28.04 2.38 1.8 3.82 2.1 4.32z"/></svg><span data-i18n="auth.apple">Continue with Apple</span></button>
-    <div class="or-divider"><span data-i18n="auth.or">or</span></div>
-    <input class="email-input" id="emailInput" type="email" data-i18n-ph="auth.ph" placeholder="your@email.com" />
-    <button class="email-submit" data-i18n="auth.submit">Let's go →</button>
   </div>
 </div>
 
@@ -590,7 +576,7 @@ function showResult(key) {
       <div class="result-traits">${d.traits.map(t=>`<span class="trait">${t}</span>`).join('')}</div>
     </div>
     <div class="result-cta">
-      <button class="btn-primary" onclick="closeResult();document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">
+      <button class="btn-primary" onclick="closeResult();window.location.href='/register/?lang='+currentLang">
         ${tr['r.cta'].replace('{breed}', d.breed)}
       </button>
     </div>
@@ -870,6 +856,9 @@ document.getElementById('resultOverlay').addEventListener('click', e=>{ if(e.tar
   if (rem > 0) startCooldown();
   else { if (ls.get('lastSat') && rem <= 0) ls.set('sessionPets',0); renderDots(ls.get('sessionPets')); }
   setLang(currentLang);
+  const langParam = currentLang !== 'en' ? '?lang=' + currentLang : '';
+  document.getElementById('navLogin').href = '/login/' + langParam;
+  document.getElementById('navRegister').href = '/register/' + langParam;
 })();
 </script>
 </body>

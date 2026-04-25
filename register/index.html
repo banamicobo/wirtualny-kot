@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create account — A Cat is Recommended</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --cream:#FAF5EE; --dark:#2A2018; --terra:#C4754A; --sage:#7A9E7E; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--cream); color:var(--dark); font-family:'Inter',sans-serif; font-size:15px; line-height:1.7; min-height:100vh; display:flex; flex-direction:column; }
+
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(250,245,238,.93); backdrop-filter:blur(10px); border-bottom:1px solid rgba(42,32,24,.06); gap:20px; }
+    .nav-left { display:flex; align-items:center; gap:20px; }
+    .nav-logo { font-family:'Cormorant Garamond',serif; font-size:17px; letter-spacing:.1em; white-space:nowrap; text-decoration:none; color:var(--dark); }
+    .lang-switcher { display:flex; gap:2px; }
+    .lang-btn { background:none; border:1px solid transparent; padding:4px 10px; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; color:var(--dark); opacity:.35; transition:all .2s; border-radius:2px; text-decoration:none; display:inline-block; }
+    .lang-btn:hover { opacity:.7; }
+    .lang-btn.active { opacity:1; border-color:rgba(42,32,24,.2); background:rgba(42,32,24,.04); }
+    .nav-back { font-size:13px; opacity:.45; text-decoration:none; color:var(--dark); transition:opacity .2s; }
+    .nav-back:hover { opacity:1; }
+
+    main { flex:1; display:flex; align-items:center; justify-content:center; padding:120px 24px 60px; }
+    .auth-box { width:100%; max-width:440px; }
+    .auth-eyebrow { font-size:10px; letter-spacing:.22em; text-transform:uppercase; opacity:.3; margin-bottom:20px; }
+    .auth-box h1 { font-family:'Cormorant Garamond',serif; font-size:48px; font-weight:300; line-height:1.1; margin-bottom:10px; }
+    .auth-box h1 em { font-style:italic; color:var(--terra); }
+    .auth-box > p { font-size:14px; opacity:.45; margin-bottom:40px; line-height:1.7; }
+    .auth-stack { display:flex; flex-direction:column; gap:10px; }
+    .auth-btn { display:flex; align-items:center; justify-content:center; gap:12px; padding:14px 20px; border:1px solid rgba(42,32,24,.13); background:#fff; font-family:'Inter',sans-serif; font-size:14px; color:var(--dark); cursor:pointer; transition:border-color .2s,box-shadow .2s; width:100%; }
+    .auth-btn:hover { border-color:rgba(42,32,24,.3); box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .or-divider { display:flex; align-items:center; gap:14px; font-size:12px; opacity:.3; margin:4px 0; }
+    .or-divider::before,.or-divider::after { content:''; flex:1; height:1px; background:var(--dark); }
+    .field { display:flex; flex-direction:column; gap:6px; }
+    .field label { font-size:11px; letter-spacing:.1em; text-transform:uppercase; opacity:.4; }
+    .field input { padding:14px 16px; border:1px solid rgba(42,32,24,.13); background:#fff; font-family:'Inter',sans-serif; font-size:14px; color:var(--dark); outline:none; }
+    .field input:focus { border-color:var(--terra); }
+    .submit-btn { width:100%; padding:15px; background:var(--terra); color:#fff; border:none; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:opacity .2s; margin-top:4px; }
+    .submit-btn:hover { opacity:.85; }
+    .terms { font-size:12px; opacity:.35; text-align:center; line-height:1.6; margin-top:8px; }
+    .auth-switch { text-align:center; font-size:13px; opacity:.45; margin-top:28px; }
+    .auth-switch a { color:var(--terra); text-decoration:none; }
+    .auth-switch a:hover { text-decoration:underline; }
+    footer { text-align:center; padding:28px 24px; border-top:1px solid rgba(42,32,24,.07); font-size:12px; opacity:.28; letter-spacing:.04em; }
+
+    @media (max-width:760px) {
+      nav { padding:14px 20px; }
+      .auth-box h1 { font-size:36px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <div class="lang-switcher">
+      <a class="lang-btn" data-lang="en" href="/register/">EN</a>
+      <a class="lang-btn" data-lang="pl" href="/register/?lang=pl">PL</a>
+      <a class="lang-btn" data-lang="ja" href="/register/?lang=ja">日本語</a>
+      <a class="lang-btn" data-lang="ko" href="/register/?lang=ko">한국어</a>
+    </div>
+    <a class="nav-logo" href="/" data-i18n="nav.logo">A CAT IS RECOMMENDED</a>
+  </div>
+  <a class="nav-back" href="/" data-i18n="nav.back">← Back to main</a>
+</nav>
+
+<main>
+  <div class="auth-box">
+    <p class="auth-eyebrow" data-i18n="reg.eyebrow">New here</p>
+    <h1><span data-i18n="reg.h1a">Find your</span><br><em data-i18n="reg.h1b">cat</em></h1>
+    <p data-i18n="reg.sub">Create an account and discover which cat is waiting for you.</p>
+    <div class="auth-stack">
+      <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18"><path d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18z" fill="#4285F4"/><path d="M8.98 17c2.16 0 3.97-.72 5.3-1.94l-2.6-2.01c-.72.48-1.63.77-2.7.77-2.08 0-3.85-1.4-4.48-3.29H1.83v2.07A8 8 0 0 0 8.98 17z" fill="#34A853"/><path d="M4.5 10.53A4.8 4.8 0 0 1 4.25 9c0-.53.09-1.04.25-1.53V5.4H1.83A8 8 0 0 0 .98 9c0 1.29.31 2.5.85 3.6l2.67-2.07z" fill="#FBBC05"/><path d="M8.98 3.58c1.17 0 2.23.4 3.06 1.2l2.3-2.3C12.95.99 11.14.2 8.98.2A8 8 0 0 0 1.83 5.4l2.67 2.07C5.13 5 6.9 3.58 8.98 3.58z" fill="#EA4335"/></svg><span data-i18n="auth.google">Continue with Google</span></button>
+      <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="#1877F2"><path d="M18 9a9 9 0 1 0-10.4 8.9V11.6H5.3V9h2.3V7.2c0-2.3 1.4-3.6 3.5-3.6 1 0 2 .1 3 .3v2.3H13a1.3 1.3 0 0 0-1.5 1.4V9h2.6l-.4 2.6H11.5V18A9 9 0 0 0 18 9z"/></svg><span data-i18n="auth.facebook">Continue with Facebook</span></button>
+      <button class="auth-btn"><svg width="18" height="18" viewBox="0 0 18 18" fill="#000"><path d="M12.47 0c.1 1.42-.4 2.82-1.2 3.82-.8 1-2.1 1.78-3.36 1.68-.14-1.38.48-2.82 1.24-3.72C10 .82 11.36.08 12.47 0zM16.5 12.2c-.6 1.3-1.3 2.52-2.3 3.42-.86.78-1.72 1.38-2.9 1.38-1.14 0-1.88-.6-2.9-.6-1.06 0-1.92.62-2.9.62-1.14 0-2.06-.66-2.94-1.48C1.2 14.02.3 11.76.3 9.4c0-3.96 2.6-6.04 5.14-6.04 1.22 0 2.26.66 3.04.66.74 0 1.94-.72 3.3-.72 1.04 0 2.94.4 4.06 2.3-.1.08-2.46 1.44-2.44 4.28.04 2.38 1.8 3.82 2.1 4.32z"/></svg><span data-i18n="auth.apple">Continue with Apple</span></button>
+      <div class="or-divider"><span data-i18n="auth.or">or</span></div>
+      <div class="field">
+        <label data-i18n="reg.name">Your name</label>
+        <input type="text" data-i18n-ph="reg.ph.name" placeholder="Mikołaj" />
+      </div>
+      <div class="field">
+        <label data-i18n="reg.email">Email</label>
+        <input type="email" data-i18n-ph="auth.ph" placeholder="your@email.com" />
+      </div>
+      <div class="field">
+        <label data-i18n="reg.password">Password</label>
+        <input type="password" data-i18n-ph="reg.ph.password" placeholder="••••••••" />
+      </div>
+      <button class="submit-btn" data-i18n="reg.submit">Create account →</button>
+      <p class="terms" data-i18n="reg.terms">By creating an account you accept the terms of service and privacy policy.</p>
+    </div>
+    <p class="auth-switch"><span data-i18n="reg.switch.text">Already have an account?</span> <a href="/login/" data-i18n="reg.switch.link">Log in →</a></p>
+  </div>
+</main>
+
+<footer><p data-i18n="footer">Inspired by A Cat is Recommended and Another Cat is Recommended — Sho Ishida · 2026</p></footer>
+
+<script>
+const t = {
+  en: {
+    'nav.logo':'A CAT IS RECOMMENDED','nav.back':'← Back',
+    'reg.eyebrow':'New here','reg.h1a':'Find your','reg.h1b':'cat',
+    'reg.sub':'Create an account and discover which cat is waiting for you.',
+    'auth.google':'Continue with Google','auth.facebook':'Continue with Facebook','auth.apple':'Continue with Apple','auth.or':'or','auth.ph':'your@email.com',
+    'reg.name':'Your name','reg.ph.name':'Your name','reg.email':'Email','reg.password':'Password','reg.ph.password':'••••••••',
+    'reg.submit':'Create account →','reg.terms':'By creating an account you accept the terms of service and privacy policy.',
+    'reg.switch.text':'Already have an account?','reg.switch.link':'Log in →',
+    'footer':'Inspired by A Cat is Recommended and Another Cat is Recommended — Sho Ishida · 2026',
+  },
+  pl: {
+    'nav.logo':'ZALECA SIĘ KOTA','nav.back':'← Wróć',
+    'reg.eyebrow':'Nowy tutaj','reg.h1a':'Znajdź swojego','reg.h1b':'kota',
+    'reg.sub':'Utwórz konto i odkryj, który kot na Ciebie czeka.',
+    'auth.google':'Kontynuuj z Google','auth.facebook':'Kontynuuj z Facebook','auth.apple':'Kontynuuj z Apple','auth.or':'lub','auth.ph':'twoj@email.pl',
+    'reg.name':'Twoje imię','reg.ph.name':'Mikołaj','reg.email':'Email','reg.password':'Hasło','reg.ph.password':'••••••••',
+    'reg.submit':'Załóż konto →','reg.terms':'Zakładając konto akceptujesz regulamin i politykę prywatności.',
+    'reg.switch.text':'Masz już konto?','reg.switch.link':'Zaloguj się →',
+    'footer':'Zainspirowane książkami „Zaleca się kota" i „Zaleca się kolejnego kota" — Sho Ishida · 2026',
+  },
+  ja: {
+    'nav.logo':'猫をすすめる','nav.back':'← 戻る',
+    'reg.eyebrow':'はじめまして','reg.h1a':'あなたの','reg.h1b':'猫を見つけよう',
+    'reg.sub':'アカウントを作成して、あなたを待っている猫を発見しましょう。',
+    'auth.google':'Googleで続ける','auth.facebook':'Facebookで続ける','auth.apple':'Appleで続ける','auth.or':'または','auth.ph':'メールアドレス',
+    'reg.name':'お名前','reg.ph.name':'お名前','reg.email':'メール','reg.password':'パスワード','reg.ph.password':'••••••••',
+    'reg.submit':'アカウント作成 →','reg.terms':'アカウントを作成することで、利用規約とプライバシーポリシーに同意したことになります。',
+    'reg.switch.text':'すでにアカウントをお持ちですか？','reg.switch.link':'ログイン →',
+    'footer':'石田祥著「猫をすすめる」「もう一匹の猫をすすめる」からインスピレーションを得て · 2026',
+  },
+  ko: {
+    'nav.logo':'고양이를 권합니다','nav.back':'← 돌아가기',
+    'reg.eyebrow':'처음 오셨군요','reg.h1a':'내 고양이를','reg.h1b':'찾아보세요',
+    'reg.sub':'계정을 만들고 당신을 기다리는 고양이를 발견하세요.',
+    'auth.google':'Google로 계속','auth.facebook':'Facebook으로 계속','auth.apple':'Apple로 계속','auth.or':'또는','auth.ph':'이메일 주소',
+    'reg.name':'이름','reg.ph.name':'이름','reg.email':'이메일','reg.password':'비밀번호','reg.ph.password':'••••••••',
+    'reg.submit':'계정 만들기 →','reg.terms':'계정을 만들면 이용약관 및 개인정보 처리방침에 동의하는 것입니다.',
+    'reg.switch.text':'이미 계정이 있으신가요?','reg.switch.link':'로그인 →',
+    'footer':'이시다 쇼의 「고양이를 권합니다」와 「또 한 마리의 고양이를 권합니다」에서 영감을 받아 · 2026',
+  },
+};
+
+const params = new URLSearchParams(window.location.search);
+const lang = params.get('lang') || 'en';
+document.documentElement.lang = lang;
+const tr = t[lang] || t.en;
+document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.dataset.i18n; if (tr[k]) el.textContent = tr[k]; });
+document.querySelectorAll('[data-i18n-ph]').forEach(el => { const k = el.dataset.i18nPh; if (tr[k]) el.placeholder = tr[k]; });
+document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+
+// Login link carries language
+document.querySelector('.auth-switch a').href = `/login/?lang=${lang}`;
+</script>
+</body>
+</html>
