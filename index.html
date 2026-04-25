@@ -912,6 +912,10 @@ document.getElementById('resultOverlay').addEventListener('click', e=>{ if(e.tar
 
 // Init
 (function(){
+  if (new URLSearchParams(window.location.search).has('reset')) {
+    ['sessionPets','lastSat'].forEach(k => localStorage.removeItem(k));
+    window.history.replaceState({}, '', window.location.pathname);
+  }
   const rem = ls.get('lastSat') ? COOLDOWN-(Date.now()-ls.get('lastSat')) : 0;
   if (rem > 0) startCooldown();
   else { if (ls.get('lastSat') && rem <= 0) ls.set('sessionPets',0); renderDots(ls.get('sessionPets')); }
