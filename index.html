@@ -16,7 +16,7 @@
     @media (max-width:760px) {
       .mobile-pet-notice { display:block; }
       nav { padding:14px 20px; }
-      .nav-links, .nav-cta { display:none; }
+      .nav-links, .nav-actions { display:none; }
       .nav-logo { font-size:14px; }
       .hero { padding:100px 24px 60px; }
       .hero h1 { font-size:clamp(42px,11vw,72px); }
@@ -51,8 +51,13 @@
     .nav-links { display:flex; gap:32px; list-style:none; }
     .nav-links a { text-decoration:none; color:var(--dark); font-size:13px; letter-spacing:.04em; opacity:.5; transition:opacity .2s; }
     .nav-links a:hover { opacity:1; }
-    .nav-cta { background:var(--dark); color:var(--cream); border:none; padding:10px 24px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.05em; cursor:pointer; transition:background .2s; white-space:nowrap; }
+    .nav-cta { background:var(--dark); color:var(--cream); border:none; padding:10px 24px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.05em; cursor:pointer; transition:background .2s; white-space:nowrap; text-decoration:none; display:inline-block; }
     .nav-cta:hover { background:var(--terra); }
+    .nav-cta-outline { background:transparent; color:var(--dark); border:1px solid rgba(42,32,24,.25); padding:10px 24px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.05em; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .nav-cta-outline:hover { border-color:var(--dark); background:rgba(42,32,24,.04); }
+    .nav-actions { display:flex; gap:8px; align-items:center; }
+    .hero-cta { display:inline-block; margin-top:36px; background:var(--terra); color:#fff; border:none; padding:18px 52px; font-family:'Inter',sans-serif; font-size:14px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:opacity .2s; }
+    .hero-cta:hover { opacity:.85; }
 
     /* Hero */
     .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:130px 56px 90px; position:relative; }
@@ -214,7 +219,10 @@
     <li><a href="#jak-dziala" data-i18n="nav.how">How it works</a></li>
     <li><a href="#dotacje" data-i18n="nav.donate">Donations</a></li>
   </ul>
-  <button class="nav-cta" data-i18n="nav.cta" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Find your cat →</button>
+  <div class="nav-actions">
+    <button class="nav-cta-outline" data-i18n="nav.register" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Załóż konto</button>
+    <button class="nav-cta" data-i18n="nav.login" onclick="document.getElementById('logowanie').scrollIntoView({behavior:'smooth'})">Zaloguj się</button>
+  </div>
 </nav>
 
 <div class="hero">
@@ -256,6 +264,8 @@
     </div>
     <p class="mobile-pet-notice" data-i18n="mobile.notice">Cat care is available from your home computer only.</p>
   </div>
+
+  <button class="hero-cta" data-i18n="hero.cta" onclick="document.getElementById('diagnoza').scrollIntoView({behavior:'smooth'})">Znajdź swojego kota →</button>
 
   <div id="satisfiedState" style="display:none">
     <span class="sat-emoji">😸</span>
@@ -356,7 +366,8 @@
 const t = {
   en: {
     'gate.h2':'Home only','gate.p':'Real cat care requires your presence at home. Return on a computer connected to your home WiFi.',
-    'nav.logo':'A CAT IS RECOMMENDED','nav.diagnosis':'Diagnosis','nav.how':'How it works','nav.donate':'Donations','nav.cta':'Find your cat →',
+    'nav.logo':'A CAT IS RECOMMENDED','nav.diagnosis':'Diagnosis','nav.how':'How it works','nav.donate':'Donations','nav.login':'Log in','nav.register':'Create account',
+    'hero.cta':'Find your cat →',
     'hero.eyebrow':"Inspired by Sho Ishida's books",'hero.h1a':'A cat is','hero.h1b':'recommended',
     'hero.sub':"Virtual cat therapy for those who can't have one — and for children who want to earn one.",
     'cnt.days':'Day of care','cnt.pets':'Pets given','hint':'pet the cat ↑',
@@ -387,7 +398,8 @@ const t = {
   },
   ja: {
     'gate.h2':'自宅専用','gate.p':'猫のお世話には自宅での存在が必要です。自宅のWiFiに接続したパソコンでアクセスしてください。',
-    'nav.logo':'猫をすすめる','nav.diagnosis':'診断','nav.how':'使い方','nav.donate':'寄付','nav.cta':'猫を見つける →',
+    'nav.logo':'猫をすすめる','nav.diagnosis':'診断','nav.how':'使い方','nav.donate':'寄付','nav.login':'ログイン','nav.register':'アカウント作成',
+    'hero.cta':'猫を見つける →',
     'hero.eyebrow':'石田祥著の本からインスピレーションを得て','hero.h1a':'猫を','hero.h1b':'すすめる',
     'hero.sub':'猫を飼えない方のための仮想猫セラピー — 猫を手に入れたい子どもたちのために。',
     'cnt.days':'ケアの日数','cnt.pets':'なでた回数','hint':'猫をなでてください ↑',
@@ -418,7 +430,8 @@ const t = {
   },
   ko: {
     'gate.h2':'자택 전용','gate.p':'진정한 고양이 돌봄은 집에서의 존재가 필요합니다. 집 WiFi에 연결된 컴퓨터로 돌아오세요.',
-    'nav.logo':'고양이를 권합니다','nav.diagnosis':'진단','nav.how':'사용법','nav.donate':'기부','nav.cta':'내 고양이 찾기 →',
+    'nav.logo':'고양이를 권합니다','nav.diagnosis':'진단','nav.how':'사용법','nav.donate':'기부','nav.login':'로그인','nav.register':'계정 만들기',
+    'hero.cta':'내 고양이 찾기 →',
     'hero.eyebrow':'이시다 쇼의 책에서 영감을 받아','hero.h1a':'고양이를','hero.h1b':'권합니다',
     'hero.sub':'고양이를 키울 수 없는 분들을 위한 가상 고양이 테라피 — 고양이를 얻고 싶은 아이들을 위해.',
     'cnt.days':'돌봄의 날','cnt.pets':'쓰다듬은 횟수','hint':'고양이를 쓰다듬어 주세요 ↑',
@@ -449,7 +462,8 @@ const t = {
   },
   pl: {
     'gate.h2':'Tylko w domu','gate.p':'Prawdziwa opieka nad kotem wymaga Twojej obecności w domu. Wróć na komputerze podłączonym do domowego WiFi.',
-    'nav.logo':'ZALECA SIĘ KOTA','nav.diagnosis':'Diagnoza','nav.how':'Jak to działa','nav.donate':'Dotacje','nav.cta':'Znajdź swojego kota →',
+    'nav.logo':'ZALECA SIĘ KOTA','nav.diagnosis':'Diagnoza','nav.how':'Jak to działa','nav.donate':'Dotacje','nav.login':'Zaloguj się','nav.register':'Załóż konto',
+    'hero.cta':'Znajdź swojego kota →',
     'hero.eyebrow':'Zainspirowane książkami Sho Ishidy','hero.h1a':'Zaleca się','hero.h1b':'kota',
     'hero.sub':'Wirtualna kocioterapia dla tych, którzy nie mogą mieć kota — i dla dzieci, które chcą go zasłużyć.',
     'cnt.days':'Dzień opieki','cnt.pets':'Oddanych głasków','hint':'głaszcz kota ↑',
