@@ -14,15 +14,29 @@
     /* Mobile pet notice */
     .mobile-pet-notice { display:none; margin-top:16px; font-size:12px; letter-spacing:.08em; opacity:.38; text-align:center; line-height:1.7; }
     @media (max-height:800px) {
-      .hero { padding:90px 56px 40px; }
-      .eyebrow { margin-bottom:12px; }
-      .hero h1 { font-size:clamp(42px,6vw,72px); margin-bottom:12px; }
-      .hero-sub { font-size:14px; margin-bottom:24px; line-height:1.6; }
-      .counters { margin-bottom:20px; gap:40px; }
-      .cnt-value { font-size:38px; }
-      .cat-wrap { width:140px; height:140px; }
-      .pet-progress { width:140px; }
-      .hero-cta { margin-top:16px; padding:14px 40px; font-size:13px; }
+      .hero { padding:80px 56px 32px; }
+      .eyebrow { margin-bottom:8px; }
+      .hero h1 { font-size:clamp(36px,5vw,60px); margin-bottom:8px; }
+      .hero-sub { font-size:13px; margin-bottom:16px; line-height:1.5; }
+      .counters { margin-bottom:14px; gap:32px; }
+      .cnt-value { font-size:32px; }
+      .cnt-label { font-size:9px; }
+      .cat-wrap { width:120px; height:120px; }
+      .pet-progress { width:120px; margin-top:10px; }
+      .pet-dots { gap:4px; }
+      .pet-dot { width:6px; height:6px; }
+      .hero-cta { margin-top:12px; padding:12px 36px; font-size:12px; }
+    }
+
+    @media (max-height:700px) {
+      .hero { padding:72px 56px 24px; }
+      .eyebrow { display:none; }
+      .hero-sub { display:none; }
+      .counters { margin-bottom:10px; gap:28px; }
+      .cnt-value { font-size:28px; }
+      .cat-wrap { width:100px; height:100px; }
+      .pet-progress { width:100px; }
+      .hero-cta { margin-top:10px; padding:11px 32px; }
     }
 
     @media (max-width:760px) {
