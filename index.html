@@ -121,7 +121,7 @@
     .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:130px 56px 90px; position:relative; }
     .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 40%,rgba(196,117,74,.07) 0%,transparent 70%); pointer-events:none; }
     .eyebrow { font-size:10px; letter-spacing:.22em; text-transform:uppercase; opacity:.35; margin-bottom:28px; }
-    .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(58px,8vw,108px); font-weight:300; line-height:1.02; margin-bottom:24px; }
+    .hero h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(42px,6vw,84px); font-weight:300; line-height:1.02; margin-bottom:24px; white-space:nowrap; }
     .hero h1 em { font-style:italic; color:var(--terra); }
     .hero-sub { font-size:16px; font-weight:300; opacity:.5; max-width:480px; line-height:1.85; margin-bottom:52px; }
 
@@ -284,7 +284,7 @@
 
 <div class="hero">
   <p class="eyebrow" data-i18n="hero.eyebrow">Inspired by Sho Ishida's books</p>
-  <h1><span data-i18n="hero.h1a">A cat is</span><br><em data-i18n="hero.h1b">recommended</em></h1>
+  <h1><span data-i18n="hero.h1a">A cat is</span> <em data-i18n="hero.h1b">recommended</em></h1>
   <p class="hero-sub" data-i18n="hero.sub">Virtual cat therapy for those who can't have one — and for children who want to earn one.</p>
 
   <button class="hero-cta" data-i18n="hero.cta" onclick="document.getElementById('diagnoza').scrollIntoView({behavior:'smooth'})">Znajdź swojego kota →</button>
