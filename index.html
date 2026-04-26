@@ -108,7 +108,8 @@
     .cnt-label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; opacity:.35; margin-top:4px; font-family:'Inter',sans-serif; }
 
     /* Cat */
-    .cat-wrap { width:190px; height:190px; margin:0 auto; transition:transform .08s; cursor:grab; user-select:none; }
+    .pet-zone { width:480px; max-width:90vw; display:flex; justify-content:center; align-items:center; cursor:grab; user-select:none; padding:10px 0; }
+    .cat-wrap { width:190px; height:190px; transition:transform .08s; user-select:none; pointer-events:none; }
     .cat-wrap.bounce { animation:bounce .35s ease; }
     @keyframes bounce { 0%{transform:scale(1)} 25%{transform:scale(1.1) rotate(-3deg)} 55%{transform:scale(1.07) rotate(2deg)} 100%{transform:scale(1) rotate(0)} }
     @keyframes cat-walkoff { 0%{transform:translate(0,0) rotate(0deg);opacity:1} 8%{transform:translate(22px,-14px) rotate(-4deg)} 16%{transform:translate(50px,2px) rotate(3deg)} 24%{transform:translate(85px,-14px) rotate(-4deg)} 32%{transform:translate(125px,2px) rotate(3deg)} 42%{transform:translate(175px,-10px) rotate(-3deg)} 55%{transform:translate(240px,0);opacity:1} 72%{transform:translate(340px,-6px);opacity:.6} 88%{transform:translate(460px,0);opacity:.2} 100%{transform:translate(620px,0);opacity:0} }
@@ -275,6 +276,7 @@
   </div>
 
   <div id="petState">
+    <div class="pet-zone" id="petZone">
     <div class="cat-wrap" id="catWrap">
       <svg viewBox="0 0 200 210" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 168 Q8 148 14 122 Q20 98 38 104 Q46 107 44 120" stroke="#D4B090" stroke-width="16" fill="none" stroke-linecap="round"/>
@@ -291,6 +293,7 @@
         <line x1="176" y1="134" x2="118" y2="138" stroke="#9A7060" stroke-width="1" opacity=".35"/><line x1="178" y1="144" x2="120" y2="144" stroke="#9A7060" stroke-width="1" opacity=".35"/><line x1="174" y1="154" x2="118" y2="150" stroke="#9A7060" stroke-width="1" opacity=".35"/>
       </svg>
     </div>
+    </div><!-- /pet-zone -->
     <div class="pet-progress">
       <div class="pet-dots" id="petDots"></div>
       <div class="pet-progress-label" id="petLabel" data-i18n="hint">pet the cat ↑</div>
@@ -882,28 +885,30 @@ function triggerPet() {
   if (newSp >= MAX_PETS) setTimeout(catWalkOff, 600);
 }
 
-catWrap.addEventListener('mousedown', (e) => {
+const petZone = document.getElementById('petZone');
+
+petZone.addEventListener('mousedown', (e) => {
   if (e.button !== 0 || window.innerWidth <= 760) return;
   if (ls.get('sessionPets') >= MAX_PETS) return;
   isDragging = true;
   strokeStartX = e.clientX;
-  catWrap.style.cursor = 'grabbing';
+  petZone.style.cursor = 'grabbing';
 });
 
 document.addEventListener('mouseup', (e) => {
   if (!isDragging) return;
   isDragging = false;
-  catWrap.style.cursor = 'grab';
+  petZone.style.cursor = 'grab';
   if (strokeStartX !== null && Math.abs(e.clientX - strokeStartX) >= MIN_STROKE_X) {
     triggerPet();
   }
   strokeStartX = null;
 });
 
-catWrap.addEventListener('mouseleave', () => {
+petZone.addEventListener('mouseleave', () => {
   isDragging = false;
   strokeStartX = null;
-  catWrap.style.cursor = 'grab';
+  petZone.style.cursor = 'grab';
 });
 
 // Modal close on overlay click
