@@ -12,17 +12,7 @@
     body { background:var(--cream); color:var(--dark); font-family:'Inter',sans-serif; font-size:15px; line-height:1.7; }
 
     /* Pet hint */
-    .pet-hint { text-align:center; margin-top:12px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; opacity:.5; transition:opacity .6s; pointer-events:none; }
-    .pet-hint.hidden { opacity:0; }
-
-    /* Hand animation */
-    .pet-hand { position:absolute; font-size:32px; top:50%; transform:translateY(-50%); pointer-events:none; animation:hand-swipe 1.4s ease-in-out .8s forwards; opacity:0; }
-    @keyframes hand-swipe {
-      0%   { opacity:0; left:20%; }
-      15%  { opacity:1; left:20%; }
-      80%  { opacity:1; left:65%; }
-      100% { opacity:0; left:65%; }
-    }
+    .pet-hint { text-align:center; margin-top:12px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; opacity:.5; pointer-events:none; }
 
     /* Mobile pet notice */
     .mobile-pet-notice { display:none; margin-top:16px; font-size:12px; letter-spacing:.08em; opacity:.38; text-align:center; line-height:1.7; }
@@ -314,8 +304,7 @@
   </div>
 
   <div id="petState">
-    <div class="pet-zone" id="petZone" style="position:relative;">
-    <span class="pet-hand" id="petHand">🤚</span>
+    <div class="pet-zone" id="petZone">
     <div class="cat-wrap" id="catWrap">
       <svg viewBox="0 0 200 210" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 168 Q8 148 14 122 Q20 98 38 104 Q46 107 44 120" stroke="#D4B090" stroke-width="16" fill="none" stroke-linecap="round"/>
@@ -912,8 +901,6 @@ function triggerPet() {
   const total = ls.get('pets') + 1; ls.set('pets', total);
   document.getElementById('petCount').textContent = total.toLocaleString();
   const newSp = sp + 1; ls.set('sessionPets', newSp);
-  const hint = document.getElementById('petHint');
-  if (hint) hint.classList.add('hidden');
   renderDots(newSp);
   const dot = document.getElementById(`dot${newSp-1}`);
   if (dot) { dot.classList.add('pulse'); setTimeout(()=>dot.classList.remove('pulse'),400); }
