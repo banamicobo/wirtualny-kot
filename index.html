@@ -11,6 +11,19 @@
     html { scroll-behavior:smooth; }
     body { background:var(--cream); color:var(--dark); font-family:'Inter',sans-serif; font-size:15px; line-height:1.7; }
 
+    /* Pet hint */
+    .pet-hint { text-align:center; margin-top:12px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; opacity:.5; transition:opacity .6s; pointer-events:none; }
+    .pet-hint.hidden { opacity:0; }
+
+    /* Hand animation */
+    .pet-hand { position:absolute; font-size:32px; top:50%; transform:translateY(-50%); pointer-events:none; animation:hand-swipe 1.4s ease-in-out .8s forwards; opacity:0; }
+    @keyframes hand-swipe {
+      0%   { opacity:0; left:20%; }
+      15%  { opacity:1; left:20%; }
+      80%  { opacity:1; left:65%; }
+      100% { opacity:0; left:65%; }
+    }
+
     /* Mobile pet notice */
     .mobile-pet-notice { display:none; margin-top:16px; font-size:12px; letter-spacing:.08em; opacity:.38; text-align:center; line-height:1.7; }
     @media (max-height:800px) {
@@ -301,7 +314,8 @@
   </div>
 
   <div id="petState">
-    <div class="pet-zone" id="petZone">
+    <div class="pet-zone" id="petZone" style="position:relative;">
+    <span class="pet-hand" id="petHand">🤚</span>
     <div class="cat-wrap" id="catWrap">
       <svg viewBox="0 0 200 210" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M32 168 Q8 148 14 122 Q20 98 38 104 Q46 107 44 120" stroke="#D4B090" stroke-width="16" fill="none" stroke-linecap="round"/>
@@ -323,6 +337,7 @@
       <div class="pet-dots" id="petDots"></div>
       <div class="pet-progress-label" id="petLabel" data-i18n="hint">pet the cat ↑</div>
     </div>
+    <p class="pet-hint" id="petHint" data-i18n="pet.hint">← move your mouse over the cat →</p>
     <p class="mobile-pet-notice" data-i18n="mobile.notice">Cat care is available from your home computer only.</p>
   </div>
 
@@ -415,7 +430,7 @@ const t = {
     'hero.cta':'Find your cat →',
     'hero.eyebrow':"Inspired by Sho Ishida's books",'hero.h1a':'A cat is','hero.h1b':'recommended',
     'hero.sub':"Virtual cat therapy for those who can't have one — and for children who want to earn one.",
-    'cnt.days':'Day of care','cnt.pets':'Pets given','hint':'stroke the cat ↑',
+    'cnt.days':'Day of care','cnt.pets':'Pets given','hint':'stroke the cat ↑','pet.hint':'← move your mouse over the cat →',
     'mobile.notice':'Cat care is available from your home computer only.',
     'sat.title':'The cat has had enough petting','sat.sub':'Back in','sat.unit':'min · sec',
     'diag.label':'Find your cat','diag.h2a':'Match a cat','diag.h2b':'to your situation',
@@ -447,7 +462,7 @@ const t = {
     'hero.cta':'猫を見つける →',
     'hero.eyebrow':'石田祥著の本からインスピレーションを得て','hero.h1a':'猫を','hero.h1b':'すすめる',
     'hero.sub':'猫を飼えない方のための仮想猫セラピー — 猫を手に入れたい子どもたちのために。',
-    'cnt.days':'ケアの日数','cnt.pets':'なでた回数','hint':'猫の上でマウスを動かしてください ↑',
+    'cnt.days':'ケアの日数','cnt.pets':'なでた回数','hint':'猫の上でマウスを動かしてください ↑','pet.hint':'← 猫の上でマウスを動かしてください →',
     'mobile.notice':'猫のお世話はご自宅のパソコンからのみ可能です。',
     'sat.title':'猫はなで過ぎで満足しています','sat.sub':'戻るまで','sat.unit':'分 · 秒',
     'diag.label':'猫を見つける','diag.h2a':'状況に合った猫を','diag.h2b':'マッチングする',
@@ -479,7 +494,7 @@ const t = {
     'hero.cta':'내 고양이 찾기 →',
     'hero.eyebrow':'이시다 쇼의 책에서 영감을 받아','hero.h1a':'고양이를','hero.h1b':'권합니다',
     'hero.sub':'고양이를 키울 수 없는 분들을 위한 가상 고양이 테라피 — 고양이를 얻고 싶은 아이들을 위해.',
-    'cnt.days':'돌봄의 날','cnt.pets':'쓰다듬은 횟수','hint':'고양이 위에서 마우스를 움직여 주세요 ↑',
+    'cnt.days':'돌봄의 날','cnt.pets':'쓰다듬은 횟수','hint':'고양이 위에서 마우스를 움직여 주세요 ↑','pet.hint':'← 고양이 위에서 마우스를 움직여 주세요 →',
     'mobile.notice':'고양이 돌봄은 집 컴퓨터에서만 가능합니다.',
     'sat.title':'고양이가 쓰다듬기에 만족했습니다','sat.sub':'돌아올 때까지','sat.unit':'분 · 초',
     'diag.label':'고양이 찾기','diag.h2a':'상황에 맞는','diag.h2b':'고양이 매칭',
@@ -511,7 +526,7 @@ const t = {
     'hero.cta':'Znajdź swojego kota →',
     'hero.eyebrow':'Zainspirowane książkami Sho Ishidy','hero.h1a':'Zaleca się','hero.h1b':'kota',
     'hero.sub':'Wirtualna kocioterapia dla tych, którzy nie mogą mieć kota — i dla dzieci, które chcą go zasłużyć.',
-    'cnt.days':'Dzień opieki','cnt.pets':'Oddanych głasków','hint':'przejedź myszą po kocie ↑',
+    'cnt.days':'Dzień opieki','cnt.pets':'Oddanych głasków','hint':'przejedź myszą po kocie ↑','pet.hint':'← przesuń myszką żeby pogłaskać →',
     'mobile.notice':'Opieka nad kotem dostępna wyłącznie z domowego komputera.',
     'sat.title':'Kot jest nasycony głaskami','sat.sub':'Wróci za','sat.unit':'min · sek',
     'diag.label':'Znajdź swojego kota','diag.h2a':'Dopasuj kota','diag.h2b':'do swojej sytuacji',
@@ -897,6 +912,8 @@ function triggerPet() {
   const total = ls.get('pets') + 1; ls.set('pets', total);
   document.getElementById('petCount').textContent = total.toLocaleString();
   const newSp = sp + 1; ls.set('sessionPets', newSp);
+  const hint = document.getElementById('petHint');
+  if (hint) hint.classList.add('hidden');
   renderDots(newSp);
   const dot = document.getElementById(`dot${newSp-1}`);
   if (dot) { dot.classList.add('pulse'); setTimeout(()=>dot.classList.remove('pulse'),400); }
