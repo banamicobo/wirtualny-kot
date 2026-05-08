@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools Map — Wirtualny Kot</title>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d0d0d; font-family: 'Inter', system-ui, sans-serif; color: #e8e8e8; overflow: hidden; height: 100vh; width: 100vw; }
+  #header { position: fixed; top: 0; left: 0; right: 0; padding: 18px 32px; background: rgba(13,13,13,.92); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; justify-content: space-between; z-index: 100; }
+  #header h1 { font-size: 15px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: #fff; }
+  #header p { font-size: 12px; color: rgba(255,255,255,.35); letter-spacing: .05em; }
+  #legend { display: flex; gap: 20px; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 7px; font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: .06em; text-transform: uppercase; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; }
+  #svg-container { width: 100vw; height: 100vh; padding-top: 60px; }
+  svg { width: 100%; height: 100%; }
+  .node circle { stroke-width: 2; cursor: pointer; transition: r .15s; }
+  .node:hover circle { filter: brightness(1.3); }
+  .node text { font-size: 11px; fill: rgba(255,255,255,.75); text-anchor: middle; pointer-events: none; font-family: 'Inter', system-ui, sans-serif; letter-spacing: .04em; }
+  .node text.label-main { font-size: 12px; fill: #fff; font-weight: 500; }
+  .link { stroke: rgba(255,255,255,.08); stroke-width: 1.5; fill: none; pointer-events: none; }
+  .link-hit { stroke: transparent; stroke-width: 12; fill: none; cursor: crosshair; }
+  #link-tooltip { position: fixed; background: rgba(18,18,18,.97); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 8px 14px; font-size: 12px; color: rgba(255,255,255,.8); max-width: 340px; pointer-events: none; opacity: 0; transition: opacity .12s; z-index: 300; box-shadow: 0 4px 20px rgba(0,0,0,.5); line-height: 1.5; }
+  #link-tooltip.visible { opacity: 1; }
+  #tooltip { position: fixed; background: rgba(18,18,18,.97); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 18px 22px; max-width: 320px; pointer-events: none; opacity: 0; transition: opacity .15s; z-index: 200; box-shadow: 0 8px 40px rgba(0,0,0,.6); }
+  #tooltip.visible { opacity: 1; }
+  #tooltip .tt-name { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  #tooltip .tt-category { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 12px; opacity: .5; }
+  #tooltip .tt-desc { font-size: 12px; line-height: 1.6; color: rgba(255,255,255,.7); margin-bottom: 12px; }
+  #tooltip .tt-row { display: flex; justify-content: space-between; font-size: 11px; padding: 4px 0; border-top: 1px solid rgba(255,255,255,.06); color: rgba(255,255,255,.5); }
+  #tooltip .tt-row span:last-child { color: rgba(255,255,255,.85); font-weight: 500; }
+  #tooltip .tt-plan-badge { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; letter-spacing: .06em; }
+  .plan-free { background: rgba(74,222,128,.15); color: #4ade80; }
+  .plan-paid { background: rgba(251,146,60,.15); color: #fb923c; }
+  .plan-limit { background: rgba(248,113,113,.15); color: #f87171; }
+  .plan-na { background: rgba(148,163,184,.1); color: #94a3b8; }
+  #hint { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 11px; color: rgba(255,255,255,.2); letter-spacing: .06em; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="header">
+  <div>
+    <h1>Wirtualny Kot — Stack</h1>
+    <p>wirtualny-kot.vercel.app</p>
+  </div>
+  <div id="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#fb923c"></div>AI</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#60a5fa"></div>VCS</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4ade80"></div>Deploy</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f472b6"></div>Backend</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#a78bfa"></div>System</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>App</div>
+  </div>
+</div>
+<div id="svg-container"><svg id="graph"></svg></div>
+<div id="tooltip">
+  <div class="tt-name" id="tt-name"></div>
+  <div class="tt-category" id="tt-category"></div>
+  <div class="tt-desc" id="tt-desc"></div>
+  <div class="tt-row"><span>Funkcja</span><span id="tt-func"></span></div>
+  <div class="tt-row" style="margin-top:4px"><span>Plan</span><span id="tt-plan"></span></div>
+</div>
+<div id="hint">Przeciągnij węzły · Najedź aby zobaczyć szczegóły</div>
+<script>
+const COLORS = { ai:'#fb923c', vcs:'#60a5fa', deploy:'#4ade80', backend:'#f472b6', system:'#a78bfa', project:'#fbbf24' };
+const CATEGORY_LABELS = { ai:'Sztuczna Inteligencja', vcs:'Wersjonowanie kodu', deploy:'Deployment', backend:'Backend / Auth', system:'System / Runtime', project:'Aplikacja' };
+
+const nodes = [
+  { id:'claude-code', label:'Claude Code', category:'ai', plan:'paid', radius:36, desc:'Agent AI który buduje i deployuje całą aplikację. Centrum pracy.', func:'Kodowanie, debug, deploy' },
+  { id:'supabase', label:'Supabase', category:'backend', plan:'free', radius:30, desc:'Backend-as-a-Service: PostgreSQL + auth (magic link, Google OAuth). Free tier: 50 000 MAU.', func:'Auth, baza danych, storage' },
+  { id:'resend', label:'Resend', category:'backend', plan:'free', radius:22, desc:'Custom SMTP dla Supabase — wysyła magic linki. Zastąpił domyślny limit 2 emaile/godz.', func:'Wysyłka magic linków' },
+  { id:'google-cloud', label:'Google\nCloud', category:'backend', plan:'free', radius:22, desc:'OAuth 2.0 — konfiguracja Client ID/Secret dla Google Sign-In. Redirect URI: supabase.co/auth/v1/callback.', func:'Google Sign-In' },
+  { id:'vercel', label:'Vercel', category:'deploy', plan:'free', radius:28, desc:'Hosting produkcyjny. Auto-deploy z GitHub, SSL, routing przez vercel.json.', func:'Hosting, CI/CD' },
+  { id:'vercel-cli', label:'Vercel CLI', category:'deploy', plan:'free', radius:20, desc:'`vercel --prod --yes` — ręczny deploy produkcyjny z terminala po każdej zmianie.', func:'Deploy z terminala' },
+  { id:'github', label:'GitHub', category:'vcs', plan:'free', radius:26, desc:'Repozytorium: github.com/banamicobo/wirtualny-kot. Push → auto preview na Vercel.', func:'Zdalne repo, backup' },
+  { id:'git', label:'Git', category:'vcs', plan:'free', radius:22, desc:'Lokalna kontrola wersji. Każda zmiana = commit.', func:'Commity, historia' },
+  { id:'chrome', label:'Chrome', category:'system', plan:'free', radius:18, desc:'Claude otwiera Chrome po każdym deploy żeby zweryfikować zmianę wizualnie.', func:'Testowanie' },
+  { id:'app', label:'Wirtualny\nKot', category:'project', plan:'na', radius:36, desc:'Aplikacja terapeutyczna — wirtualny kot do głaskania. Quiz → diagnoza → rasa kota. Mechanika głaskania (drag ≥55px).', func:'wirtualny-kot.vercel.app' },
+];
+
+const links = [
+  { source:'claude-code', target:'git', label:'Claude tworzy commity i staguje pliki po każdej zmianie' },
+  { source:'claude-code', target:'vercel-cli', label:'Claude wywołuje `vercel --prod --yes` po każdej zmianie' },
+  { source:'claude-code', target:'supabase', label:'Claude konfiguruje Supabase: URL, klucze, providers, SMTP' },
+  { source:'git', target:'github', label:'`git push` wysyła commity do zdalnego repo' },
+  { source:'github', target:'vercel', label:'Push wyzwala automatyczny preview deploy' },
+  { source:'vercel-cli', target:'vercel', label:'Ręczny deploy produkcyjny z pominięciem GitHub CI' },
+  { source:'vercel', target:'chrome', label:'Claude otwiera nową wersję w Chrome po deploy' },
+  { source:'vercel', target:'app', label:'Vercel hostuje aplikację na wirtualny-kot.vercel.app' },
+  { source:'github', target:'app', label:'Kod źródłowy w repo github.com/banamicobo/wirtualny-kot' },
+  { source:'supabase', target:'app', label:'Auth (magic link + Google OAuth) + baza danych PostgreSQL' },
+  { source:'resend', target:'supabase', label:'Resend jest custom SMTP — wysyła magic linki przez smtp.resend.com:465' },
+  { source:'google-cloud', target:'supabase', label:'Client ID i Secret dla Google OAuth skonfigurowane w Supabase providers' },
+  { source:'google-cloud', target:'app', label:'Użytkownik loguje się kontem Google — Google Sign-In flow' },
+];
+
+const svg = d3.select('#graph');
+const container = document.getElementById('svg-container');
+let W = container.clientWidth, H = container.clientHeight;
+const g = svg.append('g');
+const zoom = d3.zoom().scaleExtent([0.3,3]).on('zoom',(e)=>g.attr('transform',e.transform));
+svg.call(zoom);
+const sim = d3.forceSimulation(nodes)
+  .force('link', d3.forceLink(links).id(d=>d.id).distance(140).strength(0.4))
+  .force('charge', d3.forceManyBody().strength(-700))
+  .force('center', d3.forceCenter(W/2, H/2))
+  .force('collision', d3.forceCollide(d=>d.radius+18));
+const linkG = g.append('g');
+const link = linkG.selectAll('line.link').data(links).join('line').attr('class','link');
+const linkHit = linkG.selectAll('line.link-hit').data(links).join('line').attr('class','link-hit');
+const node = g.append('g').selectAll('g').data(nodes).join('g').attr('class','node')
+  .call(d3.drag()
+    .on('start',(e,d)=>{if(!e.active)sim.alphaTarget(0.3).restart();d.fx=d.x;d.fy=d.y;})
+    .on('drag',(e,d)=>{d.fx=e.x;d.fy=e.y;})
+    .on('end',(e,d)=>{if(!e.active)sim.alphaTarget(0);d.fx=null;d.fy=null;}));
+node.append('circle').attr('r',d=>d.radius).attr('fill',d=>COLORS[d.category]+'22').attr('stroke',d=>COLORS[d.category]).attr('stroke-width',d=>d.id==='claude-code'?3:1.5);
+node.each(function(d){
+  const el=d3.select(this), lines=d.label.split('\n');
+  if(lines.length===1){el.append('text').attr('class','label-main').attr('dy','0.35em').text(d.label);}
+  else{lines.forEach((line,i)=>el.append('text').attr('class',i===0?'label-main':'').attr('dy',`${(i-(lines.length-1)/2)*1.3}em`).text(line));}
+});
+const linkTooltip = document.createElement('div'); linkTooltip.id='link-tooltip'; document.body.appendChild(linkTooltip);
+linkHit.on('mousemove',(e,d)=>{link.filter(l=>l===d).attr('stroke','rgba(255,255,255,.35)').attr('stroke-width',3);linkTooltip.textContent=d.label;linkTooltip.style.left=(e.clientX+14)+'px';linkTooltip.style.top=(e.clientY-36)+'px';linkTooltip.classList.add('visible');}).on('mouseleave',(e,d)=>{link.filter(l=>l===d).attr('stroke',null).attr('stroke-width',null);linkTooltip.classList.remove('visible');});
+const tooltip=document.getElementById('tooltip');
+const planClass={free:'plan-free','free-paid':'plan-free',paid:'plan-paid',limit:'plan-limit',na:'plan-na'};
+const planLabel={free:'Free','free-paid':'Free / Paid',paid:'Paid',limit:'Free (limit)',na:'—'};
+node.on('mousemove',(e,d)=>{
+  document.getElementById('tt-name').textContent=d.label.replace('\n',' ');
+  document.getElementById('tt-category').textContent=CATEGORY_LABELS[d.category];
+  document.getElementById('tt-desc').textContent=d.desc;
+  document.getElementById('tt-func').textContent=d.func;
+  document.getElementById('tt-plan').innerHTML=`<span class="tt-plan-badge ${planClass[d.plan]}">${planLabel[d.plan]}</span>`;
+  const tx=e.clientX+20,ty=e.clientY-20;
+  tooltip.style.left=(tx+340>window.innerWidth?e.clientX-340:tx)+'px';
+  tooltip.style.top=(ty+200>window.innerHeight?e.clientY-200:ty)+'px';
+  tooltip.classList.add('visible');
+}).on('mouseleave',()=>tooltip.classList.remove('visible'));
+sim.on('tick',()=>{
+  const setLine=sel=>sel.attr('x1',d=>d.source.x).attr('y1',d=>d.source.y).attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+  setLine(link); setLine(linkHit);
+  node.attr('transform',d=>`translate(${d.x},${d.y})`);
+});
+window.addEventListener('resize',()=>{W=container.clientWidth;H=container.clientHeight;sim.force('center',d3.forceCenter(W/2,H/2)).alpha(0.3).restart();});
+setTimeout(()=>svg.transition().duration(800).call(zoom.transform,d3.zoomIdentity.translate(W*0.05,H*0.05).scale(0.9)),1200);
+</script>
+</body>
+</html>
