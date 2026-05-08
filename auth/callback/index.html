@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Logging in… — A Cat is Recommended</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root { --cream:#FAF5EE; --dark:#2A2018; --terra:#C4754A; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { background:var(--cream); color:var(--dark); font-family:'Inter',sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px; }
+    .wrap { max-width:360px; }
+    .icon { font-size:48px; margin-bottom:24px; }
+    h1 { font-family:'Cormorant Garamond',serif; font-size:36px; font-weight:300; margin-bottom:12px; }
+    p { font-size:14px; opacity:.5; line-height:1.7; }
+    .error h1 { color:#c0392b; }
+    a { color:var(--terra); text-decoration:none; }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="state-loading">
+    <div class="icon">🐱</div>
+    <h1>Your cat is coming…</h1>
+    <p>Just a moment.</p>
+  </div>
+  <div class="wrap error" id="state-error" style="display:none">
+    <div class="icon">😿</div>
+    <h1>Something went wrong</h1>
+    <p id="error-msg">The link may have expired. <a href="/login/">Try again →</a></p>
+  </div>
+<script>
+const SUPABASE_URL = 'https://yczhdqgxywnynatfijou.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_IfXtxnjWdOD4-5TLNI1kVQ_pq-GCS3w';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function showError(msg) {
+  document.getElementById('state-loading').style.display = 'none';
+  const el = document.getElementById('state-error');
+  el.style.display = 'block';
+  if (msg) document.getElementById('error-msg').innerHTML = msg + ' <a href="/login/">Try again →</a>';
+}
+
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const errorParam = params.get('error_description') || params.get('error');
+
+  if (errorParam) {
+    showError(decodeURIComponent(errorParam));
+    return;
+  }
+
+  const code = params.get('code');
+
+  if (code) {
+    // OAuth PKCE flow
+    const { data, error } = await sb.auth.exchangeCodeForSession(params.toString());
+    if (error) { showError(error.message); return; }
+    if (data?.session) { window.location.replace('/'); return; }
+    showError('No session returned.');
+    return;
+  }
+
+  // Magic link / token hash flow
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) { window.location.replace('/'); return; }
+
+  const { data: { subscription } } = sb.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      subscription.unsubscribe();
+      window.location.replace('/');
+    }
+  });
+
+  setTimeout(() => {
+    subscription.unsubscribe();
+    showError('Timeout — no session established. URL: ' + window.location.search.substring(0, 80));
+  }, 8000);
+})();
+</script>
+</body>
+</html>

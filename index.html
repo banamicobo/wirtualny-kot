@@ -280,9 +280,13 @@
     <li><a href="#jak-dziala" data-i18n="nav.how">How it works</a></li>
     <li><a href="#dotacje" data-i18n="nav.donate">Donations</a></li>
   </ul>
-  <div class="nav-actions">
+  <div class="nav-actions" id="nav-actions">
     <a class="nav-cta-outline" id="navRegister" data-i18n="nav.register" href="/register/">Załóż konto</a>
     <a class="nav-cta" id="navLogin" data-i18n="nav.login" href="/login/">Zaloguj się</a>
+  </div>
+  <div class="nav-actions" id="nav-user" style="display:none">
+    <a class="nav-cta-outline" id="navMyCat" href="/dashboard/">My cat →</a>
+    <button class="nav-cta" id="navLogout" onclick="signOut()">Log out</button>
   </div>
 </nav>
 
@@ -956,6 +960,28 @@ document.getElementById('resultOverlay').addEventListener('click', e=>{ if(e.tar
   const langParam = currentLang !== 'en' ? '?lang=' + currentLang : '';
   document.getElementById('navLogin').href = '/login/' + langParam;
   document.getElementById('navRegister').href = '/register/' + langParam;
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async () => {
+  const sb = window.supabase.createClient(
+    'https://yczhdqgxywnynatfijou.supabase.co',
+    'sb_publishable_IfXtxnjWdOD4-5TLNI1kVQ_pq-GCS3w'
+  );
+
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    document.getElementById('nav-actions').style.display = 'none';
+    document.getElementById('nav-user').style.display = 'flex';
+  }
+
+  async function signOut() {
+    await sb.auth.signOut();
+    document.getElementById('nav-user').style.display = 'none';
+    document.getElementById('nav-actions').style.display = 'flex';
+  }
+  window.signOut = signOut;
 })();
 </script>
 </body>

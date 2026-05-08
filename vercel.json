@@ -8,6 +8,7 @@
     { "source": "/ko/(.*)", "destination": "/index.html" },
     { "source": "/login", "destination": "/login/index.html" },
     { "source": "/register", "destination": "/register/index.html" },
-    { "source": "/breeds", "destination": "/breeds/index.html" }
+    { "source": "/breeds", "destination": "/breeds/index.html" },
+    { "source": "/auth/callback", "destination": "/auth/callback/index.html" }
   ]
 }

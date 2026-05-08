@@ -49,6 +49,9 @@ Mia jako patronka aplikacji:
 - **Współpraca z behawiorystami** — weryfikacja dopasowania ras, scenariusze kryzysów, certyfikacja aplikacji jako narzędzia terapeutycznego.
 - **Filmy kocich i psich influencerów** — sekcja "Inspiracje", cross-promocja, Mia jako influencer.
 
+### Auth
+- **Logowanie hasłem** — do dodania gdy pojawi się sekcja dla dzieci. Magic link nie wystarczy dla młodszych użytkowników — potrzebny klasyczny email + hasło flow (Supabase `signInWithPassword`).
+
 ### Quiz i diagnoza
 - **Quiz psychologiczny → rasa kota** — "Jak opisujesz swój dzień?", "Co Cię stresuje?". Wynik: konkretna rasa z uzasadnieniem terapeutycznym (Ragdoll dla lęku, Abisyńczyk dla samotnych ekstrawertyków).
 
