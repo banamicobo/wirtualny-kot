@@ -1,3 +1,5 @@
+<!-- ZAMKNIETE 2026-09-10: kanal DO-PJM zniesiony 22.08.2026. Zastapila go tablica — sprawy dla PjM ida jako wiersz z kodem projektu (ZASADY_SESJI 5.7). Plik byl pusty. -->
+
 # DO-PJM — skrzynka tasków dla PjM (wirtualny-kot)
 
 Opiekun projektu dopisuje tu taski/terminy dla PjM. PjM czyta na każdym przeglądzie, wciąga do rejestru i priorytetów, po odebraniu przenosi pozycję do „Odebrane". Bez PII — same taski, nie dane.
