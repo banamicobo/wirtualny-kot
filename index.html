@@ -16,69 +16,10 @@
 
     /* Mobile pet notice */
     .mobile-pet-notice { display:none; margin-top:16px; font-size:12px; letter-spacing:.08em; opacity:.38; text-align:center; line-height:1.7; }
-    @media (max-height:800px) {
-      .hero { min-height:unset; padding:76px 56px 24px; justify-content:flex-start; }
-      .eyebrow { margin-bottom:6px; }
-      .hero h1 { font-size:clamp(34px,5vw,56px); margin-bottom:8px; }
-      .hero-sub { font-size:13px; margin-bottom:14px; line-height:1.5; }
-      .counters { margin-bottom:12px; gap:32px; }
-      .cnt-value { font-size:30px; }
-      .cnt-label { font-size:9px; }
-      .cat-wrap { width:110px; height:110px; }
-      .pet-progress { width:110px; margin-top:8px; }
-      .pet-dots { gap:3px; margin-bottom:4px; }
-      .pet-dot { width:6px; height:6px; }
-      .hero-cta { margin-top:16px; padding:16px 52px 16px 40px; font-size:16px; }
-    }
-
-    @media (max-height:700px) {
-      .hero { padding:68px 56px 20px; }
-      .eyebrow { display:none; }
-      .counters { margin-bottom:8px; gap:24px; }
-      .cnt-value { font-size:26px; }
-      .cat-wrap { width:90px; height:90px; }
-      .pet-progress { width:90px; margin-top:6px; }
-      .hero-cta { margin-top:12px; padding:14px 48px 14px 36px; font-size:15px; }
-    }
-
-    @media (max-height:620px) {
-      .hero { padding:62px 56px 16px; }
-      .hero-sub { display:none; }
-      .counters { display:none; }
-      .cat-wrap { width:80px; height:80px; }
-      .pet-progress { width:80px; }
-    }
-
-    @media (max-width:760px) {
-      .mobile-pet-notice { display:block; }
-      nav { padding:14px 20px; }
-      .nav-links, .nav-actions { display:none; }
-      .nav-logo { font-size:14px; }
-      .hero { padding:100px 24px 60px; }
-      .hero h1 { font-size:clamp(42px,11vw,72px); }
-      .hero-sub { font-size:14px; max-width:100%; }
-      .counters { gap:32px; }
-      .cnt-value { font-size:40px; }
-      .section { padding:56px 24px; }
-      .section h2 { font-size:clamp(28px,7vw,42px); margin-bottom:32px; }
-      .diag-paths { grid-template-columns:1fr; }
-      .steps { grid-template-columns:1fr 1fr; gap:20px; }
-      .cards { grid-template-columns:1fr; }
-      .split-grid { grid-template-columns:1fr; }
-      .split-block { border-right:none; border-bottom:1px solid rgba(250,245,238,.08); padding:32px 24px; }
-      .split-block:last-child { border-bottom:none; }
-      .modal { padding:32px 24px; }
-      footer { padding:28px 24px; }
-      .cat-wrap { cursor:default; }
-    }
-    @media (max-width:420px) {
-      .steps { grid-template-columns:1fr; }
-      .split-pct { font-size:60px; }
-    }
 
     /* Nav */
     nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:18px 48px; background:rgba(250,245,238,.93); backdrop-filter:blur(10px); border-bottom:1px solid rgba(42,32,24,.06); gap:20px; }
-    .nav-left { display:flex; align-items:center; gap:20px; }
+    .nav-left { display:flex; align-items:center; gap:20px; min-width:0; }
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:17px; letter-spacing:.1em; white-space:nowrap; }
     .lang-switcher { display:flex; gap:2px; }
     .lang-btn { background:none; border:1px solid transparent; padding:4px 10px; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; color:var(--dark); opacity:.35; transition:all .2s; border-radius:2px; }
@@ -92,6 +33,19 @@
     .nav-cta-outline { background:transparent; color:var(--dark); border:1px solid rgba(42,32,24,.25); padding:10px 24px; font-family:'Inter',sans-serif; font-size:13px; letter-spacing:.05em; cursor:pointer; transition:all .2s; white-space:nowrap; }
     .nav-cta-outline:hover { border-color:var(--dark); background:rgba(42,32,24,.04); }
     .nav-actions { display:flex; gap:8px; align-items:center; }
+    .lang-btn { white-space:nowrap; }
+    /* Panel nawigacji: na desktopie przezroczysty (display:contents), na mobile szuflada */
+    .nav-panel { display:contents; }
+    /* Stan zalogowania sterowany klasa na <body>, nie stylem inline - inaczej media query nie ma szans */
+    #nav-user { display:none; }
+    body.auth-user #nav-actions { display:none; }
+    body.auth-user #nav-user { display:flex; }
+    /* Hamburger - tylko mobile */
+    .nav-burger { display:none; flex-shrink:0; flex-direction:column; justify-content:center; gap:5px; width:40px; height:40px; padding:0; background:none; border:none; cursor:pointer; margin-left:auto; }
+    .nav-burger span { display:block; width:22px; height:1.5px; background:var(--dark); margin:0 auto; transition:transform .25s, opacity .2s; }
+    nav.open .nav-burger span:nth-child(1) { transform:translateY(6.5px) rotate(45deg); }
+    nav.open .nav-burger span:nth-child(2) { opacity:0; }
+    nav.open .nav-burger span:nth-child(3) { transform:translateY(-6.5px) rotate(-45deg); }
     .hero-cta {
       display:inline-block; margin-top:32px; position:relative;
       background:var(--dark); color:var(--cream); border:none;
@@ -261,6 +215,103 @@
     .trait { font-size:11px; letter-spacing:.1em; text-transform:uppercase; border:1px solid rgba(42,32,24,.15); padding:4px 14px; }
     .result-cta { display:flex; flex-direction:column; gap:10px; margin-top:28px; }
     .result-note { font-size:12px; opacity:.35; text-align:center; margin-top:16px; line-height:1.6; }
+
+    /* ==================== RESPONSIVE ====================
+       Ten blok MUSI stac po regulach bazowych. Media query nie podnosi
+       specyficznosci - przy tym samym selektorze wygrywa regula pozniejsza. */
+
+    /* --- niskie okno (glownie landscape): sciskamy hero w pionie --- */
+    @media (max-height:800px) {
+      .hero { min-height:unset; padding-block:80px 24px; justify-content:flex-start; }
+      .eyebrow { margin-bottom:6px; }
+      .hero h1 { font-size:clamp(34px,5vw,56px); margin-bottom:8px; }
+      .hero-sub { font-size:13px; margin-bottom:14px; line-height:1.5; }
+      .counters { margin-bottom:12px; gap:32px; }
+      .cnt-value { font-size:30px; }
+      .cnt-label { font-size:9px; }
+      .cat-wrap { width:110px; height:110px; }
+      .pet-progress { width:110px; margin-top:8px; }
+      .pet-dots { gap:3px; margin-bottom:4px; }
+      .pet-dot { width:6px; height:6px; }
+      .hero-cta { margin-top:16px; padding:16px 52px 16px 40px; font-size:16px; }
+    }
+
+    @media (max-height:700px) {
+      .hero { padding-block:76px 20px; }
+      .eyebrow { display:none; }
+      .counters { margin-bottom:8px; gap:24px; }
+      .cnt-value { font-size:26px; }
+      .cat-wrap { width:90px; height:90px; }
+      .pet-progress { width:90px; margin-top:6px; }
+      .hero-cta { margin-top:12px; padding:14px 48px 14px 36px; font-size:15px; }
+    }
+
+    @media (max-height:620px) {
+      .hero { padding-block:72px 16px; }
+      .hero-sub { display:none; }
+      .counters { display:none; }
+      .cat-wrap { width:80px; height:80px; }
+      .pet-progress { width:80px; }
+    }
+
+    /* --- telefon / waski ekran --- */
+    /* --- nawigacja w szufladzie: od 980px w dol, bo ponizej ~950px desktopowy uklad
+           (linki wysrodkowane absolutnie + przelacznik jezyka + dwa przyciski) zachodzi na siebie --- */
+    @media (max-width:980px) {
+      nav { padding:12px 20px; gap:12px; }
+      .nav-burger { display:flex; }
+      .lang-btn { font-size:10px; padding:4px 7px; letter-spacing:.06em; }
+      .lang-switcher { gap:1px; }
+
+      .nav-panel {
+        display:block;
+        position:absolute; top:100%; left:0; right:0;
+        background:var(--cream);
+        border-bottom:1px solid rgba(42,32,24,.08);
+        box-shadow:0 12px 24px rgba(42,32,24,.07);
+        padding:4px 20px 20px;
+        max-height:calc(100vh - 64px); overflow-y:auto;
+        opacity:0; visibility:hidden; transform:translateY(-8px);
+        transition:opacity .22s ease, transform .22s ease, visibility .22s;
+      }
+      nav.open .nav-panel { opacity:1; visibility:visible; transform:none; }
+
+      .nav-links { position:static; transform:none; flex-direction:column; gap:0; }
+      .nav-links li { border-bottom:1px solid rgba(42,32,24,.07); }
+      .nav-links li:last-child { border-bottom:none; }
+      .nav-links a { display:block; padding:14px 2px; font-size:15px; opacity:.75; }
+
+      .nav-actions { flex-direction:column; align-items:stretch; gap:10px; margin-top:16px; }
+      .nav-cta, .nav-cta-outline { display:block; width:100%; text-align:center; padding:14px 24px; font-size:14px; }
+    }
+
+    @media (max-width:760px) {
+      .mobile-pet-notice { display:block; }
+
+      .hero { padding-inline:24px; padding-block:104px 60px; }
+      .hero h1 { font-size:clamp(34px,9vw,72px); white-space:normal; line-height:1.14; }
+      .hero-sub { font-size:14px; max-width:100%; }
+      .counters { gap:32px; }
+      .cnt-value { font-size:40px; }
+      .section { padding:56px 24px; }
+      .section h2 { font-size:clamp(28px,7vw,42px); margin-bottom:32px; }
+      .diag-paths { grid-template-columns:1fr; }
+      .steps { grid-template-columns:1fr 1fr; gap:20px; }
+      .cards { grid-template-columns:1fr; }
+      .split-grid { grid-template-columns:1fr; }
+      .split-block { border-right:none; border-bottom:1px solid rgba(250,245,238,.08); padding:32px 24px; }
+      .split-block:last-child { border-bottom:none; }
+      .modal { padding:32px 24px; }
+      footer { padding:28px 24px; }
+      .cat-wrap { cursor:default; }
+    }
+
+    @media (max-width:420px) {
+      .steps { grid-template-columns:1fr; }
+      .split-pct { font-size:60px; }
+      .lang-btn { font-size:9px; padding:4px 5px; }
+    }
+
   </style>
 </head>
 <body>
@@ -274,19 +325,26 @@
       <a class="lang-btn" data-lang="ko" href="/ko/">한국어</a>
     </div>
   </div>
-  <ul class="nav-links">
-    <li><a href="#diagnoza" data-i18n="nav.diagnosis">Diagnosis</a></li>
-    <li><a href="/breeds/" data-i18n="nav.breeds">Breeds</a></li>
-    <li><a href="#jak-dziala" data-i18n="nav.how">How it works</a></li>
-    <li><a href="#dotacje" data-i18n="nav.donate">Donations</a></li>
-  </ul>
-  <div class="nav-actions" id="nav-actions">
-    <a class="nav-cta-outline" id="navRegister" data-i18n="nav.register" href="/register/">Załóż konto</a>
-    <a class="nav-cta" id="navLogin" data-i18n="nav.login" href="/login/">Zaloguj się</a>
-  </div>
-  <div class="nav-actions" id="nav-user" style="display:none">
-    <a class="nav-cta-outline" id="navMyCat" href="/dashboard/">My cat →</a>
-    <button class="nav-cta" id="navLogout" onclick="signOut()">Log out</button>
+
+  <button class="nav-burger" id="navBurger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="navPanel">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav-panel" id="navPanel">
+    <ul class="nav-links">
+      <li><a href="#diagnoza" data-i18n="nav.diagnosis">Diagnosis</a></li>
+      <li><a href="/breeds/" data-i18n="nav.breeds">Breeds</a></li>
+      <li><a href="#jak-dziala" data-i18n="nav.how">How it works</a></li>
+      <li><a href="#dotacje" data-i18n="nav.donate">Donations</a></li>
+    </ul>
+    <div class="nav-actions" id="nav-actions">
+      <a class="nav-cta-outline" id="navRegister" data-i18n="nav.register" href="/register/">Załóż konto</a>
+      <a class="nav-cta" id="navLogin" data-i18n="nav.login" href="/login/">Zaloguj się</a>
+    </div>
+    <div class="nav-actions" id="nav-user">
+      <a class="nav-cta-outline" id="navMyCat" href="/dashboard/">My cat →</a>
+      <button class="nav-cta" id="navLogout" onclick="signOut()">Log out</button>
+    </div>
   </div>
 </nav>
 
@@ -960,6 +1018,26 @@ document.getElementById('resultOverlay').addEventListener('click', e=>{ if(e.tar
   const langParam = currentLang !== 'en' ? '?lang=' + currentLang : '';
   document.getElementById('navLogin').href = '/login/' + langParam;
   document.getElementById('navRegister').href = '/register/' + langParam;
+
+  // Hamburger: szuflada nawigacji na waskich ekranach
+  const navEl = document.querySelector('nav');
+  const burgerEl = document.getElementById('navBurger');
+  const panelEl = document.getElementById('navPanel');
+  const setMenu = open => {
+    navEl.classList.toggle('open', open);
+    burgerEl.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  burgerEl.addEventListener('click', e => {
+    e.stopPropagation();
+    setMenu(!navEl.classList.contains('open'));
+  });
+  // klik w link w szufladzie ja zamyka (kotwice #... nie przeladowuja strony)
+  panelEl.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
+  // klik poza nawigacja i Escape tez zamykaja
+  document.addEventListener('click', e => { if (!navEl.contains(e.target)) setMenu(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  // powrot na desktop: szuflada nie moze zostac "otwarta"
+  window.matchMedia('(min-width:981px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
 })();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -972,14 +1050,12 @@ document.getElementById('resultOverlay').addEventListener('click', e=>{ if(e.tar
 
   const { data: { session } } = await sb.auth.getSession();
   if (session) {
-    document.getElementById('nav-actions').style.display = 'none';
-    document.getElementById('nav-user').style.display = 'flex';
+    document.body.classList.add('auth-user');
   }
 
   async function signOut() {
     await sb.auth.signOut();
-    document.getElementById('nav-user').style.display = 'none';
-    document.getElementById('nav-actions').style.display = 'flex';
+    document.body.classList.remove('auth-user');
   }
   window.signOut = signOut;
 })();

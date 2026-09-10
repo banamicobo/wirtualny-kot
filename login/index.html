@@ -17,7 +17,7 @@
     .nav-left { display:flex; align-items:center; gap:20px; }
     .nav-logo { font-family:'Cormorant Garamond',serif; font-size:17px; letter-spacing:.1em; white-space:nowrap; text-decoration:none; color:var(--dark); }
     .lang-switcher { display:flex; gap:2px; }
-    .lang-btn { background:none; border:1px solid transparent; padding:4px 10px; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; color:var(--dark); opacity:.35; transition:all .2s; border-radius:2px; text-decoration:none; display:inline-block; }
+    .lang-btn { white-space:nowrap; background:none; border:1px solid transparent; padding:4px 10px; font-family:'Inter',sans-serif; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; color:var(--dark); opacity:.35; transition:all .2s; border-radius:2px; text-decoration:none; display:inline-block; }
     .lang-btn:hover { opacity:.7; }
     .lang-btn.active { opacity:1; border-color:rgba(42,32,24,.2); background:rgba(42,32,24,.04); }
     .nav-back { font-size:13px; opacity:.45; text-decoration:none; color:var(--dark); transition:opacity .2s; }
@@ -64,8 +64,22 @@
     .auth-switch a:hover { text-decoration:underline; }
     footer { text-align:center; padding:28px 24px; border-top:1px solid rgba(42,32,24,.07); font-size:12px; opacity:.28; letter-spacing:.04em; }
 
+    @media (max-width:980px) {
+      nav { padding:14px 20px; gap:12px; }
+      .nav-left { gap:12px; min-width:0; }
+      .nav-logo { font-size:14px; }
+      .lang-btn { font-size:10px; padding:4px 7px; letter-spacing:.06em; }
+      .lang-switcher { gap:1px; }
+      .nav-back { white-space:nowrap; flex-shrink:0; }
+    }
+    @media (max-width:380px) {
+      /* widget Turnstile ma sztywne 300px i na najwezszych telefonach wypychal strone w bok */
+      .cf-turnstile { transform:scale(.86); transform-origin:left center; }
+    }
     @media (max-width:760px) {
-      nav { padding:14px 20px; }
+      /* na telefonie zostaje przelacznik jezyka i "wroc" - powrot na strone glowna
+         jest tym samym linkiem co logo, wiec logo tylko zabieralo miejsce */
+      .nav-logo { display:none; }
       .auth-box h1 { font-size:36px; }
     }
   </style>
