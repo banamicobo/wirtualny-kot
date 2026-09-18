@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\ZASADY_SESJI.md -->
-> **Kopia z 2026-09-10.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-09-18.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # ZASADY SESJI — otwarcie, przebieg, zamknięcie
 
@@ -136,6 +136,14 @@ Bez PII: dane osobowe, skany i wypełnione formularze zostają w `-dane`, w logu
    **To jedyny przypadek, w którym zakładasz wiersz cudzego projektu.** Istniejących cudzych wierszy nadal nie ruszasz — ani treści, ani statusu, ani deadline'u. Zakładasz nowy i zostawiasz go agentowi tamtego projektu.
 
    Powód: `DO-PJM.md` zniesiony 22.08.2026. Przekazanie przez plik pośredni wymagało, żeby ktoś go przeczytał i przeniósł; przy siedmiu projektach zgłoszenia leżały tam tygodniami (IOM miał 41 nieodebranych pozycji).
+
+7a. **Zrobiłeś coś na cudzym podwórku — zostawiasz właścicielowi wpis w skrzynce** (decyzja Miko 18.09.2026; pierwszy przypadek: TAX przejmuje od CMI `aplikacje-o-prace.md`). Dotyczy każdej akcji na czyimś repo, pliku albo sprawie za decyzją Miko: zabranie pliku, przejęcie sprawy, zmiana rejestru. Trzy ruchy, wszystkie w tej samej sesji:
+
+   - **Wpis skrzynki z nadawcą:** `skrzynka.py dodaj --zrodlo agent --od TWÓJ_KOD --projekt KOD_WŁAŚCICIELA --tresc "..."` (`--od` bierze się sam z katalogu roboczego). Treść ma stały szkielet: **co zrobiłem · na czym (pełna ścieżka źródła i celu) · decyzja Miko z datą · co właściciel ma u siebie zmienić.** Właściciel widzi wpis na swoim otwarciu (4b), PjM na swoim; leżakujący wpis krzyczy `[ZALEG]`.
+   - **Stub w miejscu zabranego pliku:** jedna linia u właściciela — `Przeniesiony do {ścieżka} — decyzja Miko DD.MM.RRRR, wpis skrzynki {nazwa pliku}`. **To jedyna postać zapisu w cudzym repo, jaką wolno zrobić** — bez tego agent, który sięgnie po plik z pamięci, trafi na brak zamiast na wskazówkę.
+   - **Sekcja 6 własnego logu** — ślad, tak jak w punkcie 7.
+
+   **Rachuba właściciela to status wpisu.** Właściciel na swoim otwarciu robi `podjety` → `zrobiony --slad "..."` — dopiero to zamyka przekazanie, a plik w `skrzynka\_archiwum\` jest rejestrem: kto, kiedy, jaka decyzja, co zrobiono po stronie odbiorcy. Osobnego rejestru przekazań nie prowadzimy.
 
 8. **Narzędzie do odczytu:** `pwsh -File C:\projekty-IOMJB\PjM\narzedzia\poczta-przeglad.ps1 -Od RRRR-MM-DD -Skrzynka fraza`. Pojedyncze wiadomości i szkice: `_STANDARDY\poczta-czytaj.py` i `poczta-wyslij.py`. Szczegóły kont i pułapki: `POCZTA-IMAP.md`.
 

@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\REFERENCJA_SESJI.md -->
-> **Kopia z 2026-09-10.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\REFERENCJA_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-09-18.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\REFERENCJA_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # REFERENCJA SESJI — mapa skrzynek, akta, układ plików
 
@@ -117,7 +117,7 @@ Miko wpada na coś poza sesją — w samochodzie, u klienta, w kolejce. Skrzynka
 
 7. **Leżakujący wpis meldujesz Miko.** `skrzynka.py nowe` oznacza `[ZALEG]` powyżej 2 dni i `[PILNE]` powyżej 7. Jeśli coś Twojego leży z takim znacznikiem, mówisz o tym w meldunku otwarcia (punkt 1.7), zanim przejdziesz do pracy.
 
-8. **Skrzynka nie jest kanałem PjM → agent.** Jednorazowe polecenia PjM idą na tablicę (sekcja 5.9). Skrzynka przyjmuje wyłącznie to, co pochodzi od Miko z terenu.
+8. **Skrzynka nie jest kanałem PjM → agent.** Jednorazowe polecenia PjM idą na tablicę (sekcja 5.9). Skrzynka przyjmuje to, co pochodzi od Miko z terenu, oraz — od 18.09.2026 — **przekazania agent → agent** (`ZASADY_SESJI.md` 5.7a): wpis ma `zrodlo: agent` i pole `od: KOD` nadawcy, a właściciel domyka go `podjety` → `zrobiony` ze śladem, tak samo jak wpis z terenu.
 
 ## 6. Układ plików projektu
 
