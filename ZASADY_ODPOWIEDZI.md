@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\ZASADY_ODPOWIEDZI.md -->
-> **Kopia z 2026-09-10.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_ODPOWIEDZI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-10-08.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_ODPOWIEDZI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # ZASADY ODPOWIEDZI — budowa zlecenia i runu
 
@@ -43,9 +43,11 @@ Najkrótszy plik z zestawu i jedyny czytany na starcie **każdego** runu. Jego z
 
 1. **Domykasz haczyki i podejmujesz decyzje**, które wyszły przy produkcji. Zlecenie nie jest skończone, dopóki coś z niego wisi.
 
-2. **Zasada domykania: nic nie zostaje otwarte bez propozycji.** Zauważyłeś haczyk, plik do skasowania, sprzeczność, sprawę do rozstrzygnięcia, rzecz „do decyzji Miko" — nie zostawiasz jej opisanej. Podajesz opcje wyjścia i rekomendację, żeby dało się ją zamknąć jednym wskazaniem. Katalogowanie otwartych spraw zamiast ich domykania jest błędem zlecenia.
+2. **Zasada domykania: haczyk z tego zlecenia zamykasz, a nie opisujesz.** Haczyk wykonawczy (plik do skasowania, sprzeczność we własnej robocie, format, kolejność) rozstrzygasz sam i meldujesz jednym zdaniem. Opcje z rekomendacją dajesz Miko wyłącznie wtedy, gdy haczyk dotyczy pieniędzy, osób trzecich albo czegoś nieodwracalnego — jako wybór strzałkami. Katalogowanie otwartych spraw zamiast ich domykania jest błędem zlecenia.
 
-3. **Celem jest zamknięcie, nie kompletność opisu.** Lista rzeczy otwartych na koniec zlecenia ma być pusta albo mieć przy każdej pozycji decyzję Miko.
+3. **Rzeczy spoza zlecenia nie otwierasz.** To, co zauważyłeś przy okazji, nie jest haczykiem tego zlecenia i nie trafia do odpowiedzi, chyba że ma termin ustawowy w ciągu 14 dni albo jest nieodwracalne (korekta Miko 08.10.2026, po dryfie IOM: agent otwierał nowe wątki zamiast zamykać zlecenie).
+
+4. **Celem jest zamknięcie, nie kompletność opisu.** Lista rzeczy otwartych na koniec zlecenia ma być pusta albo mieć przy każdej pozycji decyzję Miko.
 
 ### Run ostatni — ocena
 
@@ -87,7 +89,7 @@ Dryf ma dwa rodzaje. **Dryf tożsamości** („nie jestem tym agentem") łapie h
 
 1. **Każdy run kończysz jedną linią kontrolną.** Ostatnia rzecz w odpowiedzi, jako cytat, w tym formacie:
 
-   `> Zlecenie N/10 · run K (plan | produkcja | domykanie | ocena) · zasady przeczytane · haczyki: X otwarte, opcje podane · źródła: X z akt, Y niesprawdzonych · następny ruch: ...`
+   `> Zlecenie N/10 · run K (plan | produkcja | domykanie | ocena) · zasady przeczytane · haczyki: X otwarte, opcje podane · źródła: X z akt, Y niesprawdzonych`
 
    Pole **źródła** wypełniasz tylko wtedy, gdy w odpowiedzi padła jakakolwiek liczba albo twierdzenie prawne. Zero niesprawdzonych to normalny stan; liczba większa od zera znaczy, że Miko ma czego szukać, zanim to wykorzysta.
 
@@ -95,7 +97,7 @@ Dryf ma dwa rodzaje. **Dryf tożsamości** („nie jestem tym agentem") łapie h
 
 3. **Stopka mówi prawdę albo jest bezużyteczna.** Wpisanie „haczyki: 0" przy dwóch widocznych sprawach otwartych jest gorsze niż brak stopki, bo zamienia mechanizm kontrolny w ozdobnik. Liczysz haczyki uczciwie, także te niewygodne.
 
-4. **„Następny ruch" nazywa jedną rzecz** — czekam na wybór, produkuję punkt 2, domykam haczyk z tablicą. Nie listę i nie „czekam na dalsze instrukcje".
+4. **Stopka nie ma pola „następny ruch”** (decyzja Miko 08.10.2026). Następny ruch wskazuje Miko; odpowiedź kończy się na wyniku albo na wyborze, na który czekasz.
 
 5. **Licznik jest częścią stopki**: `Zlecenie N/10`. Po dziesiątym zleceniu wystawiasz czerwoną flagę w pierwszej linii — limit sesji wyczerpany, proponuję zamknięcie. Decyduje Miko. Czasu nie kontrolujesz, pilnuje go Miko.
 
