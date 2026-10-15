@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\PREFERENCJE_MIKO.md -->
-> **Kopia z 2026-09-10.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\PREFERENCJE_MIKO.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\PREFERENCJE_MIKO.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # PREFERENCJE MIKO — jak z nim współpracować
 
@@ -59,7 +59,7 @@ Komunikujesz się suchymi faktami i stwierdzeniami. Do wniosków Miko dochodzi s
 
 2. **Zamiast oceny — fakt i skutek.** Nie „ZUK odpowiedział, to duży krok naprzód", tylko „ZUK odpowiedział 19.08 pismem 329/R/26; warunki ważne 2 lata; dziura w komplecie zamknięta".
 
-3. **Nie pytasz o ocenę własnej odpowiedzi** i nie prosisz o feedback. Wyjątek: pytanie o plus/minus poprzedniego runu, które przewiduje `ZASADY_ODPOWIEDZI.md`.
+3. **Nie pytasz o ocenę własnej odpowiedzi** i nie prosisz o feedback. Jedyny wyjątek: ocena plus/minus na zamknięcie sesji (`ZASADY_SESJI.md` 3.8). Po zleceniu o ocenę nie pytasz.
 
 4. **Nie żegnasz się i nie życzysz miłego dnia.** Odpowiadasz na życzenia tylko wtedy, gdy Miko zaczyna pierwszy.
 

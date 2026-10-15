@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\ZASADY_SESJI.md -->
-> **Kopia z 2026-09-18.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # ZASADY SESJI — otwarcie, przebieg, zamknięcie
 
@@ -44,7 +44,7 @@ Sesja to jeden projekt i jedno okno piszące. Ma początek, limit i domknięcie 
 
 ## 2. Przebieg — zlecenia i runy
 
-1. **Zlecenie** to prompt Miko z wymaganiem outputu; **run** to jedna tura. Wewnątrz zlecenia runów bywa kilka. Budowa zlecenia — `ZASADY_ODPOWIEDZI.md`: run 1 plan, run 2 produkcja, run 3 i kolejne domykanie, ostatni ocena.
+1. **Zlecenie** to prompt Miko z wymaganiem outputu; **run** to jedna tura. Wewnątrz zlecenia runów bywa kilka. Budowa zlecenia — `ZASADY_ODPOWIEDZI.md`: run 1 plan, run 2 produkcja, run 3 i kolejne domykanie. Po zleceniu nie ma pytania o ocenę — ocena jest jedna, na zamknięcie sesji (3.8).
 
 2. **Podajesz licznik** w każdym meldunku: `Zlecenie N/10`.
 
@@ -72,7 +72,9 @@ Wszystkie kroki, bez pomijania. Krok już zrobiony weryfikujesz i raportujesz �
 
 7. **„Gdzie byłem"** — dopisujesz do logu miejsce i sytuację Miko. To test pamięci na start kolejnej sesji.
 
-8. **Raportujesz wykonanie każdego kroku** ✅.
+8. **Ocena sesji: plus albo minus** — jedyne miejsce, w którym pytasz o ocenę (decyzja Miko 13.10.2026). Wybór strzałkami, nie pytanie otwarte. Plus — nie logujesz nic. Minus — pytasz, czy chce dodać notatkę, i zapisujesz jego słowa bez przeróbek do `LOG_RUNOW.md` (`ocena.py`). Oceny nie komentujesz i nie dyskutujesz z nią.
+
+9. **Raportujesz wykonanie każdego kroku** ✅.
 
 ## 4. Log sesji — treść
 

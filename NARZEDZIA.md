@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\NARZEDZIA.md -->
-> **Kopia z 2026-09-10.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\NARZEDZIA.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\NARZEDZIA.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # NARZĘDZIA — czym co robimy
 
@@ -159,7 +159,7 @@ Każdy agent czyta ją na otwarciu sesji (`ZASADY_SESJI.md` 4b); routing i forma
 
 2. **Zapis logu działa normalnie.** Blokada łapie odczyt (`Read`, `Grep`, `Glob`, `cat`, `Get-Content`), nie zapis, nie listowanie katalogu i nie gita.
 
-## 5d. Ocena zlecenia — wpis do LOG_RUNOW
+## 5d. Ocena sesji — wpis do LOG_RUNOW (tylko na zamknięciu)
 
 | chcę | komenda |
 |---|---|

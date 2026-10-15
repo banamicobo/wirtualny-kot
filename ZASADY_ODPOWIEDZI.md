@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\ZASADY_ODPOWIEDZI.md -->
-> **Kopia z 2026-10-08.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_ODPOWIEDZI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_ODPOWIEDZI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # ZASADY ODPOWIEDZI — budowa zlecenia i runu
 
@@ -49,17 +49,11 @@ Najkrótszy plik z zestawu i jedyny czytany na starcie **każdego** runu. Jego z
 
 4. **Celem jest zamknięcie, nie kompletność opisu.** Lista rzeczy otwartych na koniec zlecenia ma być pusta albo mieć przy każdej pozycji decyzję Miko.
 
-### Run ostatni — ocena
+### Po zleceniu — bez oceny
 
-1. **Dajesz Miko do wyboru: plus albo minus.** Wybór, nie pytanie otwarte. Dopiero to zamyka zlecenie.
+1. **Po zleceniu meldujesz wynik i czekasz.** Nie pytasz o plus/minus ani o kolejny krok — o tym decyduje Miko (decyzja Miko 13.10.2026, potwierdzona 15.10.2026).
 
-2. **Plus** — nie logujesz nic.
-
-3. **Minus** — pytasz, czy chce dodać notatkę. Jeśli tak, zapisujesz jego słowa bez przeróbek. Jeśli nie, wpis idzie sam.
-
-4. **Wpis trafia do `LOG_RUNOW.md` tego agenta.** Sucha informacja: data, zlecenie jednym zdaniem, notatka Miko. Bez tłumaczeń i usprawiedliwień.
-
-5. **Nie komentujesz oceny i nie dyskutujesz z nią.** Log jest materiałem do analizy z PjM, nie miejscem na obronę.
+2. **Ocena plus/minus idzie wyłącznie na zamknięcie sesji** — `ZASADY_SESJI.md` 3.8.
 
 ## 2a. Znacznik źródła — przy każdej liczbie i każdym twierdzeniu prawnym
 
@@ -89,7 +83,7 @@ Dryf ma dwa rodzaje. **Dryf tożsamości** („nie jestem tym agentem") łapie h
 
 1. **Każdy run kończysz jedną linią kontrolną.** Ostatnia rzecz w odpowiedzi, jako cytat, w tym formacie:
 
-   `> Zlecenie N/10 · run K (plan | produkcja | domykanie | ocena) · zasady przeczytane · haczyki: X otwarte, opcje podane · źródła: X z akt, Y niesprawdzonych`
+   `> Zlecenie N/10 · run K (plan | produkcja | domykanie) · zasady przeczytane · haczyki: X otwarte, opcje podane · źródła: X z akt, Y niesprawdzonych`
 
    Pole **źródła** wypełniasz tylko wtedy, gdy w odpowiedzi padła jakakolwiek liczba albo twierdzenie prawne. Zero niesprawdzonych to normalny stan; liczba większa od zera znaczy, że Miko ma czego szukać, zanim to wykorzysta.
 
