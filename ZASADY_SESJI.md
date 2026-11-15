@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\ZASADY_SESJI.md -->
-> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-11-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # ZASADY SESJI — otwarcie, przebieg, zamknięcie
 
@@ -44,7 +44,7 @@ Sesja to jeden projekt i jedno okno piszące. Ma początek, limit i domknięcie 
 
 ## 2. Przebieg — zlecenia i runy
 
-1. **Zlecenie** to prompt Miko z wymaganiem outputu; **run** to jedna tura. Wewnątrz zlecenia runów bywa kilka. Budowa zlecenia — `ZASADY_ODPOWIEDZI.md`: run 1 plan, run 2 produkcja, run 3 i kolejne domykanie. Po zleceniu nie ma pytania o ocenę — ocena jest jedna, na zamknięcie sesji (3.8).
+1. **Zlecenie** to prompt Miko z wymaganiem outputu; **run** to jedna tura. Wewnątrz zlecenia runów bywa kilka. Budowa zlecenia — `ZASADY_ODPOWIEDZI.md`: run 1 plan, run 2 produkcja, run 3 i kolejne domykanie. Po zleceniu nie ma pytania o ocenę — ocena jest jedna, na zamknięcie sesji (3.6).
 
 2. **Podajesz licznik** w każdym meldunku: `Zlecenie N/10`.
 
@@ -68,13 +68,11 @@ Wszystkie kroki, bez pomijania. Krok już zrobiony weryfikujesz i raportujesz �
 
 5. **Commit i push** wszystkich edytowanych repo.
 
-6. **Dziennik Miko** — pytasz jednym zdaniem, czy chce coś dopisać do `DZIENNIK_MIKO.md`. Jeśli tak, zapisujesz jego słowa bez przeróbek. Jeśli nie, pomijasz. Sam tam nie piszesz nic.
+6. **Ocena sesji: plus albo minus** — jedyne miejsce, w którym pytasz o ocenę (decyzja Miko 13.10.2026). Wybór strzałkami, nie pytanie otwarte. Plus — nie logujesz nic. Minus — pytasz, czy chce dodać notatkę, i zapisujesz jego słowa bez przeróbek do `LOG_RUNOW.md` (`ocena.py`). Oceny nie komentujesz i nie dyskutujesz z nią.
 
-7. **„Gdzie byłem"** — dopisujesz do logu miejsce i sytuację Miko. To test pamięci na start kolejnej sesji.
+7. **Raportujesz wykonanie każdego kroku** ✅.
 
-8. **Ocena sesji: plus albo minus** — jedyne miejsce, w którym pytasz o ocenę (decyzja Miko 13.10.2026). Wybór strzałkami, nie pytanie otwarte. Plus — nie logujesz nic. Minus — pytasz, czy chce dodać notatkę, i zapisujesz jego słowa bez przeróbek do `LOG_RUNOW.md` (`ocena.py`). Oceny nie komentujesz i nie dyskutujesz z nią.
-
-9. **Raportujesz wykonanie każdego kroku** ✅.
+**Czego na zamknięciu nie ma** (decyzja Miko 15.11.2026): pytania o wpis do dziennika i pytania, gdzie Miko jest. Z Miko na zamknięciu zostaje wyłącznie ocena plus/minus. Dziennik Miko prowadzi wyłącznie PjM.
 
 ## 4. Log sesji — treść
 
@@ -94,9 +92,7 @@ Log zawiera:
 
 6. **Co dotyczy innych projektów** — sprawa, która wyszła u Ciebie, a należy do kogoś innego. PjM to odbierze i przekaże.
 
-7. **Lessons learned** — refleksje agenta idą tutaj, nie do dziennika Miko.
-
-8. **„Gdzie byłem"**.
+7. **Lessons learned** — refleksje agenta idą tutaj.
 
 Bez PII: dane osobowe, skany i wypełnione formularze zostają w `-dane`, w logu jest tylko ścieżka.
 
@@ -201,7 +197,7 @@ Katalog projektu widać w explorerze i to jest pierwsza rzecz, którą Miko ma p
 
 ### 6.1 Co leży w korzeniu
 
-1. **Zestaw agenta** — `CLAUDE.md`, `PREFERENCJE_MIKO.md`, `ZASADY_SESJI.md`, `ZASADY_ODPOWIEDZI.md`, `KANALY.md`, `LOG_RUNOW.md`, katalog `sessions\`. Do tego `DZIENNIK_MIKO.md` i `VISION_{KOD}.md`.
+1. **Zestaw agenta** — `CLAUDE.md`, `PREFERENCJE_MIKO.md`, `ZASADY_SESJI.md`, `ZASADY_ODPOWIEDZI.md`, `KANALY.md`, `LOG_RUNOW.md`, katalog `sessions\`. Do tego `VISION_{KOD}.md`. `DZIENNIK_MIKO.md` jest tylko w PjM (decyzja Miko 15.11.2026).
 
 2. **Żywa specyfika projektu** — proces, wiedza dziedzinowa, rejestry, otwarte punkty. To, co agent faktycznie otwiera w trakcie pracy.
 

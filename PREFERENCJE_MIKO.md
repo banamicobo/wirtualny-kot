@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\PREFERENCJE_MIKO.md -->
-> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\PREFERENCJE_MIKO.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-11-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\PREFERENCJE_MIKO.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # PREFERENCJE MIKO — jak z nim współpracować
 
@@ -59,7 +59,7 @@ Komunikujesz się suchymi faktami i stwierdzeniami. Do wniosków Miko dochodzi s
 
 2. **Zamiast oceny — fakt i skutek.** Nie „ZUK odpowiedział, to duży krok naprzód", tylko „ZUK odpowiedział 19.08 pismem 329/R/26; warunki ważne 2 lata; dziura w komplecie zamknięta".
 
-3. **Nie pytasz o ocenę własnej odpowiedzi** i nie prosisz o feedback. Jedyny wyjątek: ocena plus/minus na zamknięcie sesji (`ZASADY_SESJI.md` 3.8). Po zleceniu o ocenę nie pytasz.
+3. **Nie pytasz o ocenę własnej odpowiedzi** i nie prosisz o feedback. Jedyny wyjątek: ocena plus/minus na zamknięcie sesji (`ZASADY_SESJI.md` 3.6). Po zleceniu o ocenę nie pytasz.
 
 4. **Nie żegnasz się i nie życzysz miłego dnia.** Odpowiadasz na życzenia tylko wtedy, gdy Miko zaczyna pierwszy.
 
@@ -144,3 +144,10 @@ Komunikujesz się suchymi faktami i stwierdzeniami. Do wniosków Miko dochodzi s
 3. **Dane osobowe nigdy w repo** — skany, wypełnione formularze i PII wyłącznie w `C:\projekty-IOMJB-dane\{projekt}\`.
 
 4. **Commit razem z pushem.** Gdy Miko mówi „commit", push jest częścią tego polecenia, nie osobną prośbą do niego.
+
+5. **Jedna wersja naraz — idziemy tylko do przodu** (decyzja Miko 14.11.2026). Miko nie wersjonuje i nie robi forków: każda korekta unieważnia poprzednią wersję. Ma być otwarta jedna wersja, ta z ostatnimi zmianami. Na tę jedną klasę kasowania Miko dał stałą zgodę i nie pytasz o nią, wbrew punktowi 2.
+   - **Szkic maila:** korekta zastępuje stary szkic. `poczta-wyslij.py` przy tym samym odbiorcy i temacie sam kasuje starszy szkic z Drafts; `--zostaw-stare` dajesz tylko przy dwóch różnych mailach o tym samym temacie. Gdy zmieniasz temat albo piszesz przez Outlook COM, stary szkic kasujesz sam (`$mail.Delete()`).
+   - **Plik (pptx, docx, xlsx, rysunek, HTML):** korekta nadpisuje ten sam plik pod tą samą nazwą. Bez `_v2` i `-poprawiony`. Plik otwarty w PowerPoincie, Excelu albo Wordzie najpierw zamykasz przez `kanaly_lib.zamknij_dokument(sciezka)`, potem zapisujesz, potem otwierasz od nowa. Musisz zmienić nazwę? Stary plik kasujesz w tym samym kroku.
+   - **Karta w przeglądarce:** plik pod tą samą ścieżką otwierasz w Operze tylko za pierwszym razem. Przy kolejnej korekcie piszesz „odśwież kartę (F5)” i nie otwierasz nowej karty.
+   - **Okno Explorera:** jedno okno na folder. `kanaly_lib.pokaz_plik` i hook `pokaz-plik.ps1` same zamykają okna pokazujące już ten katalog, zanim otworzą nowe. Explorer otwierasz tylko przez `pokaz_plik`, nigdy gołym `explorer.exe`.
+   - **Granica:** dotyczy tylko wersji, które sam wytworzyłeś w tej pracy. Plików Miko, dokumentów od osób trzecich i rzeczy już wysłanych nie ruszasz.

@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\NARZEDZIA.md -->
-> **Kopia z 2026-10-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\NARZEDZIA.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-11-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\NARZEDZIA.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # NARZĘDZIA — czym co robimy
 
@@ -75,7 +75,7 @@ Dwie przeglądarki, dwa światy. Dzięki temu karty, sesje i logowania się nie 
 
    `kanaly_lib.otworz_dla_miko(url)`.
 
-1d. **Oddanie pliku Miko: `kanaly_lib.pokaz_plik(sciezka)`** — otwiera Explorer z **zaznaczonym** plikiem; katalog otwiera bez zaznaczania, nieistniejąca ścieżka nie otwiera niczego. To jest znaczenie słowa „zrobione" przy każdym dokumencie (`PREFERENCJE_MIKO.md` 7.6). Siatka bezpieczeństwa: hook `pokaz-plik.ps1` (Stop) robi to samo po odpowiedzi, gdy zapomnisz — dla dokumentów z ostatnich 6 godzin, raz na plik w sesji.
+1d. **Oddanie pliku Miko: `kanaly_lib.pokaz_plik(sciezka)`** — otwiera Explorer z **zaznaczonym** plikiem; katalog otwiera bez zaznaczania, nieistniejąca ścieżka nie otwiera niczego. To jest znaczenie słowa „zrobione" przy każdym dokumencie (`PREFERENCJE_MIKO.md` 7.6). Przed nadpisaniem pliku otwartego w PowerPoincie, Excelu albo Wordzie: `kanaly_lib.zamknij_dokument(sciezka)`; `pokaz_plik` sam zamyka okna Explorera otwarte już na tym folderze (jedna wersja naraz, `PREFERENCJE_MIKO.md` 10.5). Siatka bezpieczeństwa: hook `pokaz-plik.ps1` (Stop) robi to samo po odpowiedzi, gdy zapomnisz — dla dokumentów z ostatnich 6 godzin, raz na plik w sesji.
 
 3. **Nie używaj `webbrowser.open`, `os.startfile` ani `start URL` do pokazywania czegoś Miko.** Domyślna przeglądarka systemu to **Edge**, czyli okno agenta — trafisz do siebie, nie do niego.
 
@@ -155,7 +155,7 @@ Każdy agent czyta ją na otwarciu sesji (`ZASADY_SESJI.md` 4b); routing i forma
 
 `python C:\projekty-IOMJB\PjM\narzedzia\pamiec.py --projekt KOD` — jedyna droga do logów sesji. Bezpośredni odczyt `sessions\*.md` odmawia hook `PreToolUse` (`C:\Users\Miko\.claude\hooks\blokada-logow.ps1`). Przełączniki: `--wszystkie` (najnowszy log każdego projektu — przegląd PjM), `--ile 2` (dwa ostatnie logi).
 
-1. **Skrypt tnie po nagłówkach `##`** i odcina sekcje o przebiegu: „Co zrobione", „Lessons learned", „Ocena", „Gdzie byłem", „Otwarcie". Pułapka: sekcja z faktami nazwana jednym z tych tytułów też wyleci — nazywaj sekcje po treści.
+1. **Skrypt tnie po nagłówkach `##`** i odcina sekcje o przebiegu: „Co zrobione", „Lessons learned", „Ocena", „Otwarcie". Pułapka: sekcja z faktami nazwana jednym z tych tytułów też wyleci — nazywaj sekcje po treści.
 
 2. **Zapis logu działa normalnie.** Blokada łapie odczyt (`Read`, `Grep`, `Glob`, `cat`, `Get-Content`), nie zapis, nie listowanie katalogu i nie gita.
 

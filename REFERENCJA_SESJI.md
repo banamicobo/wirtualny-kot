@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\REFERENCJA_SESJI.md -->
-> **Kopia z 2026-09-18.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\REFERENCJA_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-11-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\REFERENCJA_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # REFERENCJA SESJI — mapa skrzynek, akta, układ plików
 
@@ -125,7 +125,7 @@ Katalog projektu widać w explorerze i to jest pierwsza rzecz, którą Miko ma p
 
 ### 6.1 Co leży w korzeniu
 
-1. **Zestaw agenta** — `CLAUDE.md`, `PREFERENCJE_MIKO.md`, `ZASADY_SESJI.md`, `ZASADY_ODPOWIEDZI.md`, `KANALY.md`, `NARZEDZIA.md`, `LOG_RUNOW.md`, `LOG_STYLU_KOMUNIKACJI.md`, katalog `sessions\`. Do tego `DZIENNIK_MIKO.md` i `VISION_{KOD}.md`.
+1. **Zestaw agenta** — `CLAUDE.md`, `PREFERENCJE_MIKO.md`, `ZASADY_SESJI.md`, `ZASADY_ODPOWIEDZI.md`, `KANALY.md`, `NARZEDZIA.md`, `LOG_RUNOW.md`, `LOG_STYLU_KOMUNIKACJI.md`, katalog `sessions\`. Do tego `VISION_{KOD}.md`. `DZIENNIK_MIKO.md` jest tylko w PjM (decyzja Miko 15.11.2026).
 
 2. **Żywa specyfika projektu** — proces, wiedza dziedzinowa, rejestry, otwarte punkty. To, co agent faktycznie otwiera w trakcie pracy.
 
