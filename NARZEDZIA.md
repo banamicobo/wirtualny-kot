@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\NARZEDZIA.md -->
-> **Kopia z 2026-11-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\NARZEDZIA.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-11-16.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\NARZEDZIA.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # NARZĘDZIA — czym co robimy
 
@@ -82,6 +82,31 @@ Dwie przeglądarki, dwa światy. Dzięki temu karty, sesje i logowania się nie 
 4. **Chrome nie istnieje na tej maszynie.** Komenda z `chrome` kończy się po cichu błędem i nic się nie otwiera — jeśli gdzieś ją znajdziesz, jest do poprawienia.
 
 5. **Ścieżki obu przeglądarek żyją w `kanaly_lib`** (`PRZEGLADARKA_MIKO`, `PRZEGLADARKA_AGENTA`) — zmiana wersji albo instalacja w innym miejscu to poprawka w jednym pliku.
+
+6. **Sterowanie Edge agenta: `PjM\narzedzia\edge.ps1` — jedno narzędzie dla wszystkich** (standard od 16.11.2026, po tym jak KOS składał to sam). Nie piszesz własnego `SetForegroundWindow` ani `CopyFromScreen`.
+
+   ```
+   $E = "C:\projekty-IOMJB\PjM\narzedzia\edge.ps1"
+   powershell -NoProfile -File $E otworz "https://..."   # na wierzch + adres (bez okna: uruchamia Edge)
+   powershell -NoProfile -File $E tekst                  # tekst strony przez UI Automation — pierwszy wybór
+   powershell -NoProfile -File $E zrzut                  # PNG okna → ścieżka; obraz czytasz narzędziem Read
+   powershell -NoProfile -File $E klik 640 410           # X Y względem okna, tak jak na zrzucie
+   powershell -NoProfile -File $E pisz "tekst"           # wklejenie; schowek wraca do poprzedniej treści
+   powershell -NoProfile -File $E klawisz "{ENTER}"      # składnia SendKeys: {TAB} {ESC} ^l ^a
+   powershell -NoProfile -File $E okna                   # okna Edge; wybór okna: -Tytul "fragment"
+   ```
+
+   Kolejność pracy: `otworz` → `tekst` (albo `zrzut`, gdy treść jest w obrazie lub formularzu) → `klik` / `pisz` / `klawisz` → `zrzut` kontrolny po każdym kroku, który coś zmienia. Każda akcja wyciąga Edge na wierzch i po sobie oddaje okno, które było wcześniej (`-Zostaw` wyłącza oddawanie).
+
+   Pułapki, które narzędzie już obchodzi — nie odkrywasz ich drugi raz:
+
+   1. Windows blokuje `SetForegroundWindow` z procesu w tle — narzędzie wciska przedtem Alt. Bez tego zrzut pokazuje VS Code zamiast strony.
+   2. `PrintWindow` na oknie w tle daje pustą stronę — zrzut idzie z ekranu, po wyciągnięciu okna.
+   3. Dymki Edge'a (tłumaczenie, pobrane pliki, hasła) mają tę samą klasę okna co przeglądarka — narzędzie bierze tylko główne okno. Dymek zasłaniający stronę zamykasz `klik` w jego krzyżyk albo `klawisz "{ESC}"`.
+   4. Chromium buduje drzewo UI Automation leniwie — `tekst` sam ponawia zapytanie do 6 razy.
+   5. Edge działający w tle bez okna to normalny stan (`okna` → „Brak okien Edge") — `otworz` uruchamia nowe okno.
+
+   Granice: **hasło nigdy w poleceniu** (trafiłoby do zapisu sesji) — `sekrety.py do-schowka --konto ...`, potem `klawisz "^v"`, potem `sekrety.py wyczysc`. **Przed kliknięciem Wyślij / Złóż / Zapłać / Podpisz — STOP i zgoda Miko** (`formularz-zewnetrzny-stop-przed-wyslaniem`). Zrzuty leżą w `%TEMP%\edge-zrzut\` i nie trafiają do repo.
 
 ## 2. Co pali się teraz
 
