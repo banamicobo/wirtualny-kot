@@ -1,5 +1,5 @@
 <!-- KOPIA — nie edytuj. Zrodlo: C:\projekty-IOMJB\_STANDARDY\ZASADY_SESJI.md -->
-> **Kopia z 2026-11-15.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
+> **Kopia z 2026-11-16.** Ten plik zmienia wylacznie PjM w zrodle `_STANDARDY\ZASADY_SESJI.md` i rozsyla `sync-standardy.py`. Zmiana wpisana tutaj zniknie przy najblizszej synchronizacji.
 
 # ZASADY SESJI — otwarcie, przebieg, zamknięcie
 
@@ -119,6 +119,7 @@ Bez PII: dane osobowe, skany i wypełnione formularze zostają w `-dane`, w logu
 | `IOMJB_Jadwiga@proton.me` | IOM — korespondencja Prezes Zarządu |
 | `IOMJB_consultant@proton.me` | 4EN |
 | `IOMJB_Mikolaj@pm.me` | TAX — kancelaria 271/26, urzędy niemieckie, aplikacje o pracę |
+| `mj.banas@protonmail.com` | ARB — Lachmund Law 271/26, sąd, Sonova; TAX — ELSTER, Finanzamt, Commerzbank, Arbeitsagentur; reszta PjM (przegląd otwarcia). Tylko IMAP: konto `proton-mb` w Bridge, w Outlooku na razie nie ma (decyzja Miko 16.11.2026) |
 | `banamicobo@icloud.com` | PRV i KOS — sprawy prywatne |
 | `mikolajbanas@gmail.com`, `banamicobo@gmail.com`, `IOMJB@pm.me` | PjM — reszta, w większości szum |
 
